@@ -1,0 +1,21 @@
+type Pair @entity {
+    id: ID! # address
+    token0: Bytes!
+    token1: Bytes!
+}
+
+type Candle @entity {
+    id: ID! # time + period + srcToken + dstToken
+    time: Int!
+    period: Int!
+    lastBlock: Int!
+    token0: Bytes!
+    token1: Bytes!
+
+    token0TotalAmount: BigInt!
+    token1TotalAmount: BigInt!
+    open: BigDecimal!
+    close: BigDecimal!
+    low: BigDecimal!
+    high: BigDecimal!
+}
