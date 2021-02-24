@@ -13,9 +13,9 @@ dataSources:
       startBlock: 586851
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/dexcandles.ts
+      file: ../src/dexcandles/factory.ts
       entities:
         - Pair
       abis:
@@ -23,7 +23,7 @@ dataSources:
           file: ../abis/factory.json
       eventHandlers:
         - event: PairCreated(indexed address,indexed address,address,uint256)
-          handler: handleNewPair
+          handler: handlePairCreated
 templates:
   - kind: ethereum/contract
     name: Pair
@@ -32,9 +32,9 @@ templates:
       abi: Pair
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/dexcandles.ts
+      file: ../src/dexcandles/pair.ts
       entities:
         - Pair
       abis:
