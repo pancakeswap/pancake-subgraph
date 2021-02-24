@@ -1,19 +1,8 @@
 /* eslint-disable prefer-const */
 import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 import { concat } from "@graphprotocol/graph-ts/helper-functions";
-import { Swap } from "../generated/templates/Pair/Pair";
-import { PairCreated } from "../generated/Factory/Factory";
-import { Pair as PairTemplate } from "../generated/templates";
-import { Pair, Candle } from "../generated/schema";
-
-export function handleNewPair(event: PairCreated): void {
-  let pair = new Pair(event.params.pair.toHex());
-  pair.token0 = event.params.token0;
-  pair.token1 = event.params.token1;
-  pair.save();
-
-  PairTemplate.create(event.params.pair);
-}
+import { Pair, Candle } from "../../generated/schema";
+import { Swap } from "../../generated/templates/Pair/Pair";
 
 export function handleSwap(event: Swap): void {
   let token0Amount: BigInt = event.params.amount0In.minus(event.params.amount0Out).abs();
