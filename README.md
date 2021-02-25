@@ -6,7 +6,9 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 
 1. **Blocks**: Tracks all the blocks on Binance Smart Chain.
 
-2. **DexCandles**: Tracks all the PancakeSwap trades (event: `Swap`) with 5m / 15m / 1h / 4h / 1d / 1w candles.
+2. **Exchange**: Tracks all PancakeSwap Exchange data with price, volume, liquidity, ...
+
+3. **DexCandles**: Tracks all the PancakeSwap trades (event: `Swap`) with 5m / 15m / 1h / 4h / 1d / 1w candles.
 
 ## To setup and deploy
 
