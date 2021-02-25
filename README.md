@@ -1,14 +1,16 @@
 # PancakeSwap Subgraph
 
-The Graph exposes a GraphQL endpoint to query the events and entities within the PancakeSwap ecosystem.
+The Graph exposes a GraphQL endpoint to query the events and entities within the Binance Smart Chain and PancakeSwap ecosystem.
 
-Currently, there are one subgraph, but additional subgraphs can be added to this repo:
+Currently, there are multiple subgraphs, but additional subgraphs can be added to this repo:
 
-1. **DexCandles**: Tracks all the PancakeSwap trades (event: `Swap`) with 5m / 15m / 1h / 4h / 1d / 1w candles.
+1. **Blocks**: Tracks all the blocks on Binance Smart Chain.
+
+2. **DexCandles**: Tracks all the PancakeSwap trades (event: `Swap`) with 5m / 15m / 1h / 4h / 1d / 1w candles.
 
 ## To setup and deploy
 
-For any of the subgraph: `dexcandles` as `[subgraph]`
+For any of the subgraph: `blocks` as `[subgraph]`
 
 1. Run the `yarn run codegen:[subgraph]` command to prepare the TypeScript sources for the GraphQL (generated/*).
 
