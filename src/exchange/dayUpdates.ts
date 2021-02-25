@@ -74,6 +74,7 @@ export function updatePairHourData(event: ethereum.Event): PairHourData {
     pairHourData.hourlyTxns = ZERO_BI;
   }
 
+  pairHourData.totalSupply = pair.totalSupply;
   pairHourData.reserve0 = pair.reserve0;
   pairHourData.reserve1 = pair.reserve1;
   pairHourData.reserveUSD = pair.reserveUSD;
