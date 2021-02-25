@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 description: Binance Smart Chain blocks
-repository: https://github.com/pancakeswap/pancakeswap-subgraph
+repository: https://github.com/pancakeswap/pancake-subgraph
 schema:
   file: ./blocks.graphql
 dataSources:
