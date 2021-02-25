@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
-import { PairHourData } from "./../types/schema";
+import { PairHourData } from "../../generated/schema";
 import { BigInt, BigDecimal, ethereum } from "@graphprotocol/graph-ts";
-import { Pair, Bundle, Token, UniswapFactory, UniswapDayData, PairDayData, TokenDayData } from "../types/schema";
+import { Pair, Bundle, Token, UniswapFactory, UniswapDayData, PairDayData, TokenDayData } from "../../generated/schema";
 import { ONE_BI, ZERO_BD, ZERO_BI, FACTORY_ADDRESS } from "./helpers";
 
 export function updateUniswapDayData(event: ethereum.Event): UniswapDayData {

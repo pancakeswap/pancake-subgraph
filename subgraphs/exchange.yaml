@@ -15,19 +15,19 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/factory.ts
+      file: ../src/exchange/factory.ts
       entities:
         - Pair
         - Token
       abis:
         - name: Factory
-          file: ./abis/factory.json
+          file: ../abis/factory.json
         - name: BEP20
           file: ../abis/BEP20.json
-        - name: BEP20SymbolBytes
-          file: ../abis/BEP20SymbolBytes.json
         - name: BEP20NameBytes
           file: ../abis/BEP20NameBytes.json
+        - name: BEP20SymbolBytes
+          file: ../abis/BEP20SymbolBytes.json
       eventHandlers:
         - event: PairCreated(indexed address,indexed address,address,uint256)
           handler: handleNewPair
@@ -41,7 +41,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/core.ts
+      file: ../src/exchange/core.ts
       entities:
         - Pair
         - Token
