@@ -1,31 +1,31 @@
 /* eslint-disable prefer-const */
 import { PairHourData } from "../../generated/schema";
 import { BigInt, BigDecimal, ethereum } from "@graphprotocol/graph-ts";
-import { Pair, Bundle, Token, UniswapFactory, UniswapDayData, PairDayData, TokenDayData } from "../../generated/schema";
-import { ONE_BI, ZERO_BD, ZERO_BI, FACTORY_ADDRESS } from "./helpers";
+import { Pair, Bundle, Token, PancakeFactory, PancakeDayData, PairDayData, TokenDayData } from "../../generated/schema";
+import { ONE_BI, ZERO_BD, ZERO_BI, FACTORY_ADDRESS } from "./utils";
 
-export function updateUniswapDayData(event: ethereum.Event): UniswapDayData {
-  let uniswap = UniswapFactory.load(FACTORY_ADDRESS);
+export function updatePancakeDayData(event: ethereum.Event): PancakeDayData {
+  let pancake = PancakeFactory.load(FACTORY_ADDRESS);
   let timestamp = event.block.timestamp.toI32();
   let dayID = timestamp / 86400;
   let dayStartTimestamp = dayID * 86400;
-  let uniswapDayData = UniswapDayData.load(dayID.toString());
-  if (uniswapDayData === null) {
-    uniswapDayData = new UniswapDayData(dayID.toString());
-    uniswapDayData.date = dayStartTimestamp;
-    uniswapDayData.dailyVolumeUSD = ZERO_BD;
-    uniswapDayData.dailyVolumeETH = ZERO_BD;
-    uniswapDayData.totalVolumeUSD = ZERO_BD;
-    uniswapDayData.totalVolumeETH = ZERO_BD;
-    uniswapDayData.dailyVolumeUntracked = ZERO_BD;
+  let pancakeDayData = PancakeDayData.load(dayID.toString());
+  if (pancakeDayData === null) {
+    pancakeDayData = new PancakeDayData(dayID.toString());
+    pancakeDayData.date = dayStartTimestamp;
+    pancakeDayData.dailyVolumeUSD = ZERO_BD;
+    pancakeDayData.dailyVolumeBNB = ZERO_BD;
+    pancakeDayData.totalVolumeUSD = ZERO_BD;
+    pancakeDayData.totalVolumeBNB = ZERO_BD;
+    pancakeDayData.dailyVolumeUntracked = ZERO_BD;
   }
 
-  uniswapDayData.totalLiquidityUSD = uniswap.totalLiquidityUSD;
-  uniswapDayData.totalLiquidityETH = uniswap.totalLiquidityETH;
-  uniswapDayData.txCount = uniswap.txCount;
-  uniswapDayData.save();
+  pancakeDayData.totalLiquidityUSD = pancake.totalLiquidityUSD;
+  pancakeDayData.totalLiquidityBNB = pancake.totalLiquidityBNB;
+  pancakeDayData.txCount = pancake.txCount;
+  pancakeDayData.save();
 
-  return uniswapDayData as UniswapDayData;
+  return pancakeDayData as PancakeDayData;
 }
 
 export function updatePairDayData(event: ethereum.Event): PairDayData {
@@ -95,17 +95,17 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
     tokenDayData = new TokenDayData(tokenDayID);
     tokenDayData.date = dayStartTimestamp;
     tokenDayData.token = token.id;
-    tokenDayData.priceUSD = token.derivedETH.times(bundle.ethPrice);
+    tokenDayData.priceUSD = token.derivedBNB.times(bundle.bnbPrice);
     tokenDayData.dailyVolumeToken = ZERO_BD;
-    tokenDayData.dailyVolumeETH = ZERO_BD;
+    tokenDayData.dailyVolumeBNB = ZERO_BD;
     tokenDayData.dailyVolumeUSD = ZERO_BD;
     tokenDayData.dailyTxns = ZERO_BI;
     tokenDayData.totalLiquidityUSD = ZERO_BD;
   }
-  tokenDayData.priceUSD = token.derivedETH.times(bundle.ethPrice);
+  tokenDayData.priceUSD = token.derivedBNB.times(bundle.bnbPrice);
   tokenDayData.totalLiquidityToken = token.totalLiquidity;
-  tokenDayData.totalLiquidityETH = token.totalLiquidity.times(token.derivedETH as BigDecimal);
-  tokenDayData.totalLiquidityUSD = tokenDayData.totalLiquidityETH.times(bundle.ethPrice);
+  tokenDayData.totalLiquidityBNB = token.totalLiquidity.times(token.derivedBNB as BigDecimal);
+  tokenDayData.totalLiquidityUSD = tokenDayData.totalLiquidityBNB.times(bundle.bnbPrice);
   tokenDayData.dailyTxns = tokenDayData.dailyTxns.plus(ONE_BI);
   tokenDayData.save();
 

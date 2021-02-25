@@ -1,9 +1,9 @@
 /* eslint-disable prefer-const */
 import { BigInt, BigDecimal, Address } from "@graphprotocol/graph-ts";
-import { BEP20 } from "../../generated/Factory/BEP20";
-import { BEP20SymbolBytes } from "../../generated/Factory/BEP20SymbolBytes";
-import { BEP20NameBytes } from "../../generated/Factory/BEP20NameBytes";
-import { Factory as FactoryContract } from "../../generated/templates/Pair/Factory";
+import { BEP20 } from "../../../generated/Factory/BEP20";
+import { BEP20SymbolBytes } from "../../../generated/Factory/BEP20SymbolBytes";
+import { BEP20NameBytes } from "../../../generated/Factory/BEP20NameBytes";
+import { Factory as FactoryContract } from "../../../generated/templates/Pair/Factory";
 
 export const ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
 export const FACTORY_ADDRESS = "0xBCfCcbde45cE874adCB698cC183deBcF17952812";
@@ -24,14 +24,6 @@ export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
   return bd;
 }
 
-export function bigDecimalExp18(): BigDecimal {
-  return BigDecimal.fromString("1000000000000000000");
-}
-
-export function convertEthToDecimal(eth: BigInt): BigDecimal {
-  return eth.toBigDecimal().div(exponentToBigDecimal(18));
-}
-
 export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: BigInt): BigDecimal {
   if (exchangeDecimals == ZERO_BI) {
     return tokenAmount.toBigDecimal();
@@ -39,16 +31,7 @@ export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: Big
   return tokenAmount.toBigDecimal().div(exponentToBigDecimal(exchangeDecimals));
 }
 
-export function equalToZero(value: BigDecimal): boolean {
-  const formattedVal = parseFloat(value.toString());
-  const zero = parseFloat(ZERO_BD.toString());
-  if (zero == formattedVal) {
-    return true;
-  }
-  return false;
-}
-
-export function isNullEthValue(value: string): boolean {
+export function isNullBnbValue(value: string): boolean {
   return value == "0x0000000000000000000000000000000000000000000000000000000000000001";
 }
 
@@ -63,7 +46,7 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
     let symbolResultBytes = contractSymbolBytes.try_symbol();
     if (!symbolResultBytes.reverted) {
       // for broken pairs that have no symbol function exposed
-      if (!isNullEthValue(symbolResultBytes.value.toHexString())) {
+      if (!isNullBnbValue(symbolResultBytes.value.toHexString())) {
         symbolValue = symbolResultBytes.value.toString();
       }
     }
@@ -85,7 +68,7 @@ export function fetchTokenName(tokenAddress: Address): string {
     let nameResultBytes = contractNameBytes.try_name();
     if (!nameResultBytes.reverted) {
       // for broken exchanges that have no name function exposed
-      if (!isNullEthValue(nameResultBytes.value.toHexString())) {
+      if (!isNullBnbValue(nameResultBytes.value.toHexString())) {
         nameValue = nameResultBytes.value.toString();
       }
     }

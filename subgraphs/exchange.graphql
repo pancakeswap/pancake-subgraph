@@ -1,4 +1,4 @@
-type UniswapFactory @entity {
+type PancakeFactory @entity {
   # factory address
   id: ID!
 
@@ -7,14 +7,14 @@ type UniswapFactory @entity {
 
   # total volume
   totalVolumeUSD: BigDecimal!
-  totalVolumeETH: BigDecimal!
+  totalVolumeBNB: BigDecimal!
 
   # untracked values - less confident USD scores
   untrackedVolumeUSD: BigDecimal!
 
   # total liquidity
   totalLiquidityUSD: BigDecimal!
-  totalLiquidityETH: BigDecimal!
+  totalLiquidityBNB: BigDecimal!
 
   # transactions
   txCount: BigInt!
@@ -44,7 +44,7 @@ type Token @entity {
   totalLiquidity: BigDecimal!
 
   # derived prices
-  derivedETH: BigDecimal
+  derivedBNB: BigDecimal
 
   # derived fields
   tokenDayData: [TokenDayData!]! @derivedFrom(field: "token")
@@ -66,9 +66,9 @@ type Pair @entity {
   totalSupply: BigDecimal!
 
   # derived liquidity
-  reserveETH: BigDecimal!
+  reserveBNB: BigDecimal!
   reserveUSD: BigDecimal!
-  trackedReserveETH: BigDecimal! # used for separating per pair reserves and global
+  trackedReserveBNB: BigDecimal! # used for separating per pair reserves and global
   # Price in terms of the asset pair
   token0Price: BigDecimal!
   token1Price: BigDecimal!
@@ -145,7 +145,7 @@ type Burn @entity {
   # derived amount based on available prices of tokens
   amountUSD: BigDecimal
 
-  # mark uncomplete in ETH case
+  # mark uncomplete in BNB case
   needsComplete: Boolean!
 
   # optional fee fields, if a Transfer event is fired in _mintFee
@@ -177,20 +177,20 @@ type Swap @entity {
 # stores for USD calculations
 type Bundle @entity {
   id: ID!
-  ethPrice: BigDecimal! # price of ETH usd
+  bnbPrice: BigDecimal! # price of BNB usd
 }
 
-# Data accumulated and condensed into day stats for all of Uniswap
-type UniswapDayData @entity {
+# Data accumulated and condensed into day stats for all of Pancake
+type PancakeDayData @entity {
   id: ID! # timestamp rounded to current day by dividing by 86400
   date: Int!
 
-  dailyVolumeETH: BigDecimal!
+  dailyVolumeBNB: BigDecimal!
   dailyVolumeUSD: BigDecimal!
   dailyVolumeUntracked: BigDecimal!
 
-  totalVolumeETH: BigDecimal!
-  totalLiquidityETH: BigDecimal!
+  totalVolumeBNB: BigDecimal!
+  totalLiquidityBNB: BigDecimal!
   totalVolumeUSD: BigDecimal! # Accumulate at each trade, not just calculated off whatever totalVolume is. making it more accurate as it is a live conversion
   totalLiquidityUSD: BigDecimal!
 
@@ -248,13 +248,13 @@ type TokenDayData @entity {
 
   # volume stats
   dailyVolumeToken: BigDecimal!
-  dailyVolumeETH: BigDecimal!
+  dailyVolumeBNB: BigDecimal!
   dailyVolumeUSD: BigDecimal!
   dailyTxns: BigInt!
 
   # liquidity stats
   totalLiquidityToken: BigDecimal!
-  totalLiquidityETH: BigDecimal!
+  totalLiquidityBNB: BigDecimal!
   totalLiquidityUSD: BigDecimal!
 
   # price stats
