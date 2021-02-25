@@ -1,0 +1,24 @@
+specVersion: 0.0.2
+description: Binance Smart Chain blocks
+repository: https://github.com/pancakeswap/pancakeswap-subgraph
+schema:
+  file: ./blocks.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: ConverterRegistryContract
+    network: bsc
+    source:
+      address: '0xCd267d0feb8F71B2a7783a8752C1f76e62dcDcAF'
+      abi: ConverterRegistryContract
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/blocks/index.ts
+      entities:
+        - ConverterAddition
+      abis:
+        - name: ConverterRegistryContract
+          file: ../abis/factory.json
+      blockHandlers:
+        - handler: handleBlock
