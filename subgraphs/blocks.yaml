@@ -14,7 +14,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/blocks/index.ts
+      file: ../src/blocks/block.ts
       entities:
         - ConverterAddition
       abis:
