@@ -8,10 +8,13 @@
   "scripts": {
     "codegen:blocks": "graph codegen subgraphs/blocks.yaml",
     "codegen:dexcandles": "graph codegen subgraphs/dexcandles.yaml",
+    "codegen:exchange": "graph codegen subgraphs/exchange.yaml",
     "build:blocks": "graph build subgraphs/blocks.yaml",
     "build:dexcandles": "graph build subgraphs/dexcandles.yaml",
+    "build:exchange": "graph build subgraphs/exchange.yaml",
     "deploy:blocks": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/blocks subgraphs/blocks.yaml",
     "deploy:dexcandles": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/dex-candles subgraphs/dexcandles.yaml",
+    "deploy:exchange": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/exchange subgraphs/exchange.yaml",
     "format": "prettier --write '*/**/*.{js,ts}'",
     "lint": "eslint '*/**/*.{js,ts}'"
   },
