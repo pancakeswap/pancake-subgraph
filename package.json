@@ -11,7 +11,7 @@
     "build:blocks": "graph build subgraphs/blocks.yaml",
     "build:dexcandles": "graph build subgraphs/dexcandles.yaml",
     "deploy:blocks": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/blocks subgraphs/blocks.yaml",
-    "deploy:dexcandles": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/dexcandles subgraphs/dexcandles.yaml",
+    "deploy:dexcandles": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/dex-candles subgraphs/dexcandles.yaml",
     "format": "prettier --write '*/**/*.{js,ts}'",
     "lint": "eslint '*/**/*.{js,ts}'"
   },
