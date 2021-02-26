@@ -1,0 +1,29 @@
+specVersion: 0.0.2
+description: DEX trades candles (5m/15m/1h/4h/1d/1w)
+repository: https://github.com/pancakeswap/pancake-subgraph
+schema:
+  file: ./profile.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Profile
+    network: bsc
+    source:
+      address: '0xDf4dBf6536201370F95e06A0F8a7a70fE40E388a'
+      abi: Profile
+      startBlock: 4570433
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/profile/user.ts
+      entities:
+        - User
+        - Points
+      abis:
+        - name: Profile
+          file: ../abis/profile.json
+      eventHandlers:
+        - event: UserNew(indexed address,uint256,address,uint256)
+          handler: handleNewUser
+        - event: UserPointIncrease(indexed address,uint256,indexed uint256)
+          handler: handleIncreasePoint

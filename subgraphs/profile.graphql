@@ -1,0 +1,16 @@
+type User @entity {
+    id: ID! # address
+    isActive: Boolean!
+
+    totalPoints: BigInt!
+    points: [Points!]!
+}
+
+type Points @entity {
+    id: ID! # address + campaignId
+
+    user: User!
+
+    points: BigInt!
+    campaignId: BigInt!
+}
