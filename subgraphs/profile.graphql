@@ -1,15 +1,36 @@
-type User @entity {
-    id: ID! # address
-    isActive: Boolean!
+type Team @entity {
+    id: ID!
 
+    name: String!
+    # description: String!
+
+    totalUsers: BigInt!
     totalPoints: BigInt!
+
+    isJoinable: Boolean!
+
+    # Users
+    users: [User!]!
+
+    # Points with campaignId
     points: [Points!]!
 }
 
-type Points @entity {
-    id: ID! # address + campaignId
+type User @entity {
+    id: ID! # address
 
-    user: User!
+    totalPoints: BigInt!
+
+    isActive: Boolean!
+
+    # Points with campaignId
+    points: [Points!]!
+
+    team: Team!
+}
+
+type Points @entity {
+    id: ID! # address/teamId + campaignId
 
     points: BigInt!
     campaignId: BigInt!
