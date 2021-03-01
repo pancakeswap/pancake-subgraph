@@ -28,7 +28,6 @@ export function handleTeamAdd(event: TeamAdd): void {
     team.totalUsers = ZERO_BI;
     team.totalPoints = ZERO_BI;
     team.isJoinable = true;
-    team.users = [];
     team.points = [];
     team.save();
   }
@@ -49,7 +48,7 @@ export function handleTeamPointIncrease(event: TeamPointIncrease): void {
   point.campaignId = event.params.campaignId;
   point.save();
 
-  team.totalPoints = team.totalUsers.plus(event.params.numberPoints);
+  team.totalPoints = team.totalPoints.plus(event.params.numberPoints);
   team.points = team.points.concat([point.id]);
   team.save();
 }
@@ -76,7 +75,6 @@ export function handleUserNew(event: UserNew): void {
     log.error("Error in contract, joined team when team was not created.", []);
   }
   team.totalUsers = team.totalUsers.plus(ONE_BI);
-  team.users = team.users.concat([event.params.userAddress.toHex()]);
   team.save();
 }
 
@@ -121,7 +119,6 @@ export function handleUserChangeTeam(event: UserChangeTeam): void {
     log.error("Error in contract, changed team when (old) team was not created.", []);
   }
   oldTeam.totalUsers = oldTeam.totalUsers.minus(ONE_BI);
-  oldTeam.users = oldTeam.users.filter((user) => user !== event.params.userAddress.toHex());
   oldTeam.save();
 
   // Update the (new) team based on the user joining it.
@@ -130,7 +127,6 @@ export function handleUserChangeTeam(event: UserChangeTeam): void {
     log.error("Error in contract, changed team when (new) team was not created.", []);
   }
   newTeam.totalUsers = newTeam.totalUsers.plus(ONE_BI);
-  newTeam.users = newTeam.users.concat([event.params.userAddress.toHex()]);
   newTeam.save();
 
   // Update the user based on his (new) team.
@@ -138,7 +134,7 @@ export function handleUserChangeTeam(event: UserChangeTeam): void {
   if (user === null) {
     log.error("Error in contract, changed team when user was not created.", []);
   }
-  user.team = newTeam.id;
+  user.team = event.params.newTeamId.toHex();
   user.save();
 }
 

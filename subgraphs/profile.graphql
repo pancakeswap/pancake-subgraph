@@ -10,7 +10,7 @@ type Team @entity {
     isJoinable: Boolean!
 
     # Users
-    users: [User!]!
+    users: [User!]! @derivedFrom(field: "team")
 
     # Points with campaignId
     points: [Points!]!
