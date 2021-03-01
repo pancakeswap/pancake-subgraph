@@ -10,6 +10,8 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 
 3. **DexCandles**: Tracks all the PancakeSwap trades (event: `Swap`) with 5m / 15m / 1h / 4h / 1d / 1w candles.
 
+4. **Profile**: Tracks all the PancakeSwap Profile with teams, users, points and campaign.
+
 ## To setup and deploy
 
 For any of the subgraph: `blocks` as `[subgraph]`
