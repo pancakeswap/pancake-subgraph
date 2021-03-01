@@ -17,8 +17,8 @@ dataSources:
       language: wasm/assemblyscript
       file: ../src/profile/profile.ts
       entities:
-        - User
         - Team
+        - User
         - Points
       abis:
         - name: Profile
