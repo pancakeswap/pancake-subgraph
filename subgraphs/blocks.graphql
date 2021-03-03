@@ -1,16 +1,16 @@
 type Block @entity {
     id: ID!
+    parentHash: String!
+    unclesHash: String!
+    author: String!
+    stateRoot: String!
+    transactionsRoot: String!
+    receiptsRoot: String!
     number: BigInt!
+    gasUsed: BigInt!
+    gasLimit: BigInt!
     timestamp: BigInt!
-    parentHash: String
-    author: String
-    difficulty: BigInt
-    totalDifficulty: BigInt
-    gasUsed: BigInt
-    gasLimit: BigInt
-    receiptsRoot: String
-    transactionsRoot: String
-    stateRoot: String
+    difficulty: BigInt!
+    totalDifficulty: BigInt!
     size: BigInt
-    unclesHash: String
 }

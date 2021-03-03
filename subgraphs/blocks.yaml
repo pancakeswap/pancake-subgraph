@@ -14,11 +14,11 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/blocks/block.ts
+      file: ../src/blocks/index.ts
       entities:
         - ConverterAddition
       abis:
         - name: ConverterRegistryContract
-          file: ../abis/factory.json
+          file: ../abis/ConverterRegistryContract.json
       blockHandlers:
         - handler: handleBlock
