@@ -12,8 +12,8 @@ import {
   UserReactivate,
 } from "../../generated/Profile/Profile";
 
-let ZERO_BI = BigInt.fromI32(0);
-let ONE_BI = BigInt.fromI32(1);
+const ZERO_BI = BigInt.fromI32(0);
+const ONE_BI = BigInt.fromI32(1);
 
 /**
  * TEAM
