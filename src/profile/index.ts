@@ -12,8 +12,8 @@ import {
   UserReactivate,
 } from "../../generated/Profile/Profile";
 
-const ZERO_BI = BigInt.fromI32(0);
-const ONE_BI = BigInt.fromI32(1);
+let ZERO_BI = BigInt.fromI32(0);
+let ONE_BI = BigInt.fromI32(1);
 
 /**
  * TEAM
@@ -89,7 +89,7 @@ export function handleUserPause(event: UserPause): void {
   // Update the team based on the new user joining it.
   let team = Team.load(event.params.teamId.toHex());
   if (team === null) {
-    log.error("Error in contract, paused user when teamId: {} was not created.", [event.params.oldTeamId.toHex()]);
+    log.error("Error in contract, paused user when teamId: {} was not created.", [event.params.teamId.toHex()]);
   }
   team.totalUsers = team.totalUsers.minus(ONE_BI);
   team.save();
@@ -106,7 +106,7 @@ export function handleUserReactivate(event: UserReactivate): void {
   // Update the team based on the new user joining it.
   let team = Team.load(event.params.teamId.toHex());
   if (team === null) {
-    log.error("Error in contract, resumed user when teamId: {} was not created.", [event.params.oldTeamId.toHex()]);
+    log.error("Error in contract, resumed user when teamId: {} was not created.", [event.params.teamId.toHex()]);
   }
   team.totalUsers = team.totalUsers.plus(ONE_BI);
   team.save();

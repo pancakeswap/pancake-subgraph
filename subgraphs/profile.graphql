@@ -2,30 +2,28 @@ type Team @entity {
     id: ID!
 
     name: String!
-
-    totalUsers: BigInt!
-    totalPoints: BigInt!
-
     isJoinable: Boolean!
 
     # Users
+    totalUsers: BigInt!
     users: [User!]! @derivedFrom(field: "team")
 
     # Points with campaignId
+    totalPoints: BigInt!
     points: [Point!]!
 }
 
 type User @entity {
     id: ID! # address
 
-    totalPoints: BigInt!
-
     isActive: Boolean!
 
-    # Points with campaignId
-    points: [Point!]!
-
+    # Team
     team: Team!
+
+    # Points with campaignId
+    totalPoints: BigInt!
+    points: [Point!]!
 }
 
 type Point @entity {
