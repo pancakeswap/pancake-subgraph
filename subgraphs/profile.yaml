@@ -15,14 +15,14 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/profile/profile.ts
+      file: ../src/profile/index.ts
       entities:
         - Team
         - User
         - Points
       abis:
         - name: Profile
-          file: ../abis/profile.json
+          file: ../abis/Profile.json
       eventHandlers:
         - event: TeamAdd(uint256,string)
           handler: handleTeamAdd
