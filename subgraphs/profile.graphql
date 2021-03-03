@@ -2,7 +2,6 @@ type Team @entity {
     id: ID!
 
     name: String!
-    # description: String!
 
     totalUsers: BigInt!
     totalPoints: BigInt!
@@ -13,7 +12,7 @@ type Team @entity {
     users: [User!]! @derivedFrom(field: "team")
 
     # Points with campaignId
-    points: [Points!]!
+    points: [Point!]!
 }
 
 type User @entity {
@@ -24,12 +23,12 @@ type User @entity {
     isActive: Boolean!
 
     # Points with campaignId
-    points: [Points!]!
+    points: [Point!]!
 
     team: Team!
 }
 
-type Points @entity {
+type Point @entity {
     id: ID! # address/teamId + campaignId
 
     points: BigInt!
