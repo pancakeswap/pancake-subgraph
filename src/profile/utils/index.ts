@@ -24,7 +24,7 @@ export function createPoint(pointId: string, numberPoints: BigInt, campaignId: B
  * @param {Team|User} entity
  * @param {Point} point
  */
-export function increaseEntityPoints<T>(entity: T, point: Point): void {
+export function increaseEntityPoint<T>(entity: T, point: Point): void {
   if (entity instanceof Team || entity instanceof User) {
     entity.totalPoints = entity.totalPoints.plus(point.points);
     entity.points = entity.points.concat([point.id]);

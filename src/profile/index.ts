@@ -12,7 +12,7 @@ import {
   UserPointIncreaseMultiple,
   UserReactivate,
 } from "../../generated/Profile/Profile";
-import { createPoint, increaseEntityPoints } from "./utils";
+import { createPoint, increaseEntityPoint } from "./utils";
 
 let ZERO_BI = BigInt.fromI32(0);
 let ONE_BI = BigInt.fromI32(1);
@@ -47,7 +47,7 @@ export function handleTeamPointIncrease(event: TeamPointIncrease): void {
   ).toHex();
   let point = createPoint(pointId, event.params.numberPoints, event.params.campaignId);
 
-  increaseEntityPoints(team as Team, point as Point);
+  increaseEntityPoint(team as Team, point as Point);
 }
 
 /**
@@ -153,7 +153,7 @@ export function handleUserPointIncrease(event: UserPointIncrease): void {
   ).toHex();
   let point = createPoint(pointId, event.params.numberPoints, event.params.campaignId);
 
-  increaseEntityPoints(user as User, point as Point);
+  increaseEntityPoint(user as User, point as Point);
 }
 
 export function handleUserPointIncreaseMultiple(event: UserPointIncreaseMultiple): void {
@@ -169,6 +169,6 @@ export function handleUserPointIncreaseMultiple(event: UserPointIncreaseMultiple
     ).toHex();
     let point = createPoint(pointId, event.params.numberPoints, event.params.campaignId);
 
-    increaseEntityPoints(user as User, point as Point);
+    increaseEntityPoint(user as User, point as Point);
   });
 }
