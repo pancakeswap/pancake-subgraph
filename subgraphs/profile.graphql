@@ -27,7 +27,7 @@ type User @entity {
 }
 
 type Point @entity {
-    id: ID! # address/teamId + campaignId
+    id: ID! # campaignId + address/teamId
 
     points: BigInt!
     campaignId: BigInt!

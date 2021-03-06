@@ -2,19 +2,29 @@
 import { BigInt, log } from "@graphprotocol/graph-ts";
 import { Point, Team, User } from "../../../generated/schema";
 
+/**
+ * Get a User entity.
+ *
+ * @param {string} userId
+ */
 export function getUser(userId: string): User {
   let user = User.load(userId);
   if (user === null) {
-    log.error("Error in contract, tried to retrieve when userId: {}", [userId]);
+    log.error("Error in contract, tried to retrieve userId: {}", [userId]);
   }
 
   return user as User;
 }
 
+/**
+ * Get a Team entity.
+ *
+ * @param {string} teamId
+ */
 export function getTeam(teamId: string): Team {
   let team = Team.load(teamId);
   if (team === null) {
-    log.error("Error in contract, tried to retrieve when teamId: {}", [teamId]);
+    log.error("Error in contract, tried to retrieve teamId: {}", [teamId]);
   }
 
   return team as Team;

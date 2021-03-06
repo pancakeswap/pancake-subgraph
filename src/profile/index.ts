@@ -70,25 +70,27 @@ export function handleUserNew(event: UserNew): void {
 }
 
 export function handleUserPause(event: UserPause): void {
-  let user = getUser(event.params.userAddress.toHex());
-  user.isActive = false;
-  user.save();
-
-  // Update the team based on the new user joining it.
+  // Update the team based on the user being paused.
   let team = getTeam(event.params.teamId.toHex());
   team.totalUsers = team.totalUsers.minus(ONE_BI);
   team.save();
+
+  // Update the user.
+  let user = getUser(event.params.userAddress.toHex());
+  user.isActive = false;
+  user.save();
 }
 
 export function handleUserReactivate(event: UserReactivate): void {
-  let user = getUser(event.params.userAddress.toHex());
-  user.isActive = true;
-  user.save();
-
-  // Update the team based on the new user joining it.
+  // Update the team based on the user being resumed.
   let team = getTeam(event.params.teamId.toHex());
   team.totalUsers = team.totalUsers.plus(ONE_BI);
   team.save();
+
+  // Update the user.
+  let user = getUser(event.params.userAddress.toHex());
+  user.isActive = true;
+  user.save();
 }
 
 export function handleUserChangeTeam(event: UserChangeTeam): void {
