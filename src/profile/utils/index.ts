@@ -7,8 +7,10 @@ import { Point, Team, User } from "../../../generated/schema";
  * @param {Team|User} entity
  * @param {Point} point
  */
-export function increaseEntityPoints(entity: Team | User, point: Point): void {
-  entity.totalPoints = entity.totalPoints.plus(point.points);
-  entity.points = entity.points.concat([point.id]);
-  entity.save();
+export function increaseEntityPoints<T>(entity: T, point: Point): void {
+  if (entity instanceof Team || entity instanceof User) {
+    entity.totalPoints = entity.totalPoints.plus(point.points);
+    entity.points = entity.points.concat([point.id]);
+    entity.save();
+  }
 }
