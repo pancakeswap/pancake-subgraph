@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { BigInt, Bytes, log } from "@graphprotocol/graph-ts";
+import { Address, BigInt, Bytes, log } from "@graphprotocol/graph-ts";
 import { concat } from "@graphprotocol/graph-ts/helper-functions";
 import { Point, Team, User } from "../../generated/schema";
 import {
@@ -9,6 +9,7 @@ import {
   UserNew,
   UserPause,
   UserPointIncrease,
+  UserPointIncreaseMultiple,
   UserReactivate,
 } from "../../generated/Profile/Profile";
 import { increaseEntityPoints } from "./utils";
@@ -159,4 +160,24 @@ export function handleUserPointIncrease(event: UserPointIncrease): void {
   point.save();
 
   increaseEntityPoints(user, point);
+}
+
+export function handleUserPointIncreaseMultiple(event: UserPointIncreaseMultiple): void {
+  event.params.userAddresses.forEach((userAddress: Address) => {
+    let user = User.load(userAddress.toHex());
+    if (user === null) {
+      log.error("Error in contract, increased point when userId: {} was not created.", [userAddress.toHex()]);
+    }
+
+    let pointId = concat(
+      Bytes.fromI32(event.params.campaignId.toI32()),
+      Bytes.fromHexString(userAddress.toHex())
+    ).toHex();
+    let point = new Point(pointId);
+    point.points = event.params.numberPoints;
+    point.campaignId = event.params.campaignId;
+    point.save();
+
+    increaseEntityPoints(user, point);
+  });
 }
