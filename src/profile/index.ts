@@ -12,7 +12,7 @@ import {
   UserPointIncreaseMultiple,
   UserReactivate,
 } from "../../generated/Profile/Profile";
-import { increaseEntityPoints } from "./utils";
+import { createPoint, increaseEntityPoints } from "./utils";
 
 let ZERO_BI = BigInt.fromI32(0);
 let ONE_BI = BigInt.fromI32(1);
@@ -45,10 +45,7 @@ export function handleTeamPointIncrease(event: TeamPointIncrease): void {
     Bytes.fromI32(event.params.campaignId.toI32()),
     Bytes.fromI32(event.params.teamId.toI32())
   ).toHex();
-  let point = new Point(pointId);
-  point.points = event.params.numberPoints;
-  point.campaignId = event.params.campaignId;
-  point.save();
+  let point = createPoint(pointId, event.params.numberPoints, event.params.campaignId);
 
   increaseEntityPoints(team as Team, point as Point);
 }
@@ -154,10 +151,7 @@ export function handleUserPointIncrease(event: UserPointIncrease): void {
     Bytes.fromI32(event.params.campaignId.toI32()),
     Bytes.fromHexString(event.params.userAddress.toHex())
   ).toHex();
-  let point = new Point(pointId);
-  point.points = event.params.numberPoints;
-  point.campaignId = event.params.campaignId;
-  point.save();
+  let point = createPoint(pointId, event.params.numberPoints, event.params.campaignId);
 
   increaseEntityPoints(user as User, point as Point);
 }
@@ -173,10 +167,7 @@ export function handleUserPointIncreaseMultiple(event: UserPointIncreaseMultiple
       Bytes.fromI32(event.params.campaignId.toI32()),
       Bytes.fromHexString(userAddress.toHex())
     ).toHex();
-    let point = new Point(pointId);
-    point.points = event.params.numberPoints;
-    point.campaignId = event.params.campaignId;
-    point.save();
+    let point = createPoint(pointId, event.params.numberPoints, event.params.campaignId);
 
     increaseEntityPoints(user as User, point as Point);
   });
