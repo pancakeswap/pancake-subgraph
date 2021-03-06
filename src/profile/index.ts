@@ -50,7 +50,7 @@ export function handleTeamPointIncrease(event: TeamPointIncrease): void {
   point.campaignId = event.params.campaignId;
   point.save();
 
-  increaseEntityPoints(team, point);
+  increaseEntityPoints(team as Team, point as Point);
 }
 
 /**
@@ -159,7 +159,7 @@ export function handleUserPointIncrease(event: UserPointIncrease): void {
   point.campaignId = event.params.campaignId;
   point.save();
 
-  increaseEntityPoints(user, point);
+  increaseEntityPoints(user as User, point as Point);
 }
 
 export function handleUserPointIncreaseMultiple(event: UserPointIncreaseMultiple): void {
@@ -178,6 +178,6 @@ export function handleUserPointIncreaseMultiple(event: UserPointIncreaseMultiple
     point.campaignId = event.params.campaignId;
     point.save();
 
-    increaseEntityPoints(user, point);
+    increaseEntityPoints(user as User, point as Point);
   });
 }
