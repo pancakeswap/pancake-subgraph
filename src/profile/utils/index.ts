@@ -1,6 +1,24 @@
 /* eslint-disable prefer-const */
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import { Point, Team, User } from "../../../generated/schema";
+
+export function getUser(userId: string): User {
+  let user = User.load(userId);
+  if (user === null) {
+    log.error("Error in contract, tried to retrieve when userId: {}", [userId]);
+  }
+
+  return user as User;
+}
+
+export function getTeam(teamId: string): Team {
+  let team = Team.load(teamId);
+  if (team === null) {
+    log.error("Error in contract, tried to retrieve when teamId: {}", [teamId]);
+  }
+
+  return team as Team;
+}
 
 /**
  * Create a Point entity based on computed field (pointId).
