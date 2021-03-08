@@ -27,9 +27,10 @@ export function handleTeamAdd(event: TeamAdd): void {
   if (team === null) {
     team = new Team(event.params.teamId.toHex());
     team.name = event.params.teamName;
+    team.isJoinable = true;
+    team.block = event.block.number;
     team.totalUsers = ZERO_BI;
     team.totalPoints = ZERO_BI;
-    team.isJoinable = true;
     team.points = [];
     team.save();
   }
@@ -48,6 +49,7 @@ export function handleTeamPointIncrease(event: TeamPointIncrease): void {
   let point = new Point(pointId);
   point.points = event.params.numberPoints;
   point.campaignId = event.params.campaignId;
+  point.block = event.block.number;
   point.save();
 
   increaseEntityPoints(team as Team, point as Point);
@@ -62,10 +64,13 @@ export function handleUserNew(event: UserNew): void {
   let user = User.load(event.params.teamId.toHex());
   if (user === null) {
     user = new User(event.params.userAddress.toHex());
-    user.totalPoints = ZERO_BI;
     user.isActive = true;
-    user.points = [];
+    user.createdAt = event.block.timestamp;
+    user.updatedAt = event.block.timestamp;
+    user.block = event.block.number;
     user.team = event.params.teamId.toHex();
+    user.totalPoints = ZERO_BI;
+    user.points = [];
     user.save();
   }
 
@@ -84,6 +89,7 @@ export function handleUserPause(event: UserPause): void {
     log.error("Error in contract, paused user when userId: {} was not created.", [event.params.userAddress.toHex()]);
   }
   user.isActive = false;
+  user.updatedAt = event.block.timestamp;
   user.save();
 
   // Update the team based on the new user joining it.
@@ -101,6 +107,7 @@ export function handleUserReactivate(event: UserReactivate): void {
     log.error("Error in contract, resumed user when userId: {} was not created.", [event.params.userAddress.toHex()]);
   }
   user.isActive = true;
+  user.updatedAt = event.block.timestamp;
   user.save();
 
   // Update the team based on the new user joining it.
@@ -157,6 +164,7 @@ export function handleUserPointIncrease(event: UserPointIncrease): void {
   let point = new Point(pointId);
   point.points = event.params.numberPoints;
   point.campaignId = event.params.campaignId;
+  point.block = event.block.number;
   point.save();
 
   increaseEntityPoints(user as User, point as Point);
@@ -176,6 +184,7 @@ export function handleUserPointIncreaseMultiple(event: UserPointIncreaseMultiple
     let point = new Point(pointId);
     point.points = event.params.numberPoints;
     point.campaignId = event.params.campaignId;
+    point.block = event.block.number;
     point.save();
 
     increaseEntityPoints(user as User, point as Point);
