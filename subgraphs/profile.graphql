@@ -4,6 +4,9 @@ type Team @entity {
     name: String!
     isJoinable: Boolean!
 
+    # Block number when the team was created.
+    block: BigInt!
+
     # Users
     totalUsers: BigInt!
     users: [User!]! @derivedFrom(field: "team")
@@ -18,6 +21,12 @@ type User @entity {
 
     isActive: Boolean!
 
+    createdAt: BigInt!
+    updatedAt: BigInt!
+
+    # Block number when the user was created.
+    block: BigInt!
+
     # Team
     team: Team!
 
@@ -31,4 +40,7 @@ type Point @entity {
 
     points: BigInt!
     campaignId: BigInt!
+
+    # Block number when the point was triggered.
+    block: BigInt!
 }
