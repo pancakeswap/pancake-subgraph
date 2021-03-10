@@ -4,14 +4,14 @@ import { Pair, Token, Bundle } from "../../generated/schema";
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from "./utils";
 
 const WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
-const BUSD_WBNB_PAIR = "0x1b96b92314c44b159149f7e0303511fb2fc4774f"; // created block 589414
+const WBNB_BUSD_PAIR = "0x1b96b92314c44b159149f7e0303511fb2fc4774f"; // created block 589414
 const DAI_WBNB_PAIR = "0xf3010261b58b2874639ca2e860e9005e3be5de0b"; // created block 481116
 const USDT_WBNB_PAIR = "0x20bcc3b8a0091ddac2d0bc30f68e6cbb97de59cd"; // created block 648115
 
 export function getBnbPriceInUSD(): BigDecimal {
   // fetch bnb prices for each stablecoin
   let usdtPair = Pair.load(USDT_WBNB_PAIR); // usdt is token0
-  let busdPair = Pair.load(BUSD_WBNB_PAIR); // busd is token1
+  let busdPair = Pair.load(WBNB_BUSD_PAIR); // busd is token1
   let daiPair = Pair.load(DAI_WBNB_PAIR); // dai is token0
 
   // all 3 have been created
@@ -90,12 +90,12 @@ export function findBnbPerToken(token: Token): BigDecimal {
  * If neither is, return 0
  */
 export function getTrackedVolumeUSD(
+  bundle: Bundle,
   tokenAmount0: BigDecimal,
   token0: Token,
   tokenAmount1: BigDecimal,
   token1: Token
 ): BigDecimal {
-  let bundle = Bundle.load("1");
   let price0 = token0.derivedBNB.times(bundle.bnbPrice);
   let price1 = token1.derivedBNB.times(bundle.bnbPrice);
 
