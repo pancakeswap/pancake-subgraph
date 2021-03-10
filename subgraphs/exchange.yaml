@@ -46,10 +46,10 @@ templates:
         - Pair
         - Token
       abis:
-        - name: Pair
-          file: ../abis/pair.json
         - name: Factory
           file: ../abis/factory.json
+        - name: Pair
+          file: ../abis/pair.json
       eventHandlers:
         - event: Mint(indexed address,uint256,uint256)
           handler: handleMint
