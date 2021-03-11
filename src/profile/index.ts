@@ -61,7 +61,7 @@ export function handleTeamPointIncrease(event: TeamPointIncrease): void {
 
 export function handleUserNew(event: UserNew): void {
   // Fail safe condition in case the user has already been created.
-  let user = User.load(event.params.teamId.toHex());
+  let user = User.load(event.params.userAddress.toHex());
   if (user === null) {
     user = new User(event.params.userAddress.toHex());
     user.isActive = true;
