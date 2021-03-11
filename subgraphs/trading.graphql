@@ -1,0 +1,43 @@
+type Competition @entity {
+    id: ID!
+
+    # Volume
+    totalVolumeUSD: BigDecimal!
+    totalVolumeBNB: BigDecimal!
+
+    # Statistics count
+    userCount: BigInt!
+    txCount: BigInt!
+}
+
+type Team @entity {
+    id: ID! # address
+
+    # Users
+    userCount: BigInt!
+    users: [User!]! @derivedFrom(field: "team")
+
+    # Volume
+    totalVolumeUSD: BigDecimal!
+    totalVolumeBNB: BigDecimal!
+
+    # Transactions count
+    txCount: BigInt!
+}
+
+type User @entity {
+    id: ID! # address
+
+    # Team
+    team: Team!
+
+    # Block number when the user was created.
+    block: BigInt!
+
+    # Volume
+    totalVolumeUSD: BigDecimal!
+    totalVolumeBNB: BigDecimal!
+
+    # Transactions count
+    txCount: BigInt!
+}
