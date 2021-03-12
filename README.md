@@ -12,6 +12,8 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 
 4. **[Profile](https://thegraph.com/explorer/subgraph/pancakeswap/profile)**: Tracks all the PancakeSwap Profile with teams, users, points and campaign.
 
+5. **[Timelock](https://thegraph.com/explorer/subgraph/pancakeswap/timelock)**: Tracks all the timelock transactions queued, executed, and cancelled.
+
 ## To setup and deploy
 
 For any of the subgraph: `blocks` as `[subgraph]`
