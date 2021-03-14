@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
+import { BigDecimal, Address } from "@graphprotocol/graph-ts";
 import { Pair, Token, Bundle } from "../../../generated/schema";
-import { BigDecimal, Address } from "@graphprotocol/graph-ts/index";
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from "./index";
 
 const WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
