@@ -3,7 +3,7 @@ import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { BEP20 } from "../../../generated/Factory/BEP20";
 import { BEP20NameBytes } from "../../../generated/Factory/BEP20NameBytes";
 import { BEP20SymbolBytes } from "../../../generated/Factory/BEP20SymbolBytes";
-import { isNullEthValue } from "./index";
+import { isNullBnbValue } from "./index";
 
 export function fetchTokenName(tokenAddress: Address): string {
   let contract = BEP20.bind(tokenAddress);
@@ -16,7 +16,7 @@ export function fetchTokenName(tokenAddress: Address): string {
     let nameResultBytes = contractNameBytes.try_name();
     if (!nameResultBytes.reverted) {
       // for broken exchanges that have no name function exposed
-      if (!isNullEthValue(nameResultBytes.value.toHex())) {
+      if (!isNullBnbValue(nameResultBytes.value.toHex())) {
         nameValue = nameResultBytes.value.toString();
       }
     }
@@ -38,7 +38,7 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
     let symbolResultBytes = contractSymbolBytes.try_symbol();
     if (!symbolResultBytes.reverted) {
       // for broken pairs that have no symbol function exposed
-      if (!isNullEthValue(symbolResultBytes.value.toHex())) {
+      if (!isNullBnbValue(symbolResultBytes.value.toHex())) {
         symbolValue = symbolResultBytes.value.toString();
       }
     }
