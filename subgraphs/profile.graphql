@@ -19,6 +19,7 @@ type Team @entity {
 type User @entity {
     id: ID! # address
 
+    address: Bytes!
     isActive: Boolean!
 
     createdAt: BigInt!

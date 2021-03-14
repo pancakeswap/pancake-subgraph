@@ -64,6 +64,7 @@ export function handleUserNew(event: UserNew): void {
   let user = User.load(event.params.userAddress.toHex());
   if (user === null) {
     user = new User(event.params.userAddress.toHex());
+    user.address = event.params.userAddress;
     user.isActive = true;
     user.createdAt = event.block.timestamp;
     user.updatedAt = event.block.timestamp;
