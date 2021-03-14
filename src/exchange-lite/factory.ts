@@ -2,7 +2,8 @@
 import { Pair, Token, Bundle } from "../../generated/schema";
 import { Pair as PairTemplate } from "../../generated/templates";
 import { PairCreated } from "../../generated/Factory/Factory";
-import { ZERO_BD, fetchTokenName, fetchTokenSymbol, fetchTokenDecimals } from "./helpers";
+import { ZERO_BD } from "./utils";
+import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol } from "./utils/bep20";
 
 export function handlePairCreated(event: PairCreated): void {
   let bundle = Bundle.load("1");
@@ -23,6 +24,7 @@ export function handlePairCreated(event: PairCreated): void {
     }
     token0.decimals = decimals;
     token0.derivedBNB = ZERO_BD;
+    token0.derivedUSD = ZERO_BD;
     token0.save();
   }
 
@@ -37,6 +39,7 @@ export function handlePairCreated(event: PairCreated): void {
     }
     token1.decimals = decimals;
     token1.derivedBNB = ZERO_BD;
+    token1.derivedUSD = ZERO_BD;
     token1.save();
   }
 
@@ -52,6 +55,7 @@ export function handlePairCreated(event: PairCreated): void {
   pair.token1Price = ZERO_BD;
   pair.volumeToken0 = ZERO_BD;
   pair.volumeToken1 = ZERO_BD;
+  pair.volumeBNB = ZERO_BD;
   pair.volumeUSD = ZERO_BD;
   pair.untrackedVolumeUSD = ZERO_BD;
   pair.save();

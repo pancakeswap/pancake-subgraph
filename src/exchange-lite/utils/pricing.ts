@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
-import { Pair, Token, Bundle } from "../../generated/schema";
+import { Pair, Token, Bundle } from "../../../generated/schema";
 import { BigDecimal, Address } from "@graphprotocol/graph-ts/index";
-import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from "./helpers";
+import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from "./index";
 
 const WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
 const BUSD_WBNB_PAIR = "0x1b96b92314c44b159149f7e0303511fb2fc4774f"; // created block 589414
@@ -58,7 +58,6 @@ let MINIMUM_LIQUIDITY_THRESHOLD_BNB = BigDecimal.fromString("5");
 
 /**
  * Search through graph to find derived BNB per token.
- * @todo update to be derived BNB (add stablecoin estimates)
  **/
 export function findBnbPerToken(token: Token): BigDecimal {
   if (token.id == WBNB_ADDRESS) {
@@ -81,7 +80,7 @@ export function findBnbPerToken(token: Token): BigDecimal {
     }
   }
 
-  return ZERO_BD; // nothing was found return 0
+  return ZERO_BD;
 }
 
 /**
@@ -115,7 +114,6 @@ export function getTrackedVolumeUSD(
     return tokenAmount1.times(price1);
   }
 
-  // neither token is on white list, tracked volume is 0
   return ZERO_BD;
 }
 
@@ -144,6 +142,5 @@ export function getTrackedLiquidityUSD(bundle: Bundle, pair: Pair, token0: Token
     return pair.reserve1.times(price1).times(BigDecimal.fromString("2"));
   }
 
-  // neither token is on white list, tracked volume is 0
   return ZERO_BD;
 }

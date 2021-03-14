@@ -21,7 +21,9 @@ type Pair @entity {
   volumeToken0: BigDecimal!
   volumeToken1: BigDecimal!
 
+  volumeBNB: BigDecimal!
   volumeUSD: BigDecimal!
+  untrackedVolumeBNB: BigDecimal!
   untrackedVolumeUSD: BigDecimal!
 }
 
@@ -33,4 +35,5 @@ type Token @entity {
   decimals: BigInt!
 
   derivedBNB: BigDecimal!
+  derivedUSD: BigDecimal!
 }
