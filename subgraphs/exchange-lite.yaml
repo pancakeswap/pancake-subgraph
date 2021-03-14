@@ -1,0 +1,57 @@
+specVersion: 0.0.2
+description: PancakeSwap is a decentralized protocol for automated token exchange on Binance Smart Chain.
+repository: https://github.com/pancakeswap
+schema:
+  file: ./exchange-lite.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Factory
+    network: bsc
+    source:
+      address: '0xBCfCcbde45cE874adCB698cC183deBcF17952812'
+      abi: Factory
+      startBlock: 586851
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/exchange-lite/factory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: Factory
+          file: ../abis/factory.json
+        - name: BEP20
+          file: ../abis/BEP20.json
+        - name: BEP20NameBytes
+          file: ../abis/BEP20NameBytes.json
+        - name: BEP20SymbolBytes
+          file: ../abis/BEP20SymbolBytes.json
+      eventHandlers:
+        - event: PairCreated(indexed address,indexed address,address,uint256)
+          handler: handlePairCreated
+templates:
+  - kind: ethereum/contract
+    name: Pair
+    network: bsc
+    source:
+      abi: Pair
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/exchange-lite/pair.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: Factory
+          file: ../abis/factory.json
+        - name: Pair
+          file: ../abis/pair.json
+      eventHandlers:
+        - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
+          handler: handleSwap
+        - event: Sync(uint112,uint112)
+          handler: handleSync

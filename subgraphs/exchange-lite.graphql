@@ -1,0 +1,36 @@
+type Bundle @entity {
+  id: ID!
+
+  bnbPrice: BigDecimal!
+}
+
+type Pair @entity {
+  id: ID!
+
+  token0: Token!
+  token1: Token!
+  reserve0: BigDecimal!
+  reserve1: BigDecimal!
+
+  reserveBNB: BigDecimal!
+  reserveUSD: BigDecimal!
+  trackedReserveBNB: BigDecimal!
+
+  token0Price: BigDecimal!
+  token1Price: BigDecimal!
+  volumeToken0: BigDecimal!
+  volumeToken1: BigDecimal!
+
+  volumeUSD: BigDecimal!
+  untrackedVolumeUSD: BigDecimal!
+}
+
+type Token @entity {
+  id: ID!
+
+  name: String!
+  symbol: String!
+  decimals: BigInt!
+
+  derivedBNB: BigDecimal!
+}
