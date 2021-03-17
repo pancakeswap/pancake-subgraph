@@ -5,11 +5,11 @@ schema:
   file: ./trading.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Profile
+    name: TradingCompetitionV1
     network: bsc
     source:
-      address: '0xDf4dBf6536201370F95e06A0F8a7a70fE40E388a'
-      abi: Profile
+      address: '0x000000000000000000000000000000000000dEaD'
+      abi: TradingCompetitionV1
       startBlock: 4570433
     mapping:
       kind: ethereum/events
@@ -17,11 +17,45 @@ dataSources:
       language: wasm/assemblyscript
       file: ../src/trading/user.ts
       entities:
+        - Bundle
+        - Competition
         - Team
         - User
       abis:
-        - name: Profile
-          file: ../abis/Profile.json
+        - name: TradingCompetitionV1
+          file: ../abis/TradingCompetitionV1.json
+        - name: Factory
+          file: ../abis/factory.json
+        - name: Pair
+          file: ../abis/pair.json
+      blockHandlers:
+        - handler: handleBlock
       eventHandlers:
-        - event: UserNew(indexed address,uint256,address,uint256)
-          handler: handleUserNew
+        - event: UserRegister(address,uint256)
+          handler: handleUserRegister
+        - event: NewCompetitionStatus(uint8)
+          handler: handleNewCompetitionStatus
+templates:
+  - kind: ethereum/contract
+    name: Pair
+    network: bsc
+    source:
+      abi: Pair
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/trading/pair.ts
+      entities:
+        - Bundle
+        - Competition
+        - Team
+        - User
+      abis:
+        - name: Factory
+          file: ../abis/factory.json
+        - name: Pair
+          file: ../abis/pair.json
+      eventHandlers:
+        - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
+          handler: handleSwap

@@ -23,7 +23,7 @@
     "deploy:exchange": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/exchange subgraphs/exchange.yaml",
     "deploy:profile": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/profile subgraphs/profile.yaml",
     "deploy:timelock": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/timelock subgraphs/timelock.yaml",
-    "deploy:trading": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/trading-v1 subgraphs/trading.yaml",
+    "deploy:trading": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/trading-competition-v1 subgraphs/trading.yaml",
     "format": "prettier --write '*/**/*.{js,ts}'",
     "lint": "eslint '*/**/*.{js,ts}'"
   },
