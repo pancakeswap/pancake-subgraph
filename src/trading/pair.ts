@@ -1,8 +1,8 @@
 /* eslint-disable prefer-const */
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, BigInt, log } from "@graphprotocol/graph-ts";
 import { Bundle, Competition, Team, User } from "../../generated/schema";
 import { Swap } from "../../generated/templates/Pair/Pair";
-import { convertTokenToDecimal, ONE_BI } from "./utils";
+import { convertTokenToDecimal, ONE_BI, TRACKED_PAIRS } from "./utils";
 
 export function handleSwap(event: Swap): void {
   let bundle = Bundle.load("1");
@@ -10,8 +10,23 @@ export function handleSwap(event: Swap): void {
   let user = User.load(event.transaction.from.toHex());
   let team = Team.load(user.team);
 
-  let bnbIN = convertTokenToDecimal(event.params.amount0In, BigInt.fromI32(18));
-  let bnbOUT = convertTokenToDecimal(event.params.amount0Out, BigInt.fromI32(18));
+  // Competition has closed, ignoring trade.
+  if (competition.status.equals(BigInt.fromI32(2))) {
+    log.info("Competition has closed, ignoring trade", []);
+    return;
+  }
+
+  let bnbIN: BigDecimal;
+  let bnbOUT: BigDecimal;
+
+  if (event.address.equals(Address.fromString(TRACKED_PAIRS[0]))) {
+    bnbIN = convertTokenToDecimal(event.params.amount0In, BigInt.fromI32(18));
+    bnbOUT = convertTokenToDecimal(event.params.amount0Out, BigInt.fromI32(18));
+  } else {
+    bnbIN = convertTokenToDecimal(event.params.amount1In, BigInt.fromI32(18));
+    bnbOUT = convertTokenToDecimal(event.params.amount1Out, BigInt.fromI32(18));
+  }
+
   let volumeBNB = bnbOUT.plus(bnbIN);
   let volumeUSD = volumeBNB.times(bundle.bnbPrice);
 

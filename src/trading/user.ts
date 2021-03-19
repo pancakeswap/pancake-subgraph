@@ -101,15 +101,4 @@ export function handleNewCompetitionStatus(event: NewCompetitionStatus): void {
       log.info("Created pair with address {}.", [address]);
     });
   }
-
-  // Competition has closed, remove PairCreated to close competition.
-  if (BigInt.fromI32(event.params.status).equals(BigInt.fromI32(2))) {
-    TRACKED_PAIRS.forEach((address: string) => {
-      if (store.get("Pair", address)) {
-        store.remove("Pair", address);
-
-        log.info("Removed pair with address {}.", [address]);
-      }
-    });
-  }
 }
