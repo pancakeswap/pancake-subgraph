@@ -1,12 +1,12 @@
 /* eslint-disable prefer-const */
-import { Address, BigInt, ethereum, log, store } from "@graphprotocol/graph-ts";
+import { Address, BigInt, ethereum, log } from "@graphprotocol/graph-ts";
 import { Bundle, Competition, Team, User } from "../../generated/schema";
 import { Pair as PairTemplate } from "../../generated/templates";
 import { NewCompetitionStatus, UserRegister } from "../../generated/TradingCompetitionV1/TradingCompetitionV1";
 import { getBnbPriceInUSD, ONE_BI, TRACKED_PAIRS, ZERO_BD, ZERO_BI } from "./utils";
 
 /**
- * USER
+ * BLOCK
  */
 
 export function handleBlock(event: ethereum.Block): void {
@@ -25,7 +25,7 @@ export function handleBlock(event: ethereum.Block): void {
 }
 
 /**
- * USER
+ * COMPETITION
  */
 
 export function handleUserRegister(event: UserRegister): void {
@@ -72,10 +72,6 @@ export function handleUserRegister(event: UserRegister): void {
   team.userCount = team.userCount.plus(ONE_BI);
   team.save();
 }
-
-/**
- * COMPETITION
- */
 
 export function handleNewCompetitionStatus(event: NewCompetitionStatus): void {
   // Fail safe condition in case the competition has already been created.

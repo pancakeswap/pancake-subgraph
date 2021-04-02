@@ -8,9 +8,9 @@ dataSources:
     name: TradingCompetitionV1
     network: bsc
     source:
-      address: '0x000000000000000000000000000000000000dEaD'
+      address: '0xd718baa0B1F4f70dcC8458154042120FFE0DEFFA'
       abi: TradingCompetitionV1
-      startBlock: 4570433
+      startBlock: 6214239
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

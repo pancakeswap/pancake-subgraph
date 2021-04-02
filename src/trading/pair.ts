@@ -4,6 +4,10 @@ import { Bundle, Competition, Team, User } from "../../generated/schema";
 import { Swap } from "../../generated/templates/Pair/Pair";
 import { convertTokenToDecimal, ONE_BI, TRACKED_PAIRS } from "./utils";
 
+/**
+ * SWAP
+ */
+
 export function handleSwap(event: Swap): void {
   let bundle = Bundle.load("1");
   let competition = Competition.load("1");
@@ -11,7 +15,7 @@ export function handleSwap(event: Swap): void {
   let team = Team.load(user.team);
 
   // Competition has closed, ignoring trade.
-  if (competition.status.equals(BigInt.fromI32(2))) {
+  if (competition.status.ge(BigInt.fromI32(2))) {
     log.info("Competition has closed, ignoring trade", []);
     return;
   }
