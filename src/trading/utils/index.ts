@@ -5,7 +5,6 @@ import { Pair } from "../../../generated/templates/Pair/Pair";
 export let ZERO_BI = BigInt.fromI32(0);
 export let ONE_BI = BigInt.fromI32(1);
 export let ZERO_BD = BigDecimal.fromString("0");
-export let ONE_BD = BigDecimal.fromString("1");
 
 export let TRACKED_PAIRS: string[] = [
   "0x1b96b92314c44b159149f7e0303511fb2fc4774f", // WBNB/BUSD
@@ -15,18 +14,21 @@ export let TRACKED_PAIRS: string[] = [
 ];
 
 export function getBnbPriceInUSD(): BigDecimal {
+  // Bind WBNB/BUSD pair to query pair.
   let pairContract = Pair.bind(Address.fromString(TRACKED_PAIRS[0]));
-  let reserves = pairContract.getReserves();
 
-  let reserve0 = convertTokenToDecimal(reserves.value0, BigInt.fromI32(18));
-  let reserve1 = convertTokenToDecimal(reserves.value1, BigInt.fromI32(18));
+  // Fail-safe call to get BNB price as BUSD.
+  let reserves = pairContract.try_getReserves();
+  if (!reserves.reverted) {
+    let reserve0 = convertTokenToDecimal(reserves.value.value0, BigInt.fromI32(18));
+    let reserve1 = convertTokenToDecimal(reserves.value.value1, BigInt.fromI32(18));
 
-  let usdPrice = ZERO_BD;
-  if (reserve0.notEqual(ZERO_BD)) {
-    usdPrice = reserve1.div(reserve0);
+    if (reserve0.notEqual(ZERO_BD)) {
+      return reserve1.div(reserve0);
+    }
   }
 
-  return usdPrice;
+  return ZERO_BD;
 }
 
 export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
@@ -34,6 +36,7 @@ export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
   for (let i = ZERO_BI; i.lt(decimals as BigInt); i = i.plus(ONE_BI)) {
     bd = bd.times(BigDecimal.fromString("10"));
   }
+
   return bd;
 }
 
@@ -41,5 +44,6 @@ export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: Big
   if (exchangeDecimals == ZERO_BI) {
     return tokenAmount.toBigDecimal();
   }
+
   return tokenAmount.toBigDecimal().div(exponentToBigDecimal(exchangeDecimals));
 }
