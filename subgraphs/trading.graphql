@@ -1,24 +1,28 @@
 type Bundle @entity {
     id: ID!
 
-    # Price in USD for BNB, derived from WBNB/BUSD pair.
+    # Price in USD for BNB, derived from WBNB/BUSD pair
     bnbPrice: BigDecimal!
 
-    # Block number when the user was created.
+    # Block number
     block: BigInt!
 }
 
 type Competition @entity {
     id: ID!
 
+    # Status
     status: BigInt!
+
+    # Users
+    userCount: BigInt!
+    users: [User!]! @derivedFrom(field: "competition")
 
     # Volume
     volumeUSD: BigDecimal!
     volumeBNB: BigDecimal!
 
-    # Statistics count
-    userCount: BigInt!
+    # Transactions count
     txCount: BigInt!
 }
 
@@ -40,10 +44,13 @@ type Team @entity {
 type User @entity {
     id: ID! # address
 
+    # Competition
+    competition: Competition!
+
     # Team
     team: Team!
 
-    # Block number when the user was created.
+    # Block number
     block: BigInt!
 
     # Volume

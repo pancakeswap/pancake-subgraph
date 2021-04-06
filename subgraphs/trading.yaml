@@ -15,7 +15,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/trading/user.ts
+      file: ../src/trading/competition.ts
       entities:
         - Bundle
         - Competition
