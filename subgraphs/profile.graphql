@@ -6,6 +6,7 @@ type Team @entity {
 
     # Block number when the team was created.
     block: BigInt!
+    timestamp: BigInt!
 
     # Users
     totalUsers: BigInt!
@@ -44,4 +45,5 @@ type Point @entity {
 
     # Block number when the point was triggered.
     block: BigInt!
+    timestamp: BigInt!
 }

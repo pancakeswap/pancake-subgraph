@@ -22,12 +22,13 @@ let ONE_BI = BigInt.fromI32(1);
 
 export function handleTeamAdd(event: TeamAdd): void {
   // Fail safe condition in case the team has already been created.
-  let team = Team.load(event.params.teamId.toHex());
+  let team = Team.load(event.params.teamId.toString());
   if (team === null) {
-    team = new Team(event.params.teamId.toHex());
+    team = new Team(event.params.teamId.toString());
     team.name = event.params.teamName;
     team.isJoinable = true;
     team.block = event.block.number;
+    team.timestamp = event.block.timestamp;
     team.totalUsers = ZERO_BI;
     team.totalPoints = ZERO_BI;
     team.points = [];
@@ -36,9 +37,9 @@ export function handleTeamAdd(event: TeamAdd): void {
 }
 
 export function handleTeamPointIncrease(event: TeamPointIncrease): void {
-  let team = Team.load(event.params.teamId.toHex());
+  let team = Team.load(event.params.teamId.toString());
   if (team === null) {
-    log.error("Error in contract, increased point when teamId: {} was not created.", [event.params.teamId.toHex()]);
+    log.error("Error in contract, increased point when teamId: {} was not created.", [event.params.teamId.toString()]);
   }
 
   let pointId = concat(
@@ -49,6 +50,7 @@ export function handleTeamPointIncrease(event: TeamPointIncrease): void {
   point.points = event.params.numberPoints;
   point.campaignId = event.params.campaignId;
   point.block = event.block.number;
+  point.timestamp = event.block.timestamp;
   point.save();
 
   team.totalPoints = team.totalPoints.plus(point.points);
@@ -70,16 +72,16 @@ export function handleUserNew(event: UserNew): void {
     user.createdAt = event.block.timestamp;
     user.updatedAt = event.block.timestamp;
     user.block = event.block.number;
-    user.team = event.params.teamId.toHex();
+    user.team = event.params.teamId.toString();
     user.totalPoints = ZERO_BI;
     user.points = [];
     user.save();
   }
 
   // Update the team based on the new user joining it.
-  let team = Team.load(event.params.teamId.toHex());
+  let team = Team.load(event.params.teamId.toString());
   if (team === null) {
-    log.error("Error in contract, joined team when teamId: {} was not created.", [event.params.teamId.toHex()]);
+    log.error("Error in contract, joined team when teamId: {} was not created.", [event.params.teamId.toString()]);
   }
   team.totalUsers = team.totalUsers.plus(ONE_BI);
   team.save();
@@ -95,9 +97,9 @@ export function handleUserPause(event: UserPause): void {
   user.save();
 
   // Update the team based on the new user joining it.
-  let team = Team.load(event.params.teamId.toHex());
+  let team = Team.load(event.params.teamId.toString());
   if (team === null) {
-    log.error("Error in contract, paused user when teamId: {} was not created.", [event.params.teamId.toHex()]);
+    log.error("Error in contract, paused user when teamId: {} was not created.", [event.params.teamId.toString()]);
   }
   team.totalUsers = team.totalUsers.minus(ONE_BI);
   team.save();
@@ -113,9 +115,9 @@ export function handleUserReactivate(event: UserReactivate): void {
   user.save();
 
   // Update the team based on the new user joining it.
-  let team = Team.load(event.params.teamId.toHex());
+  let team = Team.load(event.params.teamId.toString());
   if (team === null) {
-    log.error("Error in contract, resumed user when teamId: {} was not created.", [event.params.teamId.toHex()]);
+    log.error("Error in contract, resumed user when teamId: {} was not created.", [event.params.teamId.toString()]);
   }
   team.totalUsers = team.totalUsers.plus(ONE_BI);
   team.save();
@@ -123,20 +125,20 @@ export function handleUserReactivate(event: UserReactivate): void {
 
 export function handleUserChangeTeam(event: UserChangeTeam): void {
   // Update the (old) team based on the user leaving it.
-  let oldTeam = Team.load(event.params.oldTeamId.toHex());
+  let oldTeam = Team.load(event.params.oldTeamId.toString());
   if (oldTeam === null) {
     log.error("Error in contract, changed team when (old) teamId: {} was not created.", [
-      event.params.oldTeamId.toHex(),
+      event.params.oldTeamId.toString(),
     ]);
   }
   oldTeam.totalUsers = oldTeam.totalUsers.minus(ONE_BI);
   oldTeam.save();
 
   // Update the (new) team based on the user joining it.
-  let newTeam = Team.load(event.params.newTeamId.toHex());
+  let newTeam = Team.load(event.params.newTeamId.toString());
   if (newTeam === null) {
     log.error("Error in contract, changed team when (new) teamId: {} was not created.", [
-      event.params.newTeamId.toHex(),
+      event.params.newTeamId.toString(),
     ]);
   }
   newTeam.totalUsers = newTeam.totalUsers.plus(ONE_BI);
@@ -147,7 +149,7 @@ export function handleUserChangeTeam(event: UserChangeTeam): void {
   if (user === null) {
     log.error("Error in contract, changed team when userId: {} was not created.", [event.params.userAddress.toHex()]);
   }
-  user.team = event.params.newTeamId.toHex();
+  user.team = event.params.newTeamId.toString();
   user.save();
 }
 
@@ -167,6 +169,7 @@ export function handleUserPointIncrease(event: UserPointIncrease): void {
   point.points = event.params.numberPoints;
   point.campaignId = event.params.campaignId;
   point.block = event.block.number;
+  point.timestamp = event.block.timestamp;
   point.save();
 
   user.totalPoints = user.totalPoints.plus(point.points);
@@ -189,6 +192,7 @@ export function handleUserPointIncreaseMultiple(event: UserPointIncreaseMultiple
     point.points = event.params.numberPoints;
     point.campaignId = event.params.campaignId;
     point.block = event.block.number;
+    point.timestamp = event.block.timestamp;
     point.save();
 
     user.totalPoints = user.totalPoints.plus(point.points);
