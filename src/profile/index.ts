@@ -12,7 +12,6 @@ import {
   UserPointIncreaseMultiple,
   UserReactivate,
 } from "../../generated/Profile/Profile";
-import { increaseEntityPoints } from "./utils";
 
 let ZERO_BI = BigInt.fromI32(0);
 let ONE_BI = BigInt.fromI32(1);
@@ -52,7 +51,9 @@ export function handleTeamPointIncrease(event: TeamPointIncrease): void {
   point.block = event.block.number;
   point.save();
 
-  increaseEntityPoints(team as Team, point as Point);
+  team.totalPoints = team.totalPoints.plus(point.points);
+  team.points = team.points.concat([point.id]);
+  team.save();
 }
 
 /**
@@ -168,7 +169,9 @@ export function handleUserPointIncrease(event: UserPointIncrease): void {
   point.block = event.block.number;
   point.save();
 
-  increaseEntityPoints(user as User, point as Point);
+  user.totalPoints = user.totalPoints.plus(point.points);
+  user.points = user.points.concat([point.id]);
+  user.save();
 }
 
 export function handleUserPointIncreaseMultiple(event: UserPointIncreaseMultiple): void {
@@ -188,6 +191,8 @@ export function handleUserPointIncreaseMultiple(event: UserPointIncreaseMultiple
     point.block = event.block.number;
     point.save();
 
-    increaseEntityPoints(user as User, point as Point);
+    user.totalPoints = user.totalPoints.plus(point.points);
+    user.points = user.points.concat([point.id]);
+    user.save();
   });
 }
