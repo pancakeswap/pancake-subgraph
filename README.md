@@ -4,13 +4,19 @@ TheGraph exposes a GraphQL endpoint to query the events and entities within the 
 
 Currently, there are multiple subgraphs, but additional subgraphs can be added to this repo:
 
-1. **[Blocks](https://thegraph.com/explorer/subgraph/pancakeswap/blocks)**: Tracks all the blocks on Binance Smart Chain.
+1. **[Blocks](https://thegraph.com/explorer/subgraph/pancakeswap/blocks)**: Tracks all blocks on Binance Smart Chain.
 
 2. **[Exchange](https://thegraph.com/explorer/subgraph/pancakeswap/exchange)**: Tracks all PancakeSwap Exchange data with price, volume, liquidity, ...
 
-3. **[Profile](https://thegraph.com/explorer/subgraph/pancakeswap/profile)**: Tracks all the PancakeSwap Profile with teams, users, points and campaign.
+3. **[Profile](https://thegraph.com/explorer/subgraph/pancakeswap/profile)**: Tracks all PancakeSwap Profile with teams, users, points and campaign.
 
-4. **[Timelock](https://thegraph.com/explorer/subgraph/pancakeswap/timelock)**: Tracks all the timelock transactions queued, executed, and cancelled.
+4. **[Timelock](https://thegraph.com/explorer/subgraph/pancakeswap/timelock)**: Tracks all timelock transactions queued, executed, and cancelled.
+
+5. **[Trading Competition v1](https://thegraph.com/explorer/subgraph/pancakeswap/trading-competition-v1)**: Tracks all metrics for the Easter Battle (April 07—14, 2021).
+
+## v1
+
+To access subgraphs related to PancakeSwap v1 ecosystem ([article](https://pancakeswap.medium.com/the-great-migration-vote-4093cb3edf23)), use [`v1`](https://github.com/pancakeswap/pancake-subgraph/tree/v1) branch.
 
 ## To setup and deploy
 
