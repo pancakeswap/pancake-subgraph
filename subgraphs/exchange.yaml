@@ -8,9 +8,9 @@ dataSources:
     name: Factory
     network: bsc
     source:
-      address: '0xBCfCcbde45cE874adCB698cC183deBcF17952812'
+      address: '0x877Fe7F4e22e21bE397Cd9364fAFd4aF4E15Edb6'
       abi: Factory
-      startBlock: 586851
+      startBlock: 6780751
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -21,7 +21,7 @@ dataSources:
         - Token
       abis:
         - name: Factory
-          file: ../abis/factory.json
+          file: ../abis/Factory.json
         - name: BEP20
           file: ../abis/BEP20.json
         - name: BEP20NameBytes
@@ -47,9 +47,9 @@ templates:
         - Token
       abis:
         - name: Factory
-          file: ../abis/factory.json
+          file: ../abis/Factory.json
         - name: Pair
-          file: ../abis/pair.json
+          file: ../abis/Pair.json
       eventHandlers:
         - event: Mint(indexed address,uint256,uint256)
           handler: handleMint
