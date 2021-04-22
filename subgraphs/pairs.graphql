@@ -1,0 +1,73 @@
+# Schema
+type _Schema_
+  # Token
+  @fulltext(
+    name: "tokenSearch",
+    language: en
+    algorithm: rank,
+    include: [
+      {
+        entity: "Token",
+        fields: [
+          { name: "id" },
+          { name: "name" },
+          { name: "symbol" },
+        ]
+      }
+    ]
+  )
+  # Pair
+  @fulltext(
+    name: "pairSearch",
+    language: en
+    algorithm: rank,
+    include: [
+      {
+        entity: "Pair",
+        fields: [
+          { name: "id" },
+          { name: "name" },
+        ]
+      }
+    ]
+  )
+
+# Factory
+type Factory @entity {
+  id: ID!
+
+  "Total of pairs"
+  totalPairs: BigInt!
+}
+
+# Pair
+type Pair @entity {
+  id: ID!
+
+  "Token 0"
+  token0: Token!
+  "Token 1"
+  token1: Token!
+
+  "Token0 Symbol - Token1 Symbol"
+  name: String!
+
+  "Block number"
+  block: BigInt!
+  "Block timestamp"
+  timestamp: BigInt!
+}
+
+# Token
+type Token @entity {
+  id: ID!
+
+  "Name"
+  name: String!
+  "Symbol"
+  symbol: String!
+  "Decimals"
+  decimals: BigInt!
+  "Total Supply"
+  totalSupply: BigInt!
+}
