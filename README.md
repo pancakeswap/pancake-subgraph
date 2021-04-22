@@ -6,13 +6,11 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 
 1. **[Blocks](https://thegraph.com/explorer/subgraph/pancakeswap/blocks)**: Tracks all the blocks on Binance Smart Chain.
 
-2. **Exchange (not deployed)**: Tracks all PancakeSwap Exchange data with price, volume, liquidity, ...
+2. **[Exchange](https://thegraph.com/explorer/subgraph/pancakeswap/exchange)**: Tracks all PancakeSwap Exchange data with price, volume, liquidity, ...
 
-3. **[DexCandles](https://thegraph.com/explorer/subgraph/pancakeswap/dex-candles)**: Tracks all the PancakeSwap trades (event: `Swap`) with 5m / 15m / 1h / 4h / 1d / 1w candles.
+3. **[Profile](https://thegraph.com/explorer/subgraph/pancakeswap/profile)**: Tracks all the PancakeSwap Profile with teams, users, points and campaign.
 
-4. **[Profile](https://thegraph.com/explorer/subgraph/pancakeswap/profile)**: Tracks all the PancakeSwap Profile with teams, users, points and campaign.
-
-5. **[Timelock](https://thegraph.com/explorer/subgraph/pancakeswap/timelock)**: Tracks all the timelock transactions queued, executed, and cancelled.
+4. **[Timelock](https://thegraph.com/explorer/subgraph/pancakeswap/timelock)**: Tracks all the timelock transactions queued, executed, and cancelled.
 
 ## To setup and deploy
 
