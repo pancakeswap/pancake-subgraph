@@ -57,13 +57,3 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
   }
   return BigInt.fromI32(decimalValue as i32);
 }
-
-export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
-  let contract = BEP20.bind(tokenAddress);
-  let totalSupplyValue = null;
-  let totalSupplyResult = contract.try_totalSupply();
-  if (!totalSupplyResult.reverted) {
-    totalSupplyValue = totalSupplyResult as i32;
-  }
-  return BigInt.fromI32(totalSupplyValue as i32);
-}

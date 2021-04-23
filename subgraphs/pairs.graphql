@@ -68,6 +68,4 @@ type Token @entity {
   symbol: String!
   "Decimals"
   decimals: BigInt!
-  "Total Supply"
-  totalSupply: BigInt!
 }
