@@ -25,9 +25,9 @@ dataSources:
         - name: TradingCompetitionV1
           file: ../abis/TradingCompetitionV1.json
         - name: Factory
-          file: ../abis/factory.json
+          file: ../abis/Factory.json
         - name: Pair
-          file: ../abis/pair.json
+          file: ../abis/Pair.json
       blockHandlers:
         - handler: handleBlock
       eventHandlers:
@@ -53,9 +53,9 @@ templates:
         - User
       abis:
         - name: Factory
-          file: ../abis/factory.json
+          file: ../abis/Factory.json
         - name: Pair
-          file: ../abis/pair.json
+          file: ../abis/Pair.json
       eventHandlers:
         - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
           handler: handleSwap
