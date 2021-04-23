@@ -1,0 +1,114 @@
+# Schema
+type _Schema_
+  # Token
+  @fulltext(
+    name: "tokenSearch",
+    language: en
+    algorithm: rank,
+    include: [
+      {
+        entity: "Token",
+        fields: [
+          { name: "id" },
+          { name: "name" },
+          { name: "symbol" },
+        ]
+      }
+    ]
+  )
+  # Pair
+  @fulltext(
+    name: "pairSearch",
+    language: en
+    algorithm: rank,
+    include: [
+      {
+        entity: "Pair",
+        fields: [
+          { name: "id" },
+          { name: "name" },
+        ]
+      }
+    ]
+  )
+
+# Factory
+type Factory @entity {
+  id: ID!
+
+  "Total of Pairs"
+  totalPairs: BigInt!
+
+  "Total of Tokens"
+  totalTokens: BigInt!
+}
+
+# Bundle
+type Bundle @entity {
+  id: ID!
+
+  "BNB price, in USD"
+  bnbPrice: BigDecimal!
+}
+
+# Pair
+type Pair @entity {
+  id: ID!
+
+  "Token 0"
+  token0: Token!
+  "Token 1"
+  token1: Token!
+
+  "Token0 Symbol - Token1 Symbol"
+  name: String!
+
+  "Token0 reserve"
+  reserve0: BigDecimal!
+  "Token1 reserve"
+  reserve1: BigDecimal!
+
+  "Reserve, in BNB"
+  reserveBNB: BigDecimal!
+  "Reserve, in USD"
+  reserveUSD: BigDecimal!
+
+  "Token0 price"
+  token0Price: BigDecimal!
+  "Token1 price"
+  token1Price: BigDecimal!
+  "Volume, in token0 (base)"
+  volumeToken0: BigDecimal!
+  "Volume, in token1 (quote)"
+  volumeToken1: BigDecimal!
+
+  "Volume, in BNB"
+  volumeBNB: BigDecimal!
+  "Volume, in USD"
+  volumeUSD: BigDecimal!
+
+  "Block number"
+  block: BigInt!
+  "Block timestamp"
+  timestamp: BigInt!
+}
+
+# Token
+type Token @entity {
+  id: ID!
+
+  "Name"
+  name: String!
+  "Symbol"
+  symbol: String!
+  "Decimals"
+  decimals: BigInt!
+
+  "Price, in BNB"
+  derivedBNB: BigDecimal!
+  "Price, in USD"
+  derivedUSD: BigDecimal!
+
+  "Pairs, with whitelisted Token(s)"
+  whitelist: [Pair!]!
+}
