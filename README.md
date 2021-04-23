@@ -6,13 +6,15 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 
 1. **[Blocks](https://thegraph.com/explorer/subgraph/pancakeswap/blocks)**: Tracks all blocks on Binance Smart Chain.
 
-2. **[Exchange](https://thegraph.com/explorer/subgraph/pancakeswap/exchange)**: Tracks all PancakeSwap Exchange data with price, volume, liquidity, ...
+2. **[Pairs](https://thegraph.com/explorer/subgraph/pancakeswap/pairs)**: Tracks all PancakeSwap Pairs and Tokens.
 
-3. **[Profile](https://thegraph.com/explorer/subgraph/pancakeswap/profile)**: Tracks all PancakeSwap Profile with teams, users, points and campaign.
+3. **[Exchange](https://thegraph.com/explorer/subgraph/pancakeswap/exchange)**: Tracks all PancakeSwap Exchange data with price, volume, liquidity, ...
 
-4. **[Timelock](https://thegraph.com/explorer/subgraph/pancakeswap/timelock)**: Tracks all timelock transactions queued, executed, and cancelled.
+4. **[Profile](https://thegraph.com/explorer/subgraph/pancakeswap/profile)**: Tracks all PancakeSwap Profile with teams, users, points and campaign.
 
-5. **[Trading Competition v1](https://thegraph.com/explorer/subgraph/pancakeswap/trading-competition-v1)**: Tracks all metrics for the Easter Battle (April 07—14, 2021).
+5. **[Timelock](https://thegraph.com/explorer/subgraph/pancakeswap/timelock)**: Tracks all timelock transactions queued, executed, and cancelled.
+
+6. **[Trading Competition v1](https://thegraph.com/explorer/subgraph/pancakeswap/trading-competition-v1)**: Tracks all metrics for the Easter Battle (April 07—14, 2021).
 
 ## v1
 
