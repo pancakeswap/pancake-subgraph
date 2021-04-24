@@ -2,11 +2,11 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { Factory, Pair, Token } from "../../generated/schema";
 import { PairCreated } from "../../generated/Factory/Factory";
-import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, fetchTokenTotalSupply } from "./utils/bep20";
+import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol } from "./utils/bep20";
 
 let ZERO_BI = BigInt.fromI32(0);
 let ONE_BI = BigInt.fromI32(1);
-let FACTORY_ADDRESS = "0x877fe7f4e22e21be397cd9364fafd4af4e15edb6";
+let FACTORY_ADDRESS = "0xca143ce32fe78f1f7019d7d551a6402fc5350c73";
 
 export function handlePairCreated(event: PairCreated): void {
   let factory = Factory.load(FACTORY_ADDRESS);
@@ -28,7 +28,6 @@ export function handlePairCreated(event: PairCreated): void {
       return;
     }
     token0.decimals = decimals;
-    token0.totalSupply = fetchTokenTotalSupply(event.params.token0);
     token0.save();
   }
 
@@ -42,7 +41,6 @@ export function handlePairCreated(event: PairCreated): void {
       return;
     }
     token1.decimals = decimals;
-    token1.totalSupply = fetchTokenTotalSupply(event.params.token1);
     token1.save();
   }
 
