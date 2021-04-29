@@ -1,0 +1,43 @@
+specVersion: 0.0.2
+description: Pancake Prediction
+repository: https://github.com/pancakeswap
+schema:
+  file: ./prediction.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Prediction
+    network: mainnet
+    source:
+      address: '0x516ffd7D1e0Ca40b1879935B2De87cb20Fc1124b'
+      abi: Prediction
+      startBlock: 6950840
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/prediction/index.ts
+      entities:
+        - Market
+        - Round
+        - User
+        - Bet
+      abis:
+        - name: Prediction
+          file: ../abis/Prediction.json
+      eventHandlers:
+        - event: StartRound(indexed uint256,uint256)
+          handler: handleStartRound
+        - event: LockRound(indexed uint256,uint256,int256)
+          handler: handleLockRound
+        - event: EndRound(indexed uint256,uint256,int256)
+          handler: handleEndRound
+        - event: BetBull(indexed address,indexed uint256,uint256)
+          handler: handleBetBull
+        - event: BetBear(indexed address,indexed uint256,uint256)
+          handler: handleBetBear
+        - event: Claim(indexed address,indexed uint256,uint256)
+          handler: handleClaim
+        - event: Pause(uint256)
+          handler: handlePause
+        - event: Unpause(uint256)
+          handler: handleUnpause
