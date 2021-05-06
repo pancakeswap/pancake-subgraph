@@ -171,6 +171,9 @@ export function handleBetBull(event: BetBull): void {
   bet.amount = event.params.amount.divDecimal(EIGHTEEN_BD);
   bet.position = "Bull";
   bet.claimed = false;
+  bet.createdAt = event.block.timestamp;
+  bet.updatedAt = event.block.timestamp;
+  bet.block = event.block.number;
   bet.save();
 }
 
@@ -209,6 +212,9 @@ export function handleBetBear(event: BetBear): void {
   bet.amount = event.params.amount.divDecimal(EIGHTEEN_BD);
   bet.position = "Bear";
   bet.claimed = false;
+  bet.createdAt = event.block.timestamp;
+  bet.updatedAt = event.block.timestamp;
+  bet.block = event.block.number;
   bet.save();
 }
 
@@ -218,6 +224,7 @@ export function handleClaim(event: Claim): void {
   if (bet !== null) {
     bet.claimed = true;
     bet.claimedHash = event.transaction.hash;
+    bet.updatedAt = event.block.timestamp;
     bet.save();
   }
 }

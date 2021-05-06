@@ -78,4 +78,10 @@ type Bet @entity {
     position: Position!
     claimed: Boolean!
     claimedHash: Bytes
+
+    createdAt: BigInt!
+    updatedAt: BigInt!
+
+    # Block
+    block: BigInt!
 }
