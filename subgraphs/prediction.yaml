@@ -41,3 +41,7 @@ dataSources:
           handler: handlePause
         - event: Unpause(uint256)
           handler: handleUnpause
+        - event: RatesUpdated(indexed uint256,uint256,uint256)
+          handler: handleRatesUpdated
+        - event: RewardsCalculated(indexed uint256,uint256,uint256,uint256)
+          handler: handleRewardsCalculated

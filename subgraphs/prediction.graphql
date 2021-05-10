@@ -17,6 +17,10 @@ type Market @entity {
     totalBNB: BigDecimal!
     totalBNBBull: BigDecimal!
     totalBNBBear: BigDecimal!
+    totalBNBTreasury: BigDecimal!
+
+    rewardRate: BigInt!
+    treasuryRate: BigInt!
 }
 
 type Round @entity {
@@ -48,6 +52,7 @@ type Round @entity {
     # Bets
     totalBets: BigInt!
     totalAmount: BigDecimal!
+    totalAmountTreasury: BigDecimal
     bullBets: BigInt!
     bullAmount: BigDecimal!
     bearBets: BigInt!
@@ -85,6 +90,7 @@ type Bet @entity {
     amount: BigDecimal!
     position: Position!
     claimed: Boolean!
+    claimedAmount: BigDecimal
     claimedHash: Bytes
 
     createdAt: BigInt!
