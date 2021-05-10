@@ -9,6 +9,10 @@ type Market @entity {
 
     epoch: Round
     paused: Boolean!
+
+    totalUsers: BigInt!
+    totalBets: BigInt!
+    totalBNB: BigDecimal!
 }
 
 type Round @entity {

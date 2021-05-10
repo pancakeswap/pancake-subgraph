@@ -29,6 +29,9 @@ export function handlePause(event: Pause): void {
     market = new Market("1");
     market.epoch = event.params.epoch.toString();
     market.paused = true;
+    market.totalUsers = ZERO_BI;
+    market.totalBets = ZERO_BI;
+    market.totalBNB = ZERO_BD;
     market.save();
   }
   market.epoch = event.params.epoch.toString();
@@ -56,6 +59,9 @@ export function handleUnpause(event: Unpause): void {
     market = new Market("1");
     market.epoch = event.params.epoch.toString();
     market.paused = false;
+    market.totalUsers = ZERO_BI;
+    market.totalBets = ZERO_BI;
+    market.totalBNB = ZERO_BD;
     market.save();
   }
   market.epoch = event.params.epoch.toString();
@@ -72,6 +78,9 @@ export function handleStartRound(event: StartRound): void {
   if (market === null) {
     market = new Market("1");
     market.paused = false;
+    market.totalUsers = ZERO_BI;
+    market.totalBets = ZERO_BI;
+    market.totalBNB = ZERO_BD;
     market.save();
   }
 
@@ -137,6 +146,14 @@ export function handleEndRound(event: EndRound): void {
 }
 
 export function handleBetBull(event: BetBull): void {
+  let market = Market.load("1");
+  if (market === null) {
+    log.error("Tried query market with bet (bear)", []);
+  }
+  market.totalBets = market.totalBets.plus(ONE_BI);
+  market.totalBNB = market.totalBNB.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  market.save();
+
   let round = Round.load(event.params.currentEpoch.toString());
   if (round === null) {
     log.error("Tried to bet (bull) without an existing round (epoch: {}).", [event.params.currentEpoch.toString()]);
@@ -157,6 +174,9 @@ export function handleBetBull(event: BetBull): void {
     user.block = event.block.number;
     user.totalBets = ZERO_BI;
     user.totalBNB = ZERO_BD;
+
+    market.totalUsers = market.totalUsers.plus(ONE_BI);
+    market.save();
   }
   user.updatedAt = event.block.timestamp;
   user.totalBets = user.totalBets.plus(ONE_BI);
@@ -178,6 +198,14 @@ export function handleBetBull(event: BetBull): void {
 }
 
 export function handleBetBear(event: BetBear): void {
+  let market = Market.load("1");
+  if (market === null) {
+    log.error("Tried query market with bet (bear)", []);
+  }
+  market.totalBets = market.totalBets.plus(ONE_BI);
+  market.totalBNB = market.totalBNB.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  market.save();
+
   let round = Round.load(event.params.currentEpoch.toString());
   if (round === null) {
     log.error("Tried to bet (bear) without an existing round (epoch: {}).", [event.params.currentEpoch.toString()]);
@@ -198,6 +226,9 @@ export function handleBetBear(event: BetBear): void {
     user.block = event.block.number;
     user.totalBets = ZERO_BI;
     user.totalBNB = ZERO_BD;
+
+    market.totalUsers = market.totalUsers.plus(ONE_BI);
+    market.save();
   }
   user.updatedAt = event.block.timestamp;
   user.totalBets = user.totalBets.plus(ONE_BI);
