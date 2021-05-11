@@ -31,7 +31,11 @@ export function handlePause(event: Pause): void {
     market.paused = true;
     market.totalUsers = ZERO_BI;
     market.totalBets = ZERO_BI;
+    market.totalBetsBull = ZERO_BI;
+    market.totalBetsBear = ZERO_BI;
     market.totalBNB = ZERO_BD;
+    market.totalBNBBull = ZERO_BD;
+    market.totalBNBBear = ZERO_BD;
     market.save();
   }
   market.epoch = event.params.epoch.toString();
@@ -61,7 +65,11 @@ export function handleUnpause(event: Unpause): void {
     market.paused = false;
     market.totalUsers = ZERO_BI;
     market.totalBets = ZERO_BI;
+    market.totalBetsBull = ZERO_BI;
+    market.totalBetsBear = ZERO_BI;
     market.totalBNB = ZERO_BD;
+    market.totalBNBBull = ZERO_BD;
+    market.totalBNBBear = ZERO_BD;
     market.save();
   }
   market.epoch = event.params.epoch.toString();
@@ -80,7 +88,11 @@ export function handleStartRound(event: StartRound): void {
     market.paused = false;
     market.totalUsers = ZERO_BI;
     market.totalBets = ZERO_BI;
+    market.totalBetsBull = ZERO_BI;
+    market.totalBetsBear = ZERO_BI;
     market.totalBNB = ZERO_BD;
+    market.totalBNBBull = ZERO_BD;
+    market.totalBNBBear = ZERO_BD;
     market.save();
   }
 
@@ -151,7 +163,9 @@ export function handleBetBull(event: BetBull): void {
     log.error("Tried query market with bet (bear)", []);
   }
   market.totalBets = market.totalBets.plus(ONE_BI);
+  market.totalBetsBull = market.totalBetsBull.plus(ONE_BI);
   market.totalBNB = market.totalBNB.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  market.totalBNBBull = market.totalBNBBull.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   market.save();
 
   let round = Round.load(event.params.currentEpoch.toString());
@@ -203,7 +217,9 @@ export function handleBetBear(event: BetBear): void {
     log.error("Tried query market with bet (bear)", []);
   }
   market.totalBets = market.totalBets.plus(ONE_BI);
+  market.totalBetsBear = market.totalBetsBear.plus(ONE_BI);
   market.totalBNB = market.totalBNB.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  market.totalBNBBear = market.totalBNBBear.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   market.save();
 
   let round = Round.load(event.params.currentEpoch.toString());
