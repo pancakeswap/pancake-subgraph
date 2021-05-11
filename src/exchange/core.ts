@@ -20,28 +20,22 @@ function isCompleteMint(mintId: string): boolean {
 }
 
 export function handleTransfer(event: Transfer): void {
-  // ignore initial transfers for first adds
-  if (event.params.to.toHexString() == ADDRESS_ZERO && event.params.value.equals(BigInt.fromI32(1000))) {
+  // Initial liquidity.
+  if (event.params.to.toHex() == ADDRESS_ZERO && event.params.value.equals(BigInt.fromI32(1000))) {
     return;
   }
 
-  let factory = PancakeFactory.load(FACTORY_ADDRESS);
-  let transactionHash = event.transaction.hash.toHexString();
-
-  let from = event.params.from;
-  let to = event.params.to;
-
   // get pair and load contract
-  let pair = Pair.load(event.address.toHexString());
+  let pair = Pair.load(event.address.toHex());
 
   // liquidity token amount being transferred
   let value = convertTokenToDecimal(event.params.value, BI_18);
 
   // get or create transaction
-  let transaction = Transaction.load(transactionHash);
+  let transaction = Transaction.load(event.transaction.hash.toHex());
   if (transaction === null) {
-    transaction = new Transaction(transactionHash);
-    transaction.blockNumber = event.block.number;
+    transaction = new Transaction(event.transaction.hash.toHex());
+    transaction.block = event.block.number;
     transaction.timestamp = event.block.timestamp;
     transaction.mints = [];
     transaction.burns = [];
@@ -50,7 +44,7 @@ export function handleTransfer(event: Transfer): void {
 
   // mints
   let mints = transaction.mints;
-  if (from.toHexString() == ADDRESS_ZERO) {
+  if (event.params.from.toHex() == ADDRESS_ZERO) {
     // update total supply
     pair.totalSupply = pair.totalSupply.plus(value);
     pair.save();
@@ -58,11 +52,11 @@ export function handleTransfer(event: Transfer): void {
     // create new mint if no mints so far or if last one is done already
     if (mints.length === 0 || isCompleteMint(mints[mints.length - 1])) {
       let mint = new MintEvent(
-        event.transaction.hash.toHexString().concat("-").concat(BigInt.fromI32(mints.length).toString())
+        event.transaction.hash.toHex().concat("-").concat(BigInt.fromI32(mints.length).toString())
       );
       mint.transaction = transaction.id;
       mint.pair = pair.id;
-      mint.to = to;
+      mint.to = event.params.to;
       mint.liquidity = value;
       mint.timestamp = transaction.timestamp;
       mint.transaction = transaction.id;
@@ -73,15 +67,14 @@ export function handleTransfer(event: Transfer): void {
 
       // save entities
       transaction.save();
-      factory.save();
     }
   }
 
   // case where direct send first on BNB withdrawals
-  if (event.params.to.toHexString() == pair.id) {
+  if (event.params.to.toHex() == pair.id) {
     let burns = transaction.burns;
     let burn = new BurnEvent(
-      event.transaction.hash.toHexString().concat("-").concat(BigInt.fromI32(burns.length).toString())
+      event.transaction.hash.toHex().concat("-").concat(BigInt.fromI32(burns.length).toString())
     );
     burn.transaction = transaction.id;
     burn.pair = pair.id;
@@ -101,7 +94,7 @@ export function handleTransfer(event: Transfer): void {
   }
 
   // burn
-  if (event.params.to.toHexString() == ADDRESS_ZERO && event.params.from.toHexString() == pair.id) {
+  if (event.params.to.toHex() == ADDRESS_ZERO && event.params.from.toHex() == pair.id) {
     pair.totalSupply = pair.totalSupply.minus(value);
     pair.save();
 
@@ -114,7 +107,7 @@ export function handleTransfer(event: Transfer): void {
         burn = currentBurn as BurnEvent;
       } else {
         burn = new BurnEvent(
-          event.transaction.hash.toHexString().concat("-").concat(BigInt.fromI32(burns.length).toString())
+          event.transaction.hash.toHex().concat("-").concat(BigInt.fromI32(burns.length).toString())
         );
         burn.transaction = transaction.id;
         burn.needsComplete = false;
@@ -124,9 +117,7 @@ export function handleTransfer(event: Transfer): void {
         burn.timestamp = transaction.timestamp;
       }
     } else {
-      burn = new BurnEvent(
-        event.transaction.hash.toHexString().concat("-").concat(BigInt.fromI32(burns.length).toString())
-      );
+      burn = new BurnEvent(event.transaction.hash.toHex().concat("-").concat(BigInt.fromI32(burns.length).toString()));
       burn.transaction = transaction.id;
       burn.needsComplete = false;
       burn.pair = pair.id;
@@ -176,7 +167,7 @@ export function handleSync(event: Sync): void {
   let token1 = Token.load(pair.token1);
   let pancake = PancakeFactory.load(FACTORY_ADDRESS);
 
-  // reset factory liquidity by subtracting onluy tarcked liquidity
+  // reset factory liquidity by subtracting only tracked liquidity
   pancake.totalLiquidityBNB = pancake.totalLiquidityBNB.minus(pair.trackedReserveBNB as BigDecimal);
 
   // reset token total liquidity amounts
@@ -191,16 +182,18 @@ export function handleSync(event: Sync): void {
   if (pair.reserve0.notEqual(ZERO_BD)) pair.token1Price = pair.reserve1.div(pair.reserve0);
   else pair.token1Price = ZERO_BD;
 
-  pair.save();
-
-  // update BNB price now that reserves could have changed
   let bundle = Bundle.load("1");
   bundle.bnbPrice = getBnbPriceInUSD();
   bundle.save();
 
-  token0.derivedBNB = findBnbPerToken(token0 as Token);
-  token1.derivedBNB = findBnbPerToken(token1 as Token);
+  let t0DerivedBNB = findBnbPerToken(token0 as Token);
+  token0.derivedBNB = t0DerivedBNB;
+  token0.derivedUSD = t0DerivedBNB.times(bundle.bnbPrice);
   token0.save();
+
+  let t1DerivedBNB = findBnbPerToken(token1 as Token);
+  token1.derivedBNB = t1DerivedBNB;
+  token1.derivedUSD = t1DerivedBNB.times(bundle.bnbPrice);
   token1.save();
 
   // get tracked liquidity - will be 0 if neither is in whitelist
@@ -240,7 +233,7 @@ export function handleSync(event: Sync): void {
 }
 
 export function handleMint(event: Mint): void {
-  let transaction = Transaction.load(event.transaction.hash.toHexString());
+  let transaction = Transaction.load(event.transaction.hash.toHex());
   let mints = transaction.mints;
   let mint = MintEvent.load(mints[mints.length - 1]);
 
@@ -255,8 +248,8 @@ export function handleMint(event: Mint): void {
   let token1Amount = convertTokenToDecimal(event.params.amount1, token1.decimals);
 
   // update txn counts
-  token0.txCount = token0.txCount.plus(ONE_BI);
-  token1.txCount = token1.txCount.plus(ONE_BI);
+  token0.totalTransactions = token0.totalTransactions.plus(ONE_BI);
+  token1.totalTransactions = token1.totalTransactions.plus(ONE_BI);
 
   // get new amounts of USD and BNB for tracking
   let bundle = Bundle.load("1");
@@ -266,8 +259,8 @@ export function handleMint(event: Mint): void {
     .times(bundle.bnbPrice);
 
   // update txn counts
-  pair.txCount = pair.txCount.plus(ONE_BI);
-  pancake.txCount = pancake.txCount.plus(ONE_BI);
+  pair.totalTransactions = pair.totalTransactions.plus(ONE_BI);
+  pancake.totalTransactions = pancake.totalTransactions.plus(ONE_BI);
 
   // save entities
   token0.save();
@@ -282,7 +275,6 @@ export function handleMint(event: Mint): void {
   mint.amountUSD = amountTotalUSD as BigDecimal;
   mint.save();
 
-  // update day entities
   updatePairDayData(event);
   updatePairHourData(event);
   updatePancakeDayData(event);
@@ -291,9 +283,7 @@ export function handleMint(event: Mint): void {
 }
 
 export function handleBurn(event: Burn): void {
-  let transaction = Transaction.load(event.transaction.hash.toHexString());
-
-  // safety check
+  let transaction = Transaction.load(event.transaction.hash.toHex());
   if (transaction === null) {
     return;
   }
@@ -311,8 +301,8 @@ export function handleBurn(event: Burn): void {
   let token1Amount = convertTokenToDecimal(event.params.amount1, token1.decimals);
 
   // update txn counts
-  token0.txCount = token0.txCount.plus(ONE_BI);
-  token1.txCount = token1.txCount.plus(ONE_BI);
+  token0.totalTransactions = token0.totalTransactions.plus(ONE_BI);
+  token1.totalTransactions = token1.totalTransactions.plus(ONE_BI);
 
   // get new amounts of USD and BNB for tracking
   let bundle = Bundle.load("1");
@@ -322,8 +312,8 @@ export function handleBurn(event: Burn): void {
     .times(bundle.bnbPrice);
 
   // update txn counts
-  pancake.txCount = pancake.txCount.plus(ONE_BI);
-  pair.txCount = pair.txCount.plus(ONE_BI);
+  pancake.totalTransactions = pancake.totalTransactions.plus(ONE_BI);
+  pair.totalTransactions = pair.totalTransactions.plus(ONE_BI);
 
   // update global counter and save
   token0.save();
@@ -340,7 +330,6 @@ export function handleBurn(event: Burn): void {
   burn.amountUSD = amountTotalUSD as BigDecimal;
   burn.save();
 
-  // update day entities
   updatePairDayData(event);
   updatePairHourData(event);
   updatePancakeDayData(event);
@@ -349,7 +338,7 @@ export function handleBurn(event: Burn): void {
 }
 
 export function handleSwap(event: Swap): void {
-  let pair = Pair.load(event.address.toHexString());
+  let pair = Pair.load(event.address.toHex());
   let token0 = Token.load(pair.token0);
   let token1 = Token.load(pair.token1);
   let amount0In = convertTokenToDecimal(event.params.amount0In, token0.decimals);
@@ -398,15 +387,15 @@ export function handleSwap(event: Swap): void {
   token1.untrackedVolumeUSD = token1.untrackedVolumeUSD.plus(derivedAmountUSD);
 
   // update txn counts
-  token0.txCount = token0.txCount.plus(ONE_BI);
-  token1.txCount = token1.txCount.plus(ONE_BI);
+  token0.totalTransactions = token0.totalTransactions.plus(ONE_BI);
+  token1.totalTransactions = token1.totalTransactions.plus(ONE_BI);
 
   // update pair volume data, use tracked amount if we have it as its probably more accurate
   pair.volumeUSD = pair.volumeUSD.plus(trackedAmountUSD);
   pair.volumeToken0 = pair.volumeToken0.plus(amount0Total);
   pair.volumeToken1 = pair.volumeToken1.plus(amount1Total);
   pair.untrackedVolumeUSD = pair.untrackedVolumeUSD.plus(derivedAmountUSD);
-  pair.txCount = pair.txCount.plus(ONE_BI);
+  pair.totalTransactions = pair.totalTransactions.plus(ONE_BI);
   pair.save();
 
   // update global values, only used tracked amounts for volume
@@ -414,7 +403,7 @@ export function handleSwap(event: Swap): void {
   pancake.totalVolumeUSD = pancake.totalVolumeUSD.plus(trackedAmountUSD);
   pancake.totalVolumeBNB = pancake.totalVolumeBNB.plus(trackedAmountBNB);
   pancake.untrackedVolumeUSD = pancake.untrackedVolumeUSD.plus(derivedAmountUSD);
-  pancake.txCount = pancake.txCount.plus(ONE_BI);
+  pancake.totalTransactions = pancake.totalTransactions.plus(ONE_BI);
 
   // save entities
   pair.save();
@@ -422,19 +411,17 @@ export function handleSwap(event: Swap): void {
   token1.save();
   pancake.save();
 
-  let transaction = Transaction.load(event.transaction.hash.toHexString());
+  let transaction = Transaction.load(event.transaction.hash.toHex());
   if (transaction === null) {
-    transaction = new Transaction(event.transaction.hash.toHexString());
-    transaction.blockNumber = event.block.number;
+    transaction = new Transaction(event.transaction.hash.toHex());
+    transaction.block = event.block.number;
     transaction.timestamp = event.block.timestamp;
     transaction.mints = [];
     transaction.swaps = [];
     transaction.burns = [];
   }
   let swaps = transaction.swaps;
-  let swap = new SwapEvent(
-    event.transaction.hash.toHexString().concat("-").concat(BigInt.fromI32(swaps.length).toString())
-  );
+  let swap = new SwapEvent(event.transaction.hash.toHex().concat("-").concat(BigInt.fromI32(swaps.length).toString()));
 
   // update swap event
   swap.transaction = transaction.id;
@@ -488,7 +475,7 @@ export function handleSwap(event: Swap): void {
 
   // swap specific updating for token0
   token0DayData.dailyVolumeToken = token0DayData.dailyVolumeToken.plus(amount0Total);
-  token0DayData.dailyVolumeBNB = token0DayData.dailyVolumeBNB.plus(amount0Total.times(token1.derivedBNB as BigDecimal));
+  token0DayData.dailyVolumeBNB = token0DayData.dailyVolumeBNB.plus(amount0Total.times(token0.derivedBNB as BigDecimal));
   token0DayData.dailyVolumeUSD = token0DayData.dailyVolumeUSD.plus(
     amount0Total.times(token0.derivedBNB as BigDecimal).times(bundle.bnbPrice)
   );

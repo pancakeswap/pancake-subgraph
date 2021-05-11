@@ -8,9 +8,9 @@ dataSources:
     name: Factory
     network: bsc
     source:
-      address: '0x877Fe7F4e22e21bE397Cd9364fAFd4aF4E15Edb6'
+      address: '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
       abi: Factory
-      startBlock: 6780751
+      startBlock: 6809737
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
