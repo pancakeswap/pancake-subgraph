@@ -14,7 +14,9 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 
 5. **[Timelock](https://thegraph.com/explorer/subgraph/pancakeswap/timelock)**: Tracks all timelock transactions queued, executed, and cancelled.
 
-6. **[Trading Competition v1](https://thegraph.com/explorer/subgraph/pancakeswap/trading-competition-v1)**: Tracks all metrics for the Easter Battle (April 07—14, 2021).
+6. **[SmartChef](https://thegraph.com/explorer/subgraph/pancakeswap/smartchef)**: Tracks all PancakeSwap SmartChef (also known as Pools) contract, with related tokens.
+
+7. **[Trading Competition v1](https://thegraph.com/explorer/subgraph/pancakeswap/trading-competition-v1)**: Tracks all metrics for the Easter Battle (April 07—14, 2021).
 
 ## v1
 
