@@ -12,7 +12,11 @@ type Market @entity {
 
     totalUsers: BigInt!
     totalBets: BigInt!
+    totalBetsBull: BigInt!
+    totalBetsBear: BigInt!
     totalBNB: BigDecimal!
+    totalBNBBull: BigDecimal!
+    totalBNBBear: BigDecimal!
 }
 
 type Round @entity {
