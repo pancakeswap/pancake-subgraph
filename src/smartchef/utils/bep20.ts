@@ -1,8 +1,8 @@
 /* eslint-disable prefer-const */
 import { Address, BigInt } from "@graphprotocol/graph-ts";
-import { BEP20 } from "../../../generated/Factory/BEP20";
-import { BEP20NameBytes } from "../../../generated/Factory/BEP20NameBytes";
-import { BEP20SymbolBytes } from "../../../generated/Factory/BEP20SymbolBytes";
+import { BEP20 } from "../../../generated/SmartChefFactory/BEP20";
+import { BEP20NameBytes } from "../../../generated/SmartChefFactory/BEP20NameBytes";
+import { BEP20SymbolBytes } from "../../../generated/SmartChefFactory/BEP20SymbolBytes";
 
 export function isNullBnbValue(value: string): boolean {
   return value == "0x0000000000000000000000000000000000000000000000000000000000000001";

@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import { BigInt } from "@graphprotocol/graph-ts";
 import { Factory, SmartChef, Token } from "../../generated/schema";
-import { NewSmartChefContract } from "../../generated/SmartChef/SmartChef";
+import { NewSmartChefContract } from "../../generated/SmartChefFactory/SmartChefFactory";
 import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol } from "./utils/bep20";
 import {
   fetchEndBlock,
@@ -11,13 +11,18 @@ import {
   fetchStartBlock,
   fetchUserLimit,
 } from "./utils/smartchef";
-import { convertTokenToDecimal } from "../exchange/utils";
+import { BLACKLISTED_ADDRESSES, convertTokenToDecimal } from "./utils";
 
 let ZERO_BI = BigInt.fromI32(0);
 let ONE_BI = BigInt.fromI32(1);
-let FACTORY_ADDRESS = "0x927158Be21Fe3D4da7E96931bb27Fd5059A8CbC2";
+let FACTORY_ADDRESS = "0x927158be21fe3d4da7e96931bb27fd5059a8cbc2";
 
 export function handleNewSmartChefContract(event: NewSmartChefContract): void {
+  // Do not process some SmartChef smart contract, hiccup.
+  if (BLACKLISTED_ADDRESSES.includes(event.params.smartChef.toHex())) {
+    return;
+  }
+
   let factory = Factory.load(FACTORY_ADDRESS);
   if (factory === null) {
     factory = new Factory(FACTORY_ADDRESS);
