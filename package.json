@@ -30,12 +30,13 @@
     "deploy:smartchef": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/smartchef subgraphs/smartchef.yaml",
     "deploy:timelock": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/timelock subgraphs/timelock.yaml",
     "deploy:trading": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/trading-competition-v1 subgraphs/trading.yaml",
-    "format": "prettier --write '*/**/*.{js,ts}'",
+    "format:check": "prettier --check '*/**/*.{js,ts}'",
+    "format:write": "prettier --write '*/**/*.{js,ts}'",
     "lint": "eslint '*/**/*.{js,ts}'"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn format",
+      "pre-commit": "yarn format:write",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
