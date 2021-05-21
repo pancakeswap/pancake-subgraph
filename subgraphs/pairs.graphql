@@ -36,8 +36,11 @@ type _Schema_
 type Factory @entity {
   id: ID!
 
-  "Total of pairs"
+  "Total of Pairs"
   totalPairs: BigInt!
+
+  "Total of Tokens"
+  totalTokens: BigInt!
 }
 
 # Pair

@@ -13,6 +13,7 @@ export function handlePairCreated(event: PairCreated): void {
   if (factory === null) {
     factory = new Factory(FACTORY_ADDRESS);
     factory.totalPairs = ZERO_BI;
+    factory.totalTokens = ZERO_BI;
     factory.save();
   }
   factory.totalPairs = factory.totalPairs.plus(ONE_BI);
@@ -29,6 +30,10 @@ export function handlePairCreated(event: PairCreated): void {
     }
     token0.decimals = decimals;
     token0.save();
+
+    // Factory
+    factory.totalTokens = factory.totalTokens.plus(ONE_BI);
+    factory.save();
   }
 
   let token1 = Token.load(event.params.token1.toHex());
@@ -42,6 +47,10 @@ export function handlePairCreated(event: PairCreated): void {
     }
     token1.decimals = decimals;
     token1.save();
+
+    // Factory
+    factory.totalTokens = factory.totalTokens.plus(ONE_BI);
+    factory.save();
   }
 
   let pair = new Pair(event.params.pair.toHex());
