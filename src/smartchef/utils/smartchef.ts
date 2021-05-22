@@ -2,7 +2,7 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { SmartChef } from "../../../generated/SmartChefFactory/SmartChef";
 
-export const ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
+export let ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
 
 export function fetchStakeToken(smartChefAddress: Address): Address {
   let contract = SmartChef.bind(smartChefAddress);
