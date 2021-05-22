@@ -1,16 +1,33 @@
+"""
+Binance Smart Chain blocks
+"""
 type Block @entity {
+    "ID (hash)"
     id: ID!
-    parentHash: String!
-    unclesHash: String!
-    author: String!
-    stateRoot: String!
-    transactionsRoot: String!
-    receiptsRoot: String!
+    "Parent Hash"
+    parentHash: Bytes!
+    "Uncles Hash"
+    unclesHash: Bytes!
+    "Author"
+    author: Bytes!
+    "State Root"
+    stateRoot: Bytes!
+    "Transactions Root"
+    transactionsRoot: Bytes!
+    "Receipts Root"
+    receiptsRoot: Bytes!
+    "Number"
     number: BigInt!
+    "Gas User"
     gasUsed: BigInt!
+    "Gas Limit"
     gasLimit: BigInt!
+    "Timestamp"
     timestamp: BigInt!
+    "Difficulty"
     difficulty: BigInt!
+    "Total Difficulty"
     totalDifficulty: BigInt!
+    "Size"
     size: BigInt
 }
