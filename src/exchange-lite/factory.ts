@@ -69,7 +69,7 @@ export function handlePairCreated(event: PairCreated): void {
     factory.save();
   }
 
-  // Add (whitelisted) pairs to token0 entity.
+  // Add (whitelisted) pairs from token0 to token1 entity.
   if (WHITELIST.includes(token0.id)) {
     let whitelistedPairs = token1.whitelist;
     whitelistedPairs.push(event.params.pair.toHex());
@@ -77,7 +77,7 @@ export function handlePairCreated(event: PairCreated): void {
     token1.save();
   }
 
-  // Add (whitelisted) pairs to token1 entity.
+  // Add (whitelisted) pairs from token1 to token0 entity.
   if (WHITELIST.includes(token1.id)) {
     let whitelistedPairs = token0.whitelist;
     whitelistedPairs.push(event.params.pair.toHex());
