@@ -4,20 +4,20 @@ import { BEP20 } from "../../../generated/Factory/BEP20";
 import { BEP20NameBytes } from "../../../generated/Factory/BEP20NameBytes";
 import { BEP20SymbolBytes } from "../../../generated/Factory/BEP20SymbolBytes";
 
-export function isNullBnbValue(value: string): boolean {
+export function isNullValue(value: string): boolean {
   return value == "0x0000000000000000000000000000000000000000000000000000000000000001";
 }
 
-export function fetchTokenName(tokenAddress: Address): string {
-  let contract = BEP20.bind(tokenAddress);
-  let contractNameBytes = BEP20NameBytes.bind(tokenAddress);
+export function fetchTokenName(address: Address): string {
+  let contract = BEP20.bind(address);
+  let contractNameBytes = BEP20NameBytes.bind(address);
 
   let nameValue = "unknown";
   let nameResult = contract.try_name();
   if (nameResult.reverted) {
     let nameResultBytes = contractNameBytes.try_name();
     if (!nameResultBytes.reverted) {
-      if (!isNullBnbValue(nameResultBytes.value.toHex())) {
+      if (!isNullValue(nameResultBytes.value.toHex())) {
         nameValue = nameResultBytes.value.toString();
       }
     }
@@ -28,16 +28,16 @@ export function fetchTokenName(tokenAddress: Address): string {
   return nameValue;
 }
 
-export function fetchTokenSymbol(tokenAddress: Address): string {
-  let contract = BEP20.bind(tokenAddress);
-  let contractSymbolBytes = BEP20SymbolBytes.bind(tokenAddress);
+export function fetchTokenSymbol(address: Address): string {
+  let contract = BEP20.bind(address);
+  let contractSymbolBytes = BEP20SymbolBytes.bind(address);
 
   let symbolValue = "unknown";
   let symbolResult = contract.try_symbol();
   if (symbolResult.reverted) {
     let symbolResultBytes = contractSymbolBytes.try_symbol();
     if (!symbolResultBytes.reverted) {
-      if (!isNullBnbValue(symbolResultBytes.value.toHex())) {
+      if (!isNullValue(symbolResultBytes.value.toHex())) {
         symbolValue = symbolResultBytes.value.toString();
       }
     }
@@ -48,12 +48,14 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
   return symbolValue;
 }
 
-export function fetchTokenDecimals(tokenAddress: Address): BigInt {
-  let contract = BEP20.bind(tokenAddress);
+export function fetchTokenDecimals(address: Address): BigInt {
+  let contract = BEP20.bind(address);
+
   let decimalValue = null;
   let decimalResult = contract.try_decimals();
   if (!decimalResult.reverted) {
     decimalValue = decimalResult.value;
   }
+
   return BigInt.fromI32(decimalValue as i32);
 }
