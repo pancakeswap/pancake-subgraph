@@ -18,7 +18,6 @@ dataSources:
       file: ../src/exchange-lite/factory.ts
       entities:
         - Factory
-        - Bundle
         - Pair
         - Token
       abis:

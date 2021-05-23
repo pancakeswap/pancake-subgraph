@@ -43,14 +43,6 @@ type Factory @entity {
   totalTokens: BigInt!
 }
 
-# Bundle
-type Bundle @entity {
-  id: ID!
-
-  "BNB price, in USD"
-  bnbPrice: BigDecimal!
-}
-
 # Pair
 type Pair @entity {
   id: ID!
@@ -70,8 +62,6 @@ type Pair @entity {
 
   "Reserve, in BNB"
   reserveBNB: BigDecimal!
-  "Reserve, in USD"
-  reserveUSD: BigDecimal!
 
   "Token0 price"
   token0Price: BigDecimal!
@@ -84,8 +74,6 @@ type Pair @entity {
 
   "Volume, in BNB"
   volumeBNB: BigDecimal!
-  "Volume, in USD"
-  volumeUSD: BigDecimal!
 
   "Block number"
   block: BigInt!
@@ -106,8 +94,6 @@ type Token @entity {
 
   "Price, in BNB"
   derivedBNB: BigDecimal!
-  "Price, in USD"
-  derivedUSD: BigDecimal!
 
   "Pairs, with whitelisted Token(s)"
   whitelist: [Pair!]!

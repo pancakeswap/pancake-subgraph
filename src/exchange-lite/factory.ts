@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 import { BigInt } from "@graphprotocol/graph-ts";
-import { Pair, Token, Bundle, Factory } from "../../generated/schema";
+import { Pair, Token, Factory } from "../../generated/schema";
 import { Pair as PairTemplate } from "../../generated/templates";
 import { PairCreated } from "../../generated/Factory/Factory";
 import { ZERO_BD } from "./utils";
@@ -18,14 +18,8 @@ export function handlePairCreated(event: PairCreated): void {
     factory = new Factory(FACTORY);
     factory.totalPairs = ZERO_BI;
     factory.totalTokens = ZERO_BI;
-    factory.save();
-
-    let bundle = new Bundle("1");
-    bundle.bnbPrice = ZERO_BD;
-    bundle.save();
   }
   factory.totalPairs = factory.totalPairs.plus(ONE_BI);
-  factory.save();
 
   // Add token0.
   let token0 = Token.load(event.params.token0.toHex());
@@ -39,13 +33,10 @@ export function handlePairCreated(event: PairCreated): void {
     }
     token0.decimals = decimals;
     token0.derivedBNB = ZERO_BD;
-    token0.derivedUSD = ZERO_BD;
     token0.whitelist = [];
-    token0.save();
 
     // Factory
     factory.totalTokens = factory.totalTokens.plus(ONE_BI);
-    factory.save();
   }
 
   // Add token1.
@@ -60,13 +51,10 @@ export function handlePairCreated(event: PairCreated): void {
     }
     token1.decimals = decimals;
     token1.derivedBNB = ZERO_BD;
-    token1.derivedUSD = ZERO_BD;
     token1.whitelist = [];
-    token1.save();
 
     // Factory
     factory.totalTokens = factory.totalTokens.plus(ONE_BI);
-    factory.save();
   }
 
   // Add (whitelisted) pairs from token0 to token1 entity.
@@ -74,7 +62,6 @@ export function handlePairCreated(event: PairCreated): void {
     let whitelistedPairs = token1.whitelist;
     whitelistedPairs.push(event.params.pair.toHex());
     token1.whitelist = whitelistedPairs;
-    token1.save();
   }
 
   // Add (whitelisted) pairs from token1 to token0 entity.
@@ -82,7 +69,6 @@ export function handlePairCreated(event: PairCreated): void {
     let whitelistedPairs = token0.whitelist;
     whitelistedPairs.push(event.params.pair.toHex());
     token0.whitelist = whitelistedPairs;
-    token0.save();
   }
 
   // Add pair.
@@ -93,16 +79,20 @@ export function handlePairCreated(event: PairCreated): void {
   pair.reserve0 = ZERO_BD;
   pair.reserve1 = ZERO_BD;
   pair.reserveBNB = ZERO_BD;
-  pair.reserveUSD = ZERO_BD;
   pair.token0Price = ZERO_BD;
   pair.token1Price = ZERO_BD;
   pair.volumeToken0 = ZERO_BD;
   pair.volumeToken1 = ZERO_BD;
   pair.volumeBNB = ZERO_BD;
-  pair.volumeUSD = ZERO_BD;
   pair.block = event.block.number;
   pair.timestamp = event.block.timestamp;
-  pair.save();
 
+  // Save entities.
+  token0.save();
+  token1.save();
+  pair.save();
+  factory.save();
+
+  // Create the template and start tracking underlying events.
   PairTemplate.create(event.params.pair);
 }

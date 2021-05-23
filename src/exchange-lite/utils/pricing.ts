@@ -4,9 +4,6 @@ import { Pair, Token } from "../../../generated/schema";
 import { ZERO_BD, ONE_BD } from "./index";
 
 let WBNB_TOKEN = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
-let WBNB_BUSD_PAIR = "0x58f876857a02d6762e0101bb5c46a8c1ed44dc16";
-
-let MINIMUM_LIQUIDITY_THRESHOLD_BNB = BigDecimal.fromString("50");
 
 export let WHITELIST: string[] = [
   WBNB_TOKEN, // WBNB
@@ -17,16 +14,6 @@ export let WHITELIST: string[] = [
   "0x23396cf899ca06c4472205fc903bdb4de249d6fc", // UST
 ];
 
-export function getBnbPriceInUSD(): BigDecimal {
-  let busdPair = Pair.load(WBNB_BUSD_PAIR); // busd is token1
-
-  if (busdPair !== null) {
-    return busdPair.token1Price;
-  } else {
-    return ZERO_BD;
-  }
-}
-
 export function findBnbPerToken(token: Token): BigDecimal {
   if (token.id == WBNB_TOKEN) {
     return ONE_BD;
@@ -35,7 +22,7 @@ export function findBnbPerToken(token: Token): BigDecimal {
   let whitelist = token.whitelist;
   for (let i = 0; i < whitelist.length; ++i) {
     let pair = Pair.load(whitelist[i]);
-    if (pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
+    if (pair.reserveBNB.ge(BigDecimal.fromString("50"))) {
       if (pair.token0 == token.id) {
         let token1 = Token.load(pair.token1);
         return pair.token1Price.times(token1.derivedBNB);
