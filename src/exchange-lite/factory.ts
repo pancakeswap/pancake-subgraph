@@ -7,23 +7,26 @@ import { ZERO_BD } from "./utils";
 import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol } from "./utils/bep20";
 import { WHITELIST } from "./utils/pricing";
 
+// Constants
+let FACTORY_ADDRESS = "0xca143ce32fe78f1f7019d7d551a6402fc5350c73";
+
+// BigNumber-like references
 let ZERO_BI = BigInt.fromI32(0);
 let ONE_BI = BigInt.fromI32(1);
-let FACTORY = "0xca143ce32fe78f1f7019d7d551a6402fc5350c73";
 
 export function handlePairCreated(event: PairCreated): void {
-  // Add factory.
-  let factory = Factory.load(FACTORY);
+  let factory = Factory.load(FACTORY_ADDRESS);
   if (factory === null) {
-    factory = new Factory(FACTORY);
+    // Factory
+    factory = new Factory(FACTORY_ADDRESS);
     factory.totalPairs = ZERO_BI;
     factory.totalTokens = ZERO_BI;
   }
   factory.totalPairs = factory.totalPairs.plus(ONE_BI);
 
-  // Add token0.
   let token0 = Token.load(event.params.token0.toHex());
   if (token0 === null) {
+    // Token0
     token0 = new Token(event.params.token0.toHex());
     token0.name = fetchTokenName(event.params.token0);
     token0.symbol = fetchTokenSymbol(event.params.token0);
@@ -39,9 +42,9 @@ export function handlePairCreated(event: PairCreated): void {
     factory.totalTokens = factory.totalTokens.plus(ONE_BI);
   }
 
-  // Add token1.
   let token1 = Token.load(event.params.token1.toHex());
   if (token1 === null) {
+    // Token1
     token1 = new Token(event.params.token1.toHex());
     token1.name = fetchTokenName(event.params.token1);
     token1.symbol = fetchTokenSymbol(event.params.token1);
@@ -71,7 +74,7 @@ export function handlePairCreated(event: PairCreated): void {
     token0.whitelist = whitelistedPairs;
   }
 
-  // Add pair.
+  // Pair
   let pair = new Pair(event.params.pair.toHex());
   pair.token0 = token0.id;
   pair.token1 = token1.id;
@@ -87,12 +90,12 @@ export function handlePairCreated(event: PairCreated): void {
   pair.block = event.block.number;
   pair.timestamp = event.block.timestamp;
 
-  // Save entities.
+  // Entities
   token0.save();
   token1.save();
   pair.save();
   factory.save();
 
-  // Create the template and start tracking underlying events.
+  // Template
   PairTemplate.create(event.params.pair);
 }
