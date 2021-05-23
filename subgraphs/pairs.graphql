@@ -32,8 +32,11 @@ type _Schema_
     ]
   )
 
-# Factory
+"""
+PancakeSwap Factory
+"""
 type Factory @entity {
+  "ID (address)"
   id: ID!
 
   "Total of Pairs"
@@ -43,8 +46,11 @@ type Factory @entity {
   totalTokens: BigInt!
 }
 
-# Pair
+"""
+PancakeSwap Pairs (Pancake LPs - Cake-LP)
+"""
 type Pair @entity {
+  "ID (address)"
   id: ID!
 
   "Token 0"
@@ -61,8 +67,11 @@ type Pair @entity {
   timestamp: BigInt!
 }
 
-# Token
+"""
+PancakeSwap Tokens
+"""
 type Token @entity {
+  "ID (address)"
   id: ID!
 
   "Name"
