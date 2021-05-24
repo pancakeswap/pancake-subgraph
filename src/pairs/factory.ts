@@ -58,6 +58,7 @@ export function handlePairCreated(event: PairCreated): void {
   pair.token0 = token0.id;
   pair.token1 = token1.id;
   pair.name = token0.symbol.concat("-").concat(token1.symbol);
+  pair.hash = event.transaction.hash;
   pair.block = event.block.number;
   pair.timestamp = event.block.timestamp;
 
