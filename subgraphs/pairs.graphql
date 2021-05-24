@@ -61,6 +61,8 @@ type Pair @entity {
   "Token0 Symbol - Token1 Symbol"
   name: String!
 
+  "Transaction Hash"
+  hash: Bytes!
   "Block number"
   block: BigInt!
   "Block timestamp"
