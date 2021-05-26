@@ -49,6 +49,7 @@ export function handleTeamPointIncrease(event: TeamPointIncrease): void {
   let point = new Point(pointId);
   point.points = event.params.numberPoints;
   point.campaignId = event.params.campaignId;
+  point.hash = event.transaction.hash;
   point.block = event.block.number;
   point.timestamp = event.block.timestamp;
   point.save();
@@ -67,7 +68,6 @@ export function handleUserNew(event: UserNew): void {
   let user = User.load(event.params.userAddress.toHex());
   if (user === null) {
     user = new User(event.params.userAddress.toHex());
-    user.address = event.params.userAddress;
     user.isActive = true;
     user.createdAt = event.block.timestamp;
     user.updatedAt = event.block.timestamp;
@@ -168,6 +168,7 @@ export function handleUserPointIncrease(event: UserPointIncrease): void {
   let point = new Point(pointId);
   point.points = event.params.numberPoints;
   point.campaignId = event.params.campaignId;
+  point.hash = event.transaction.hash;
   point.block = event.block.number;
   point.timestamp = event.block.timestamp;
   point.save();
@@ -191,6 +192,7 @@ export function handleUserPointIncreaseMultiple(event: UserPointIncreaseMultiple
     let point = new Point(pointId);
     point.points = event.params.numberPoints;
     point.campaignId = event.params.campaignId;
+    point.hash = event.transaction.hash;
     point.block = event.block.number;
     point.timestamp = event.block.timestamp;
     point.save();

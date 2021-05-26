@@ -20,7 +20,6 @@ type Team @entity {
 type User @entity {
     id: ID! # address
 
-    address: Bytes!
     isActive: Boolean!
 
     createdAt: BigInt!
@@ -42,6 +41,9 @@ type Point @entity {
 
     points: BigInt!
     campaignId: BigInt!
+
+    # Transaction
+    hash: Bytes!
 
     # Block number when the point was triggered.
     block: BigInt!
