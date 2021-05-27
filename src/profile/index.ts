@@ -13,6 +13,7 @@ import {
   UserReactivate,
 } from "../../generated/Profile/Profile";
 
+// BigNumber-like references
 let ZERO_BI = BigInt.fromI32(0);
 let ONE_BI = BigInt.fromI32(1);
 
@@ -31,7 +32,6 @@ export function handleTeamAdd(event: TeamAdd): void {
     team.timestamp = event.block.timestamp;
     team.totalUsers = ZERO_BI;
     team.totalPoints = ZERO_BI;
-    team.points = [];
     team.save();
   }
 }
@@ -47,6 +47,7 @@ export function handleTeamPointIncrease(event: TeamPointIncrease): void {
     Bytes.fromI32(event.params.teamId.toI32())
   ).toHex();
   let point = new Point(pointId);
+  point.team = event.params.teamId.toString();
   point.points = event.params.numberPoints;
   point.campaignId = event.params.campaignId;
   point.hash = event.transaction.hash;
@@ -55,7 +56,6 @@ export function handleTeamPointIncrease(event: TeamPointIncrease): void {
   point.save();
 
   team.totalPoints = team.totalPoints.plus(point.points);
-  team.points = team.points.concat([point.id]);
   team.save();
 }
 
@@ -74,7 +74,6 @@ export function handleUserNew(event: UserNew): void {
     user.block = event.block.number;
     user.team = event.params.teamId.toString();
     user.totalPoints = ZERO_BI;
-    user.points = [];
     user.save();
   }
 
@@ -166,6 +165,7 @@ export function handleUserPointIncrease(event: UserPointIncrease): void {
     Bytes.fromHexString(event.params.userAddress.toHex())
   ).toHex();
   let point = new Point(pointId);
+  point.user = event.params.userAddress.toHex();
   point.points = event.params.numberPoints;
   point.campaignId = event.params.campaignId;
   point.hash = event.transaction.hash;
@@ -174,7 +174,6 @@ export function handleUserPointIncrease(event: UserPointIncrease): void {
   point.save();
 
   user.totalPoints = user.totalPoints.plus(point.points);
-  user.points = user.points.concat([point.id]);
   user.save();
 }
 
@@ -190,6 +189,7 @@ export function handleUserPointIncreaseMultiple(event: UserPointIncreaseMultiple
       Bytes.fromHexString(userAddress.toHex())
     ).toHex();
     let point = new Point(pointId);
+    point.user = userAddress.toHex();
     point.points = event.params.numberPoints;
     point.campaignId = event.params.campaignId;
     point.hash = event.transaction.hash;
@@ -198,7 +198,6 @@ export function handleUserPointIncreaseMultiple(event: UserPointIncreaseMultiple
     point.save();
 
     user.totalPoints = user.totalPoints.plus(point.points);
-    user.points = user.points.concat([point.id]);
     user.save();
   });
 }
