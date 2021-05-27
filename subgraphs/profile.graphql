@@ -14,7 +14,7 @@ type Team @entity {
 
     # Points with campaignId
     totalPoints: BigInt!
-    points: [Point!]!
+    points: [Point!]! @derivedFrom(field: "team")
 }
 
 type User @entity {
@@ -33,11 +33,15 @@ type User @entity {
 
     # Points with campaignId
     totalPoints: BigInt!
-    points: [Point!]!
+    points: [Point!]! @derivedFrom(field: "user")
 }
 
 type Point @entity {
     id: ID! # address/teamId + campaignId
+
+    # Use optionnal dependecy to avoid having to `.concat` each point(s).
+    team: Team
+    user: User
 
     points: BigInt!
     campaignId: BigInt!
