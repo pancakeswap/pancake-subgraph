@@ -1,0 +1,8 @@
+version: 2
+
+updates:
+  # Maintain dependencies for NPM/Yarn packages
+  - package-ecosystem: "yarn"
+    directory: "/"
+    schedule:
+      interval: "monthly"
