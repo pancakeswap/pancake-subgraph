@@ -9,6 +9,8 @@ import {
   EndRound,
   LockRound,
   Pause,
+  RatesUpdated,
+  RewardsCalculated,
   StartRound,
   Unpause,
 } from "../../generated/Prediction/Prediction";
@@ -18,6 +20,10 @@ let ONE_BI = BigInt.fromI32(1);
 let ZERO_BD = BigDecimal.fromString("0");
 let EIGHT_BD = BigDecimal.fromString("1e8");
 let EIGHTEEN_BD = BigDecimal.fromString("1e18");
+
+// Prediction fees
+let BASE_REWARD_RATE = BigInt.fromI32(3);
+let BASE_TREASURY_RATE = BigInt.fromI32(97);
 
 /**
  * PAUSE
@@ -36,6 +42,9 @@ export function handlePause(event: Pause): void {
     market.totalBNB = ZERO_BD;
     market.totalBNBBull = ZERO_BD;
     market.totalBNBBear = ZERO_BD;
+    market.totalBNBTreasury = ZERO_BD;
+    market.rewardRate = BASE_REWARD_RATE;
+    market.treasuryRate = BASE_TREASURY_RATE;
     market.save();
   }
   market.epoch = event.params.epoch.toString();
@@ -70,10 +79,40 @@ export function handleUnpause(event: Unpause): void {
     market.totalBNB = ZERO_BD;
     market.totalBNBBull = ZERO_BD;
     market.totalBNBBear = ZERO_BD;
+    market.totalBNBTreasury = ZERO_BD;
+    market.rewardRate = BASE_REWARD_RATE;
+    market.treasuryRate = BASE_TREASURY_RATE;
     market.save();
   }
   market.epoch = event.params.epoch.toString();
   market.paused = false;
+  market.save();
+}
+
+/**
+ * MARKET
+ */
+
+export function handleRatesUpdated(event: RatesUpdated): void {
+  let market = Market.load("1");
+  if (market === null) {
+    market = new Market("1");
+    market.epoch = event.params.epoch.toString();
+    market.paused = false;
+    market.totalUsers = ZERO_BI;
+    market.totalBets = ZERO_BI;
+    market.totalBetsBull = ZERO_BI;
+    market.totalBetsBear = ZERO_BI;
+    market.totalBNB = ZERO_BD;
+    market.totalBNBBull = ZERO_BD;
+    market.totalBNBBear = ZERO_BD;
+    market.totalBNBTreasury = ZERO_BD;
+    market.rewardRate = BASE_REWARD_RATE;
+    market.treasuryRate = BASE_TREASURY_RATE;
+    market.save();
+  }
+  market.rewardRate = event.params.rewardRate;
+  market.treasuryRate = event.params.treasuryRate;
   market.save();
 }
 
@@ -85,6 +124,7 @@ export function handleStartRound(event: StartRound): void {
   let market = Market.load("1");
   if (market === null) {
     market = new Market("1");
+    market.epoch = event.params.epoch.toString();
     market.paused = false;
     market.totalUsers = ZERO_BI;
     market.totalBets = ZERO_BI;
@@ -93,6 +133,9 @@ export function handleStartRound(event: StartRound): void {
     market.totalBNB = ZERO_BD;
     market.totalBNBBull = ZERO_BD;
     market.totalBNBBear = ZERO_BD;
+    market.totalBNBTreasury = ZERO_BD;
+    market.rewardRate = BASE_REWARD_RATE;
+    market.treasuryRate = BASE_TREASURY_RATE;
     market.save();
   }
 
@@ -270,8 +313,27 @@ export function handleClaim(event: Claim): void {
   let bet = Bet.load(betId);
   if (bet !== null) {
     bet.claimed = true;
+    bet.claimedAmount = event.params.amount.divDecimal(EIGHTEEN_BD);
     bet.claimedHash = event.transaction.hash;
     bet.updatedAt = event.block.timestamp;
     bet.save();
   }
+}
+
+export function handleRewardsCalculated(event: RewardsCalculated): void {
+  let market = Market.load("1");
+  if (market === null) {
+    log.error("Tried query market after rewards were calculated for a round", []);
+  }
+  market.totalBNBTreasury = market.totalBNBTreasury.plus(event.params.treasuryAmount.divDecimal(EIGHTEEN_BD));
+  market.save();
+
+  let round = Round.load(event.params.epoch.toString());
+  if (round === null) {
+    log.error("Tried query round (epoch: {}) after rewards were calculated for a round", [
+      event.params.epoch.toString(),
+    ]);
+  }
+  round.totalAmountTreasury = event.params.treasuryAmount.divDecimal(EIGHTEEN_BD);
+  round.save();
 }
