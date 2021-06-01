@@ -45,7 +45,7 @@
     "@commitlint/config-conventional": "^12.1.4",
     "@graphprotocol/graph-cli": "^0.20.0",
     "@graphprotocol/graph-ts": "^0.20.0",
-    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.25.0",
     "eslint": "^7.27.0",
     "eslint-config-prettier": "^8.3.0",
