@@ -8,6 +8,7 @@
   "scripts": {
     "codegen:blocks": "graph codegen subgraphs/blocks.yaml",
     "codegen:exchange": "graph codegen subgraphs/exchange.yaml",
+    "codegen:lottery": "graph codegen subgraphs/lottery.yaml",
     "codegen:pairs": "graph codegen subgraphs/pairs.yaml",
     "codegen:prediction": "graph codegen subgraphs/prediction.yaml",
     "codegen:profile": "graph codegen subgraphs/profile.yaml",
@@ -16,6 +17,7 @@
     "codegen:trading": "graph codegen subgraphs/trading.yaml",
     "build:blocks": "graph build subgraphs/blocks.yaml",
     "build:exchange": "graph build subgraphs/exchange.yaml",
+    "build:lottery": "graph build subgraphs/lottery.yaml",
     "build:pairs": "graph build subgraphs/pairs.yaml",
     "build:prediction": "graph build subgraphs/prediction.yaml",
     "build:profile": "graph build subgraphs/profile.yaml",
@@ -24,6 +26,7 @@
     "build:trading": "graph build subgraphs/trading.yaml",
     "deploy:blocks": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/blocks subgraphs/blocks.yaml",
     "deploy:exchange": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/exchange subgraphs/exchange.yaml",
+    "deploy:lottery": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/lottery subgraphs/lottery.yaml",
     "deploy:pairs": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/pairs subgraphs/pairs.yaml",
     "deploy:prediction": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/prediction subgraphs/prediction.yaml",
     "deploy:profile": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/profile subgraphs/profile.yaml",
@@ -47,10 +50,10 @@
     "@graphprotocol/graph-ts": "^0.20.0",
     "@typescript-eslint/eslint-plugin": "^4.28.0",
     "@typescript-eslint/parser": "^4.28.0",
-    "eslint": "^7.29.0",
+    "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^4.3.8",
     "prettier": "^2.3.2",
-    "typescript": "^4.3.4"
+    "typescript": "^4.3.5"
   }
 }
