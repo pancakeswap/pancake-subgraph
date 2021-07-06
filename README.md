@@ -12,11 +12,13 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 
 4. **[Profile](https://thegraph.com/explorer/subgraph/pancakeswap/profile)**: Tracks all PancakeSwap Profile with teams, users, points and campaign.
 
-5. **[Timelock](https://thegraph.com/explorer/subgraph/pancakeswap/timelock)**: Tracks all timelock transactions queued, executed, and cancelled.
+5. **[Lottery](https://thegraph.com/explorer/subgraph/pancakeswap/lottery)**: Tracks all PancakeSwap Lottery with rounds, draws and tickets.
 
-6. **[SmartChef](https://thegraph.com/explorer/subgraph/pancakeswap/smartchef)**: Tracks all PancakeSwap SmartChef (also known as Pools) contract, with related tokens.
+6. **[Timelock](https://thegraph.com/explorer/subgraph/pancakeswap/timelock)**: Tracks all timelock transactions queued, executed, and cancelled.
 
-7. **[Trading Competition v1](https://thegraph.com/explorer/subgraph/pancakeswap/trading-competition-v1)**: Tracks all metrics for the Easter Battle (April 07—14, 2021).
+7. **[SmartChef](https://thegraph.com/explorer/subgraph/pancakeswap/smartchef)**: Tracks all PancakeSwap SmartChef (also known as Pools) contract, with related tokens.
+
+8. **[Trading Competition v1](https://thegraph.com/explorer/subgraph/pancakeswap/trading-competition-v1)**: Tracks all metrics for the Easter Battle (April 07—14, 2021).
 
 ## v1
 
