@@ -44,6 +44,7 @@ export function handleLotteryNumberDrawn(event: LotteryNumberDrawn): void {
     lottery.status = "Claimable";
     lottery.finalNumber = event.params.finalNumber;
     lottery.winningTickets = event.params.countWinningTickets;
+    lottery.claimedTickets = ZERO_BI;
     lottery.save();
   }
 }
@@ -92,6 +93,13 @@ export function handleTicketsPurchase(event: TicketsPurchase): void {
 }
 
 export function handleTicketsClaim(event: TicketsClaim): void {
+  let lottery = Lottery.load(event.params.lotteryId.toString());
+  if (lottery === null) {
+    log.warning("Trying to claim tickets for an unknown lottery - #{}", [event.params.lotteryId.toString()]);
+  }
+  lottery.claimedTickets = lottery.claimedTickets.plus(event.params.numberTickets);
+  lottery.save();
+
   let user = User.load(event.params.claimer.toHex());
   if (user === null) {
     user = new User(event.params.claimer.toHex());

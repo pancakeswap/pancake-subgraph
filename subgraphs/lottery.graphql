@@ -19,6 +19,7 @@ type Lottery @entity {
 
   finalNumber: BigInt
   winningTickets: BigInt
+  claimedTickets: BigInt
 
   startTime: BigInt!
   endTime: BigInt!
