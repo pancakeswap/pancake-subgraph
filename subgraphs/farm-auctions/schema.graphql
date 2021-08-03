@@ -1,0 +1,15 @@
+type Bidder @entity {
+    "ID (address)"
+    id: ID!
+
+    "Whitelist status"
+    isWhitelisted: Boolean!
+
+    "Total of Bids"
+    totalBids: BigInt!
+
+    "Block number"
+    block: BigInt!
+    "Block timestamp"
+    timestamp: BigInt!
+}
