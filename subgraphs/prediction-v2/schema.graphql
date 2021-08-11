@@ -1,0 +1,119 @@
+enum Position {
+    Bull
+    Bear
+    House
+}
+
+type Market @entity {
+    id: ID!
+
+    epoch: Round
+    paused: Boolean!
+
+    # Users
+    totalUsers: BigInt!
+
+    # Bets
+    totalBets: BigInt!
+    totalBetsBull: BigInt!
+    totalBetsBear: BigInt!
+    totalBNB: BigDecimal!
+    totalBNBBull: BigDecimal!
+    totalBNBBear: BigDecimal!
+    totalBNBTreasury: BigDecimal!
+
+    # Statistics
+    totalBetsClaimed: BigInt!
+    totalBNBClaimed: BigDecimal!
+    winRate: BigDecimal!
+    averageBNB: BigDecimal!
+    netBNB: BigDecimal!
+}
+
+type Round @entity {
+    id: ID!
+
+    epoch: BigInt!
+    position: Position
+    failed: Boolean
+
+    previous: Round
+
+    # Start
+    startAt: BigInt!
+    startBlock: BigInt!
+    startHash: Bytes!
+
+    # Lock
+    lockAt: BigInt
+    lockBlock: BigInt
+    lockHash: Bytes
+    lockPrice: BigDecimal
+    lockRoundId: BigInt
+
+    # End
+    closeAt: BigInt
+    closeBlock: BigInt
+    closeHash: Bytes
+    closePrice: BigDecimal
+    closeRoundId: BigInt
+
+    # Bets
+    totalBets: BigInt!
+    totalAmount: BigDecimal!
+    bullBets: BigInt!
+    bullAmount: BigDecimal!
+    bearBets: BigInt!
+    bearAmount: BigDecimal!
+    bets: [Bet!]! @derivedFrom(field: "round")
+}
+
+type User @entity {
+    id: ID!
+
+    createdAt: BigInt!
+    updatedAt: BigInt!
+
+    block: BigInt!
+
+    # Bets
+    totalBets: BigInt!
+    totalBetsBull: BigInt!
+    totalBetsBear: BigInt!
+    totalBNB: BigDecimal!
+    totalBNBBull: BigDecimal!
+    totalBNBBear: BigDecimal!
+    bets: [Bet!]! @derivedFrom(field: "user")
+
+    # Statistics
+    totalBetsClaimed: BigInt!
+    totalBNBClaimed: BigDecimal!
+    winRate: BigDecimal!
+    averageBNB: BigDecimal!
+    netBNB: BigDecimal!
+}
+
+type Bet @entity {
+    id: ID!
+
+    # epoch
+    round: Round!
+
+    user: User!
+    hash: Bytes!
+
+    amount: BigDecimal!
+    position: Position!
+
+    claimed: Boolean!
+    claimedAt: BigInt
+    claimedBlock: BigInt
+    claimedHash: Bytes
+    claimedBNB: BigDecimal
+    claimedNetBNB: BigDecimal
+
+    createdAt: BigInt!
+    updatedAt: BigInt!
+
+    block: BigInt!
+}
