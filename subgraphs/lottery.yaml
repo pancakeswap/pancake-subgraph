@@ -5,7 +5,7 @@ schema:
   file: ./lottery.graphql
 dataSources:
   - kind: ethereum/contract
-    name: bsc
+    name: Lottery
     network: bsc
     source:
       address: '0x5aF6D33DE2ccEC94efb1bDF8f92Bd58085432d2c'
