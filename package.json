@@ -44,13 +44,13 @@
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "^12.1.4",
-    "@commitlint/config-conventional": "^12.1.4",
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
     "@graphprotocol/graph-cli": "^0.21.0",
     "@graphprotocol/graph-ts": "^0.20.0",
-    "@typescript-eslint/eslint-plugin": "^4.28.0",
-    "@typescript-eslint/parser": "^4.28.0",
-    "eslint": "^7.30.0",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
+    "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^4.3.8",
     "prettier": "^2.3.2",
