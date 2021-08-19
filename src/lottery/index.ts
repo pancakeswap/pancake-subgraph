@@ -61,6 +61,7 @@ export function handleTicketsPurchase(event: TicketsPurchase): void {
   let user = User.load(event.params.buyer.toHex());
   if (user === null) {
     user = new User(event.params.buyer.toHex());
+    user.totalRounds = ZERO_BI;
     user.totalTickets = ZERO_BI;
     user.totalCake = ZERO_BD;
     user.block = event.block.number;
@@ -85,6 +86,9 @@ export function handleTicketsPurchase(event: TicketsPurchase): void {
     round.timestamp = event.block.timestamp;
     round.save();
 
+    user.totalRounds = user.totalRounds.plus(ONE_BI);
+    user.save();
+
     lottery.totalUsers = lottery.totalUsers.plus(ONE_BI);
     lottery.save();
   }
@@ -103,6 +107,7 @@ export function handleTicketsClaim(event: TicketsClaim): void {
   let user = User.load(event.params.claimer.toHex());
   if (user === null) {
     user = new User(event.params.claimer.toHex());
+    user.totalRounds = ZERO_BI;
     user.totalTickets = ZERO_BI;
     user.totalCake = ZERO_BD;
     user.block = event.block.number;
