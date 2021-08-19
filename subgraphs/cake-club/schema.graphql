@@ -1,0 +1,100 @@
+# Schema
+type _Schema_
+  # Token
+  @fulltext(
+    name: "tokenSearch"
+    language: en
+    algorithm: rank
+    include: [{ entity: "Token", fields: [{ name: "id" }] }]
+  )
+
+"""
+Pancake CAKE Club (contract)
+"""
+type Contract @entity {
+  "ID (address)"
+  id: ID!
+
+  "Total of Tokens"
+  totalTokens: BigInt!
+
+  "Total of Owners"
+  totalOwners: BigInt!
+
+  "Total of Transactions"
+  totalTransactions: BigInt!
+}
+
+"""
+Owners
+"""
+type Owner @entity {
+  "ID"
+  id: ID!
+
+  "List of Tokens"
+  tokens: [Token!]! @derivedFrom(field: "owner")
+  "Total of Tokens"
+  totalTokens: BigInt!
+
+  "Transactions (as Sender)"
+  fromTransactions: [Transaction!]! @derivedFrom(field: "from")
+  "Transactions (as Receiver)"
+  toTransactions: [Transaction!]! @derivedFrom(field: "to")
+  "Total of Transactions"
+  totalTransactions: BigInt!
+
+  "Block number"
+  block: BigInt!
+  "Block timestamp"
+  timestamp: BigInt!
+}
+
+"""
+Tokens
+"""
+type Token @entity {
+  "ID"
+  id: ID!
+
+  "Owner"
+  owner: Owner!
+
+  "Burned"
+  burned: Boolean!
+
+  "Transactions"
+  transactions: [Transaction!]! @derivedFrom(field: "token")
+  "Total of Transactions"
+  totalTransactions: BigInt!
+
+  "Block number"
+  block: BigInt!
+  "Block timestamp"
+  timestamp: BigInt!
+}
+
+"""
+Transactions
+"""
+type Transaction @entity {
+  "ID (hash)"
+  id: ID!
+
+  "Sender"
+  from: Owner!
+  "Receiver"
+  to: Owner!
+  "Token"
+  token: Token!
+
+  "Gas Used"
+  gasUsed: BigInt!
+  "Gas Price (in wei)"
+  gasPrice: BigInt!
+
+  "Block number"
+  block: BigInt!
+  "Block timestamp"
+  timestamp: BigInt!
+}
