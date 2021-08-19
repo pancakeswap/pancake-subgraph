@@ -38,6 +38,8 @@ type User @entity {
   "ID"
   id: ID!
 
+  totalRounds: BigInt!
+
   totalTickets: BigInt!
   rounds: [Round!]! @derivedFrom(field: "user")
 
