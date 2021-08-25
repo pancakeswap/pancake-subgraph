@@ -25,12 +25,12 @@ dataSources:
           file: ./abis/SmartChefFactory.json
         - name: SmartChef
           file: ./abis/SmartChef.json
-        - name: BEP20
-          file: ./abis/BEP20.json
-        - name: BEP20NameBytes
-          file: ./abis/BEP20NameBytes.json
-        - name: BEP20SymbolBytes
-          file: ./abis/BEP20SymbolBytes.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
         - event: NewSmartChefContract(indexed address)
           handler: handleNewSmartChefContract

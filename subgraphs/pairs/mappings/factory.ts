@@ -2,7 +2,7 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { Factory, Pair, Token } from "../generated/schema";
 import { PairCreated } from "../generated/Factory/Factory";
-import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol } from "./utils/bep20";
+import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol } from "./utils/erc20";
 
 // Constants
 let FACTORY_ADDRESS = "0xca143ce32fe78f1f7019d7d551a6402fc5350c73";

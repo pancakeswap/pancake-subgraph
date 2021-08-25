@@ -1,16 +1,16 @@
 /* eslint-disable prefer-const */
 import { Address, BigInt } from "@graphprotocol/graph-ts";
-import { BEP20 } from "../../generated/Factory/BEP20";
-import { BEP20NameBytes } from "../../generated/Factory/BEP20NameBytes";
-import { BEP20SymbolBytes } from "../../generated/Factory/BEP20SymbolBytes";
+import { ERC20 } from "../../generated/Factory/ERC20";
+import { ERC20NameBytes } from "../../generated/Factory/ERC20NameBytes";
+import { ERC20SymbolBytes } from "../../generated/Factory/ERC20SymbolBytes";
 
 export function isNullValue(value: string): boolean {
   return value == "0x0000000000000000000000000000000000000000000000000000000000000001";
 }
 
 export function fetchTokenName(address: Address): string {
-  let contract = BEP20.bind(address);
-  let contractNameBytes = BEP20NameBytes.bind(address);
+  let contract = ERC20.bind(address);
+  let contractNameBytes = ERC20NameBytes.bind(address);
 
   let nameValue = "unknown";
   let nameResult = contract.try_name();
@@ -29,8 +29,8 @@ export function fetchTokenName(address: Address): string {
 }
 
 export function fetchTokenSymbol(address: Address): string {
-  let contract = BEP20.bind(address);
-  let contractSymbolBytes = BEP20SymbolBytes.bind(address);
+  let contract = ERC20.bind(address);
+  let contractSymbolBytes = ERC20SymbolBytes.bind(address);
 
   let symbolValue = "unknown";
   let symbolResult = contract.try_symbol();
@@ -49,7 +49,7 @@ export function fetchTokenSymbol(address: Address): string {
 }
 
 export function fetchTokenDecimals(address: Address): BigInt {
-  let contract = BEP20.bind(address);
+  let contract = ERC20.bind(address);
 
   let decimalValue = null;
   let decimalResult = contract.try_decimals();

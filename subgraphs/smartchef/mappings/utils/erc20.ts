@@ -1,16 +1,16 @@
 /* eslint-disable prefer-const */
 import { Address, BigInt } from "@graphprotocol/graph-ts";
-import { BEP20 } from "../../generated/SmartChefFactory/BEP20";
-import { BEP20NameBytes } from "../../generated/SmartChefFactory/BEP20NameBytes";
-import { BEP20SymbolBytes } from "../../generated/SmartChefFactory/BEP20SymbolBytes";
+import { ERC20 } from "../../generated/SmartChefFactory/ERC20";
+import { ERC20NameBytes } from "../../generated/SmartChefFactory/ERC20NameBytes";
+import { ERC20SymbolBytes } from "../../generated/SmartChefFactory/ERC20SymbolBytes";
 
 export function isNullBnbValue(value: string): boolean {
   return value == "0x0000000000000000000000000000000000000000000000000000000000000001";
 }
 
 export function fetchTokenName(tokenAddress: Address): string {
-  let contract = BEP20.bind(tokenAddress);
-  let contractNameBytes = BEP20NameBytes.bind(tokenAddress);
+  let contract = ERC20.bind(tokenAddress);
+  let contractNameBytes = ERC20NameBytes.bind(tokenAddress);
 
   let nameValue = "unknown";
   let nameResult = contract.try_name();
@@ -29,8 +29,8 @@ export function fetchTokenName(tokenAddress: Address): string {
 }
 
 export function fetchTokenSymbol(tokenAddress: Address): string {
-  let contract = BEP20.bind(tokenAddress);
-  let contractSymbolBytes = BEP20SymbolBytes.bind(tokenAddress);
+  let contract = ERC20.bind(tokenAddress);
+  let contractSymbolBytes = ERC20SymbolBytes.bind(tokenAddress);
 
   let symbolValue = "unknown";
   let symbolResult = contract.try_symbol();
@@ -49,7 +49,7 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
 }
 
 export function fetchTokenDecimals(tokenAddress: Address): BigInt {
-  let contract = BEP20.bind(tokenAddress);
+  let contract = ERC20.bind(tokenAddress);
   let decimalValue = null;
   let decimalResult = contract.try_decimals();
   if (!decimalResult.reverted) {

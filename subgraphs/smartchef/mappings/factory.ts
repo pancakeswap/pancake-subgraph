@@ -2,7 +2,7 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { Factory, SmartChef, Token } from "../generated/schema";
 import { NewSmartChefContract } from "../generated/SmartChefFactory/SmartChefFactory";
-import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol } from "./utils/bep20";
+import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol } from "./utils/erc20";
 import {
   fetchEndBlock,
   fetchRewardPerBlock,
