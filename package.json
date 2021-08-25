@@ -7,7 +7,7 @@
   "author": "PancakeSwap",
   "license": "MIT",
   "workspaces": [
-    "subgraphs/*"
+    "subgraphs/**/*"
   ],
   "scripts": {
     "codegen": "lerna run codegen",
