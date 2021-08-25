@@ -4,42 +4,42 @@ import { Timelock } from "../../generated/schema";
 import { CancelTransaction, ExecuteTransaction, QueueTransaction } from "../../generated/Timelock/Timelock";
 
 export function handleCanceledTransaction(event: CancelTransaction): void {
-  let tl = Timelock.load(event.params.txHash.toHex());
-  if (tl !== null) {
-    tl.canceledBlock = event.block.number;
-    tl.canceledAt = event.block.timestamp;
-    tl.canceledTx = event.transaction.hash.toHex();
-    tl.isCanceled = true;
-    tl.save();
+  let timelock = Timelock.load(event.params.txHash.toHex());
+  if (timelock !== null) {
+    timelock.canceledAt = event.block.timestamp;
+    timelock.canceledBlock = event.block.number;
+    timelock.canceledHash = event.transaction.hash;
+    timelock.isCanceled = true;
+    timelock.save();
   }
 }
 
 export function handleExecutedTransaction(event: ExecuteTransaction): void {
-  let tl = Timelock.load(event.params.txHash.toHex());
-  if (tl !== null) {
-    tl.executedBlock = event.block.number;
-    tl.executedAt = event.block.timestamp;
-    tl.executedTx = event.transaction.hash.toHex();
-    tl.isExecuted = true;
-    tl.save();
+  let timelock = Timelock.load(event.params.txHash.toHex());
+  if (timelock !== null) {
+    timelock.executedAt = event.block.timestamp;
+    timelock.executedBlock = event.block.number;
+    timelock.executedHash = event.transaction.hash;
+    timelock.isExecuted = true;
+    timelock.save();
   }
 }
 
 export function handleQueuedTransaction(event: QueueTransaction): void {
-  let tl = Timelock.load(event.params.txHash.toHex());
-  if (tl === null) {
-    tl = new Timelock(event.params.txHash.toHex());
-    tl.targetAddress = event.params.target.toHex();
-    tl.functionName = event.params.signature;
-    tl.data = event.params.data.toHex();
-    tl.value = event.params.value;
-    tl.eta = event.params.eta;
-    tl.createdBlock = event.block.number;
-    tl.createdAt = event.block.timestamp;
-    tl.createdTx = event.transaction.hash.toHex();
-    tl.expiresAt = event.params.eta.plus(BigInt.fromI32(14 * 86400));
-    tl.isExecuted = false;
-    tl.isCanceled = false;
-    tl.save();
+  let timelock = Timelock.load(event.params.txHash.toHex());
+  if (timelock === null) {
+    timelock = new Timelock(event.params.txHash.toHex());
+    timelock.target = event.params.target;
+    timelock.signature = event.params.signature;
+    timelock.data = event.params.data;
+    timelock.value = event.params.value;
+    timelock.eta = event.params.eta;
+    timelock.createdAt = event.block.timestamp;
+    timelock.createdBlock = event.block.number;
+    timelock.createdHash = event.transaction.hash;
+    timelock.expiresAt = event.params.eta.plus(BigInt.fromI32(14 * 86400));
+    timelock.isExecuted = false;
+    timelock.isCanceled = false;
+    timelock.save();
   }
 }
