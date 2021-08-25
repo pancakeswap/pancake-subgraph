@@ -28,10 +28,12 @@ To access subgraphs related to PancakeSwap v1 ecosystem ([article](https://panca
 
 For any of the subgraph: `blocks` as `[subgraph]`
 
-1. Run the `yarn run codegen:[subgraph]` command to prepare the TypeScript sources for the GraphQL (generated/*).
+1. Run the `cd subgraphs/[subgraph]` command to move to the subgraph directory.
 
-2. Run the `yarn run build:[subgraph]` command to build the subgraph, and check compilation errors before deploying.
+2. Run the `yarn run codegen` command to prepare the TypeScript sources for the GraphQL (generated/*).
 
-3. Run `graph auth https://api.thegraph.com/deploy/ '<ACCESS_TOKEN>'`
+3. Run the `yarn run build` command to build the subgraph, and check compilation errors before deploying.
 
-4. Deploy via `yarn run deploy:[subgraph]`.
+4. Run `graph auth https://api.thegraph.com/deploy/ '<ACCESS_TOKEN>'`
+
+5. Deploy via `yarn run deploy`.
