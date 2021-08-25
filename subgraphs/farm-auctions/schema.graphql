@@ -1,3 +1,36 @@
+enum Status {
+    Pending
+    Open
+    Close
+}
+
+"""
+Auctions
+"""
+type Auction @entity {
+    "ID"
+    id: ID!
+
+    "Status"
+    status: Status!
+
+    "Total of Bids"
+    totalBids: BigInt!
+    "Total of Cake"
+    totalCake: BigDecimal!
+
+    startBlock: BigInt!
+    endBlock: BigInt!
+
+    initialBidAmount: BigDecimal!
+
+    leaderboard: BigInt!
+    leaderboardThreshold: BigDecimal!
+}
+
+"""
+Bidders
+"""
 type Bidder @entity {
     "ID (address)"
     id: ID!
@@ -7,6 +40,9 @@ type Bidder @entity {
 
     "Total of Bids"
     totalBids: BigInt!
+
+    "Total of Cake"
+    totalCake: BigDecimal!
 
     "Block number"
     block: BigInt!
