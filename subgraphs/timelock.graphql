@@ -1,27 +1,27 @@
 type Timelock @entity {
     id: ID!
 
-    targetAddress: String!
-    functionName: String!
-    data: String!
+    target: Bytes!
+    signature: String!
+    data: Bytes!
     value: BigInt!
     eta: BigInt!
 
     # Queued
-    createdBlock: BigInt!
     createdAt: BigInt!
-    createdTx: String!
+    createdBlock: BigInt!
+    createdHash: Bytes!
     expiresAt: BigInt!
 
     # Executed
-    executedBlock: BigInt
     executedAt: BigInt
-    executedTx: String
+    executedBlock: BigInt
+    executedHash: Bytes
     isExecuted: Boolean!
 
     # Cancelled
-    canceledBlock: BigInt
     canceledAt: BigInt
-    canceledTx: String
+    canceledBlock: BigInt
+    canceledHash: Bytes
     isCanceled: Boolean!
 }
