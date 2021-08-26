@@ -5,38 +5,37 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Collectible Market V1
+    name: CollectibleMarketV1
     network: bsc
     source:
-      address: '' # To be updated
+      address: '0x0000000000000000000000000000000000000000' # To be updated
       abi: CollectibleMarketV1
       startBlock: 10000000 # To be updated
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/collectible-market/index.ts
+      file: ./mappings/index.ts
       entities:
         - Collection
-        - TokenId
+        - NFT
         - Transaction
         - User
       abis:
         - name: CollectibleMarketV1
-          file: ../abis/CollectibleMarketV1.json
+          file: ./abis/CollectibleMarketV1.json
       eventHandlers:
-        - event: AskCancel(address indexed collection,address indexed seller,uint256 indexed tokenId)
+        - event: AskCancel(indexed address,indexed address,indexed uint256)
           handler: handleAskCancel
-        - event: AskNew(address indexed collection,address indexed seller,uint256 indexed tokenId,uint256 price)
+        - event: AskNew(indexed address,indexed address,indexed uint256,uint256)
           handler: handleAskNew
-        - event: CollectionClose(address indexed collection)
+        - event: CollectionClose(indexed address)
           handler: handleCollectionClose
-        - event: CollectionNew(address indexed collection,address indexed creator,address indexed whitelistChecker,uint256 tradingFee,uint256 creatorFee)
+        - event: CollectionNew(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleCollectionNew
-        - event: CollectionUpdate(
-        address indexed collection,address indexed creator,address indexed whitelistChecker,uint256 tradingFee,uint256 creatorFee)
+        - event: CollectionUpdate(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleCollectionUpdate
-        - event: RevenueClaim(address indexed claimer, uint256 amountClaimed)
+        - event: RevenueClaim(indexed address,uint256)
           handler: handleRevenueClaim
-        - event: Trade(address indexed collection,uint256 indexed tokenId,address indexed seller,address buyer,uint256 price, uint256 netPrice, bool withBNB)
+        - event: Trade(indexed address,indexed uint256,indexed address,address,uint256,uint256,bool)
           handler: handleTrade

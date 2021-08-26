@@ -9,7 +9,7 @@ type Collection @entity {
   symbol: String!
 
   "Is active"
-  active: Bool!
+  active: Boolean!
 
   "Number of unique trades"
   totalTrades: BigInt!
@@ -20,8 +20,8 @@ type Collection @entity {
   "Number tokens listed"
   numberTokensListed: BigInt!
 
-  "Array of tokenId"
-  tokenIds: [TokenId!]! @derivedFrom(field: "collection")
+  "Array of NFTs"
+  tokenIds: [NFT!]! @derivedFrom(field: "collection")
 
   "Creator address"
   creatorAddress: String!
@@ -36,8 +36,8 @@ type Collection @entity {
   whitelistChecker: String!
 }
 
-type TokenId @entity {
-  "CollectionAddress + TokenId" # TODO: adjust 
+type NFT @entity {
+  "CollectionAddress + tokenId"
   id: ID!
 
   "tokenId"
@@ -47,19 +47,19 @@ type TokenId @entity {
   collection: Collection!
 
   "Metadata url"
-  metadataUrl: String!
+  metadataUrl: String
 
   "Name" 
-  name: String! 
+  name: String
 
   "Description"
-  description: String!
+  description: String
   
   "Visual(s)"
-  visual: String[]!
+  visual: [String!]
 
   "Attributes (if any)"
-  attributes: String[]
+  attributes: [String!]
 
   "Latest traded price in BNB"
   latestTradedPriceInBNB: BigDecimal!
@@ -114,7 +114,7 @@ type Transaction @entity {
   collection: Collection!
 
   "TokenId"
-  tokenId: TokenId!
+  tokenId: NFT!
 
   "Price (in BNB)"
   price: BigDecimal!
@@ -129,5 +129,5 @@ type Transaction @entity {
   seller: User!
 
   "Whether the buyer used BNB"
-  withBNB: Bool!
+  withBNB: Boolean!
 }
