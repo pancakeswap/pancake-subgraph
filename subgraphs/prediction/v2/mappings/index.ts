@@ -116,6 +116,8 @@ export function handleStartRound(event: StartRound): void {
     market.netBNB = ZERO_BD;
     market.save();
   }
+  market.epoch = event.params.epoch.toString();
+  market.save();
 
   let round = Round.load(event.params.epoch.toString());
   if (round === null) {
