@@ -21,7 +21,7 @@ type Collection @entity {
   numberTokensListed: BigInt!
 
   "Array of NFTs"
-  tokenIds: [NFT!]! @derivedFrom(field: "collection")
+  NFTs: [NFT!]! @derivedFrom(field: "collection")
 
   "Creator address"
   creatorAddress: String!
