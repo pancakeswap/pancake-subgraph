@@ -2,6 +2,7 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { Contract, Owner, Token, Transaction } from "../generated/schema";
 import { Transfer } from "../generated/ERC721/ERC721";
+import { toBigDecimal } from "./utils";
 
 // Constants
 let CONTRACT_ADDRESS = "0x0000000000000000000000000000000000001000";
@@ -80,7 +81,7 @@ export function handleTransfer(event: Transfer): void {
   transaction.to = to.id;
   transaction.token = token.id;
   transaction.gasUsed = event.transaction.gasUsed;
-  transaction.gasPrice = event.transaction.gasPrice;
+  transaction.gasPrice = toBigDecimal(event.transaction.gasPrice, 9);
   transaction.block = event.block.number;
   transaction.timestamp = event.block.timestamp;
   transaction.save();

@@ -91,7 +91,7 @@ type Transaction @entity {
   "Gas Used"
   gasUsed: BigInt!
   "Gas Price (in wei)"
-  gasPrice: BigInt!
+  gasPrice: BigDecimal!
 
   "Block number"
   block: BigInt!
