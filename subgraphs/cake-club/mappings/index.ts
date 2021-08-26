@@ -1,8 +1,7 @@
 /* eslint-disable prefer-const */
-import { BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { Contract, Owner, Token, Transaction } from "../generated/schema";
 import { Transfer } from "../generated/ERC721/ERC721";
-import { Address } from "@graphprotocol/graph-ts/index";
 
 // Constants
 let CONTRACT_ADDRESS = "0x0000000000000000000000000000000000001000";
