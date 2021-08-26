@@ -1,0 +1,133 @@
+type Collection @entity {
+  "Contract address"
+  id: ID! 
+
+  "Name"
+  name: String!
+
+  "Symbol"
+  symbol: String!
+
+  "Is active"
+  active: Bool!
+
+  "Number of unique trades"
+  totalTrades: BigInt!
+
+  "Total volume of collection traded (in BNB)"
+  totalVolumeBNB: BigDecimal!
+ 
+  "Number tokens listed"
+  numberTokensListed: BigInt!
+
+  "Array of tokenId"
+  tokenIds: [TokenId!]! @derivedFrom(field: "collection")
+
+  "Creator address"
+  creatorAddress: String!
+
+  "Trading fee"
+  tradingFee: BigDecimal!
+
+  "Creator fee"
+  creatorFee: BigDecimal!
+
+  "Whitelist checker"
+  whitelistChecker: String!
+}
+
+type TokenId @entity {
+  "CollectionAddress + TokenId" # TODO: adjust 
+  id: ID!
+
+  "tokenId"
+  tokenId: BigInt!
+
+  "Collection address"
+  collection: Collection!
+
+  "Metadata url"
+  metadataUrl: String!
+
+  "Name" 
+  name: String! 
+
+  "Description"
+  description: String!
+  
+  "Visual(s)"
+  visual: String[]!
+
+  "Attributes (if any)"
+  attributes: String[]
+
+  "Latest traded price in BNB"
+  latestTradedPriceInBNB: BigDecimal!
+
+  "Total volume traded (in BNB)"
+  tradeVolumeBNB: BigDecimal!
+
+  "Number of unique trades"
+  totalTrades: BigInt!
+
+  "Transactions"
+  transactionHistory: [Transaction!]! @derivedFrom(field: "tokenId")
+}
+
+type User @entity {
+  "User address"
+  id: ID!
+
+  "Number of tokens currently listed"
+  numberTokensListed: BigInt!
+
+  "Number of tokens purchased"
+  numberTokensPurchased: BigInt!
+
+  "Number of tokens sold"
+  numberTokensSold: BigInt!
+
+  "Volume of tokens purchased (in BNB)"
+  tokenVolumeInBNBTokensPurchased: BigDecimal!
+
+  "Volume of tokens sold (in BNB)"
+  totalVolumeInBNBTokensSold: BigDecimal!
+
+  "Total fees collected (in BNB)" # For creator/treasury addresses
+  totalFeesCollectedInBNB: BigDecimal!
+
+  "Average price of tokens purchased (in BNB)"
+  averageTokenPriceInBNBPurchased: BigDecimal!
+
+  "Average price of tokens sold (in BNB)"
+  averageTokenPriceInBNBSold: BigDecimal!
+}
+
+type Transaction @entity {
+  id: ID!
+
+  block: BigInt!
+
+  timestamp: BigInt!
+
+  "Collection"
+  collection: Collection!
+
+  "TokenId"
+  tokenId: TokenId!
+
+  "Price (in BNB)"
+  price: BigDecimal!
+
+  "Net price to seller (in BNB)"
+  netPrice: BigDecimal!
+
+  "Buyer"
+  buyer: User! 
+
+  "Seller"
+  seller: User!
+
+  "Whether the buyer used BNB"
+  withBNB: Bool!
+}

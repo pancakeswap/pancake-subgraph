@@ -1,0 +1,42 @@
+specVersion: 0.0.2
+description: NFT Markets
+repository: https://github.com/pancakeswap
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Collectible Market V1
+    network: bsc
+    source:
+      address: '' # To be updated
+      abi: CollectibleMarketV1
+      startBlock: 10000000 # To be updated
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/collectible-market/index.ts
+      entities:
+        - Collection
+        - TokenId
+        - Transaction
+        - User
+      abis:
+        - name: CollectibleMarketV1
+          file: ../abis/CollectibleMarketV1.json
+      eventHandlers:
+        - event: AskCancel(address indexed collection,address indexed seller,uint256 indexed tokenId)
+          handler: handleAskCancel
+        - event: AskNew(address indexed collection,address indexed seller,uint256 indexed tokenId,uint256 price)
+          handler: handleAskNew
+        - event: CollectionClose(address indexed collection)
+          handler: handleCollectionClose
+        - event: CollectionNew(address indexed collection,address indexed creator,address indexed whitelistChecker,uint256 tradingFee,uint256 creatorFee)
+          handler: handleCollectionNew
+        - event: CollectionUpdate(
+        address indexed collection,address indexed creator,address indexed whitelistChecker,uint256 tradingFee,uint256 creatorFee)
+          handler: handleCollectionUpdate
+        - event: RevenueClaim(address indexed claimer, uint256 amountClaimed)
+          handler: handleRevenueClaim
+        - event: Trade(address indexed collection,uint256 indexed tokenId,address indexed seller,address buyer,uint256 price, uint256 netPrice, bool withBNB)
+          handler: handleTrade
