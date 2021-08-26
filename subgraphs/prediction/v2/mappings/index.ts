@@ -348,7 +348,7 @@ export function handleClaim(event: Claim): void {
   user.totalBetsClaimed = user.totalBetsClaimed.plus(ONE_BI);
   user.totalBNBClaimed = user.totalBNBClaimed.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   user.winRate = user.totalBetsClaimed.divDecimal(user.totalBets.toBigDecimal()).times(HUNDRED_BD);
-  user.netBNB = user.netBNB.plus(event.params.amount.divDecimal(EIGHTEEN_BD).minus(bet.amount));
+  user.netBNB = user.netBNB.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   user.save();
 
   let market = Market.load("1");
