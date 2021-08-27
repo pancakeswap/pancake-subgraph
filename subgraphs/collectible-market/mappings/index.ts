@@ -156,14 +156,12 @@ export function handleAskNew(event: AskNew): void {
           visuals.push(response);
         }
       }
-
       token.visuals = visuals;
     }
+    token.save();
   }
 
-  token.save();
-
-  // 3. Token
+  // 3. Collection
   let collection = Collection.load(event.params.collection.toHex());
   collection.numberTokensListed = collection.numberTokensListed.plus(ONE_BI);
 
