@@ -83,6 +83,9 @@ type NFT @entity {
 
   "Transactions"
   transactionHistory: [Transaction!]! @derivedFrom(field: "tokenId")
+
+  "isTradable"
+  isTradable: Boolean!
 }
 
 type User @entity {
@@ -127,8 +130,8 @@ type Transaction @entity {
   "NFT"
   tokenId: NFT!
 
-  "Price (in BNB)"
-  price: BigDecimal!
+  "Ask Price (in BNB)"
+  askPrice: BigDecimal!
 
   "Net price to seller (in BNB)"
   netPrice: BigDecimal!
@@ -142,4 +145,3 @@ type Transaction @entity {
   "Whether the buyer used BNB"
   withBNB: Boolean!
 }
-
