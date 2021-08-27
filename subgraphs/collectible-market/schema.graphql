@@ -1,6 +1,15 @@
+
+type Attribute @entity {
+  id: ID!
+
+  name: String!
+  
+  value: String!
+}
+
 type Collection @entity {
   "Contract address"
-  id: ID! 
+  id: ID!
 
   "Name"
   name: String!
@@ -16,7 +25,7 @@ type Collection @entity {
 
   "Total volume of collection traded (in BNB)"
   totalVolumeBNB: BigDecimal!
- 
+
   "Number tokens listed"
   numberTokensListed: BigInt!
 
@@ -49,17 +58,17 @@ type NFT @entity {
   "Metadata url"
   metadataUrl: String
 
-  "Name" 
+  "Name"
   name: String
 
   "Description"
   description: String
-  
-  "Visual(s)"
-  visual: [String!]
 
   "Attributes (if any)"
-  attributes: [String!]
+  attributes: [Attribute!]
+
+  "Visual(s)"
+  visuals: [String!]
 
   "Latest traded price in BNB"
   latestTradedPriceInBNB: BigDecimal!
@@ -88,7 +97,7 @@ type User @entity {
   numberTokensSold: BigInt!
 
   "Volume of tokens purchased (in BNB)"
-  tokenVolumeInBNBTokensPurchased: BigDecimal!
+  totalVolumeInBNBTokensPurchased: BigDecimal!
 
   "Volume of tokens sold (in BNB)"
   totalVolumeInBNBTokensSold: BigDecimal!
@@ -113,7 +122,7 @@ type Transaction @entity {
   "Collection"
   collection: Collection!
 
-  "TokenId"
+  "NFT"
   tokenId: NFT!
 
   "Price (in BNB)"
@@ -123,7 +132,7 @@ type Transaction @entity {
   netPrice: BigDecimal!
 
   "Buyer"
-  buyer: User! 
+  buyer: User!
 
   "Seller"
   seller: User!
@@ -131,3 +140,4 @@ type Transaction @entity {
   "Whether the buyer used BNB"
   withBNB: Boolean!
 }
+

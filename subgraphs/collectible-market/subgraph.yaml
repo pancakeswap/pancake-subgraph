@@ -17,6 +17,7 @@ dataSources:
       language: wasm/assemblyscript
       file: ./mappings/index.ts
       entities:
+        - Attribute
         - Collection
         - NFT
         - Transaction
@@ -24,6 +25,8 @@ dataSources:
       abis:
         - name: CollectibleMarketV1
           file: ./abis/CollectibleMarketV1.json
+        - name: IERC721
+          file: ./abis/IERC721.json
       eventHandlers:
         - event: AskCancel(indexed address,indexed address,indexed uint256)
           handler: handleAskCancel
