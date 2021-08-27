@@ -1,9 +1,11 @@
-
 type Attribute @entity {
+  "Collection + name + value"
   id: ID!
 
+  "Name"
   name: String!
-  
+
+  "Value"
   value: String!
 }
 
