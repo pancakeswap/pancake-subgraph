@@ -11,6 +11,7 @@ import {
 } from "../generated/Lottery/Lottery";
 import { toBigDecimal } from "./utils";
 
+// BigNumber-like references
 let ZERO_BI = BigInt.fromI32(0);
 let ONE_BI = BigInt.fromI32(1);
 let ZERO_BD = BigDecimal.fromString("0");
@@ -54,7 +55,6 @@ export function handleTicketsPurchase(event: TicketsPurchase): void {
   if (lottery === null) {
     log.warning("Trying to purchase tickets for an unknown lottery - #{}", [event.params.lotteryId.toString()]);
   }
-  // lottery.totalUsers = lottery.totalUsers.plus(ONE_BI);
   lottery.totalTickets = lottery.totalTickets.plus(event.params.numberTickets);
   lottery.save();
 
@@ -98,33 +98,24 @@ export function handleTicketsPurchase(event: TicketsPurchase): void {
 
 export function handleTicketsClaim(event: TicketsClaim): void {
   let lottery = Lottery.load(event.params.lotteryId.toString());
-  if (lottery === null) {
-    log.warning("Trying to claim tickets for an unknown lottery - #{}", [event.params.lotteryId.toString()]);
+  if (lottery !== null) {
+    lottery.claimedTickets = lottery.claimedTickets.plus(event.params.numberTickets);
+    lottery.save();
   }
-  lottery.claimedTickets = lottery.claimedTickets.plus(event.params.numberTickets);
-  lottery.save();
 
   let user = User.load(event.params.claimer.toHex());
-  if (user === null) {
-    user = new User(event.params.claimer.toHex());
-    user.totalRounds = ZERO_BI;
-    user.totalTickets = ZERO_BI;
-    user.totalCake = ZERO_BD;
-    user.block = event.block.number;
-    user.timestamp = event.block.timestamp;
+  if (user !== null) {
+    user.totalCake = user.totalCake.plus(toBigDecimal(event.params.amount));
     user.save();
   }
-  user.totalCake = user.totalCake.plus(toBigDecimal(event.params.amount));
-  user.save();
 
   let roundId = concat(
     Bytes.fromHexString(event.params.claimer.toHex()),
     Bytes.fromUTF8(event.params.lotteryId.toString())
   ).toHex();
   let round = Round.load(roundId);
-  if (round === null) {
-    log.warning("Trying to claim tickets for an unknown lottery - #{}", [roundId.toString()]);
+  if (round !== null) {
+    round.claimed = true;
+    round.save();
   }
-  round.claimed = true;
-  round.save();
 }
