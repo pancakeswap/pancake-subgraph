@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
-import { Address, ethereum, BigDecimal, BigInt, ipfs, Bytes, json, JSONValue } from "@graphprotocol/graph-ts";
-import { Collection, NFT, Transaction, User } from "../generated/schema";
+import { Address, ethereum, BigDecimal, BigInt, ipfs, Bytes, json } from "@graphprotocol/graph-ts";
+import { Attribute, Collection, NFT, Transaction, User } from "../generated/schema";
 import {
   AskCancel,
   AskNew,
@@ -10,6 +10,8 @@ import {
   RevenueClaim,
   Trade,
 } from "../generated/CollectibleMarketV1/CollectibleMarketV1";
+
+import { toBigDecimal } from "./utils";
 
 import { IERC721 } from "../generated/CollectibleMarketV1/IERC721";
 
@@ -24,7 +26,7 @@ export function fetchCollectionName(collectionAddress: Address): string {
   let nameResult = contract.try_name();
 
   if (!nameResult.reverted) {
-    nameValue = nameResult.value.toString();
+    nameValue = nameResult.value;
   }
   return nameValue;
 }
@@ -35,7 +37,7 @@ export function fetchCollectionSymbol(collectionAddress: Address): string {
   let symbolResult = contract.try_symbol();
 
   if (!symbolResult.reverted) {
-    symbolValue = symbolResult.value.toString();
+    symbolValue = symbolResult.value;
   }
   return symbolValue;
 }
@@ -46,7 +48,7 @@ export function fetchTokenURI(collectionAddress: Address, tokenId: BigInt): stri
   let tokenURIResult = contract.try_tokenURI(tokenId);
 
   if (!tokenURIResult.reverted) {
-    tokenURIValue = tokenURIResult.value.toString();
+    tokenURIValue = tokenURIResult.value;
   }
   return tokenURIValue;
 }
@@ -66,19 +68,18 @@ export function handleCollectionNew(event: CollectionNew): void {
     collection.totalVolumeBNB = ZERO_BD;
     collection.numberTokensListed = ZERO_BI;
     collection.creatorAddress = event.params.creator.toHex();
-    collection.tradingFee = event.params.tradingFee.toBigDecimal();
-    collection.creatorFee = event.params.creatorFee.toBigDecimal();
+    collection.tradingFee = toBigDecimal(event.params.tradingFee, 2);
+    collection.creatorFee = toBigDecimal(event.params.creatorFee, 2);
     collection.whitelistChecker = event.params.whitelistChecker.toHex();
-    collection.save();
   } else {
     // Collection has existed, was closed, but is re-listed
     collection.active = true;
     collection.creatorAddress = event.params.creator.toHex();
-    collection.tradingFee = event.params.tradingFee.toBigDecimal();
-    collection.creatorFee = event.params.creatorFee.toBigDecimal();
+    collection.tradingFee = toBigDecimal(event.params.tradingFee, 2);
+    collection.creatorFee = toBigDecimal(event.params.creatorFee, 2);
     collection.whitelistChecker = event.params.whitelistChecker.toHex();
-    collection.save();
   }
+  collection.save();
 }
 
 export function handleCollectionClose(event: CollectionClose): void {
@@ -90,8 +91,8 @@ export function handleCollectionClose(event: CollectionClose): void {
 export function handleCollectionUpdate(event: CollectionUpdate): void {
   let collection = Collection.load(event.params.collection.toHex());
   collection.creatorAddress = event.params.creator.toHex();
-  collection.tradingFee = event.params.tradingFee.toBigDecimal();
-  collection.creatorFee = event.params.creatorFee.toBigDecimal();
+  collection.tradingFee = toBigDecimal(event.params.tradingFee, 2);
+  collection.creatorFee = toBigDecimal(event.params.creatorFee, 2);
   collection.whitelistChecker = event.params.whitelistChecker.toHex();
   collection.save();
 }
@@ -117,9 +118,11 @@ export function handleAskNew(event: AskNew): void {
     user.numberTokensListed = user.numberTokensListed.plus(ONE_BI);
   }
 
-  user.save();
+  // 2. Collection
+  let collection = Collection.load(event.params.collection.toHex());
+  collection.numberTokensListed = collection.numberTokensListed.plus(ONE_BI);
 
-  // 2. Token
+  // 3. Token
   let tokenConcatId = event.params.collection.toString() + "-" + event.params.tokenId.toString();
   let token = NFT.load(tokenConcatId);
 
@@ -138,33 +141,54 @@ export function handleAskNew(event: AskNew): void {
     let rawData = ipfs.cat(token.metadataUrl);
 
     if (rawData != null) {
-      let obj = json.fromBytes(rawData).toObject();
+      let obj = json.fromBytes(rawData as Bytes).toObject();
 
-      token.name = obj.get("name").toString();
+      if (obj != null) {
+        token.name = obj.get("name").toString();
 
-      token.description = obj.get("description").toString();
+        token.description = obj.get("description").toString();
 
-      let fields: string[] = ["image", "mp4_url", "gif_url", "webm_url"];
+        let fields: string[] = ["image", "mp4_url", "gif_url", "webm_url"];
 
-      let visuals: string[];
+        let visuals: string[];
 
-      for (let i = 0; i < fields.length; i++) {
-        let response: string;
-        response = obj.get(fields[i]).toString();
+        for (let i = 0; i < fields.length; i++) {
+          let response: string;
+          response = obj.get(fields[i]).toString();
 
-        if (response != null) {
-          visuals.push(response);
+          if (response != null) {
+            visuals.push(response);
+          }
+        }
+
+        token.visuals = visuals;
+
+        let rawAttributes = obj.get("attributes").toObject();
+
+        if (rawAttributes != null) {
+          for (let i = 0; i < rawAttributes.entries.length; i++) {
+            let attributeName = rawAttributes.entries[i].key;
+            let attributeValue = rawAttributes.entries[i].value;
+            let attributeId =
+              event.params.collection.toString() +
+              "-" +
+              event.params.tokenId.toString() +
+              "-" +
+              attributeName.toString();
+
+            let attribute = new Attribute(attributeId);
+            attribute.name = attributeName.toString();
+            attribute.value = attributeValue.toString();
+            attribute.save();
+          }
         }
       }
-      token.visuals = visuals;
     }
-    token.save();
+  } else {
+    token.isTradable = true;
   }
-
-  // 3. Collection
-  let collection = Collection.load(event.params.collection.toHex());
-  collection.numberTokensListed = collection.numberTokensListed.plus(ONE_BI);
-
+  user.save();
+  token.save();
   collection.save();
 }
 
@@ -172,17 +196,16 @@ export function handleAskCancel(event: AskCancel): void {
   let user = User.load(event.params.seller.toHex());
   user.numberTokensListed = user.numberTokensListed;
 
-  user.save();
-
   let collection = Collection.load(event.params.collection.toHex());
   collection.numberTokensListed = collection.numberTokensListed.minus(ONE_BI);
-
-  collection.save();
 
   let tokenConcatId = event.params.collection.toString() + "-" + event.params.tokenId.toString();
   let token = NFT.load(tokenConcatId);
 
   token.isTradable = true;
+
+  user.save();
+  collection.save();
   token.save();
 }
 
@@ -210,8 +233,6 @@ export function handleTrade(block: ethereum.Block, event: Trade): void {
   transaction.seller = event.params.seller.toHex();
   transaction.withBNB = event.params.withBNB;
 
-  transaction.save();
-
   // 2. Buyer
   let buyer = User.load(event.params.buyer.toHex());
 
@@ -236,8 +257,6 @@ export function handleTrade(block: ethereum.Block, event: Trade): void {
     );
   }
 
-  buyer.save();
-
   // 3. Seller
   let seller = User.load(event.params.seller.toHex());
 
@@ -247,18 +266,19 @@ export function handleTrade(block: ethereum.Block, event: Trade): void {
   );
   seller.averageTokenPriceInBNBSold = seller.totalVolumeInBNBTokensSold.div(seller.numberTokensSold.toBigDecimal());
 
-  seller.save();
-
   // 4. NFT
   let tokenConcatId = event.params.collection.toString() + "-" + event.params.tokenId.toString();
   let token = NFT.load(tokenConcatId);
 
-  token.latestTradedPriceInBNB = event.params.price.toBigDecimal().div(EIGHTEEN_BD);
+  token.latestTradedPriceInBNB = event.params.price.toBigDecimal().div(EIGHTEEN_BD); // divDecimal
   token.tradeVolumeBNB = token.tradeVolumeBNB.plus(event.params.price.toBigDecimal().div(EIGHTEEN_BD));
   token.totalTrades = token.totalTrades.plus(ONE_BI);
 
   token.isTradable = false;
 
+  transaction.save();
+  buyer.save();
+  seller.save();
   token.save();
 }
 
