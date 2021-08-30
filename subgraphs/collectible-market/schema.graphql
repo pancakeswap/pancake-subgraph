@@ -7,6 +7,9 @@ type Attribute @entity {
 
   "Value"
   value: String!
+
+  "Collection + tokenId"
+  collectionTokenId: NFT!
 }
 
 type Collection @entity {
@@ -67,7 +70,7 @@ type NFT @entity {
   description: String
 
   "Attributes (if any)"
-  attributes: [Attribute!]
+  attributes: [Attribute!] @derivedFrom(field: "collectionTokenId")
 
   "Visual(s)"
   visuals: [String!]
