@@ -116,6 +116,8 @@ export function handleStartRound(event: StartRound): void {
     market.netBNB = ZERO_BD;
     market.save();
   }
+  market.epoch = event.params.epoch.toString();
+  market.save();
 
   let round = Round.load(event.params.epoch.toString());
   if (round === null) {
@@ -346,7 +348,7 @@ export function handleClaim(event: Claim): void {
   user.totalBetsClaimed = user.totalBetsClaimed.plus(ONE_BI);
   user.totalBNBClaimed = user.totalBNBClaimed.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   user.winRate = user.totalBetsClaimed.divDecimal(user.totalBets.toBigDecimal()).times(HUNDRED_BD);
-  user.netBNB = user.netBNB.plus(event.params.amount.divDecimal(EIGHTEEN_BD).minus(bet.amount));
+  user.netBNB = user.netBNB.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   user.save();
 
   let market = Market.load("1");

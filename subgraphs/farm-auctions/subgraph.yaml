@@ -1,0 +1,35 @@
+specVersion: 0.0.2
+description: Pancake Farm Auction
+repository: https://github.com/pancakeswap
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: FarmAuction
+    network: bsc
+    source:
+      address: '0xb92Ab7c1edcb273AbA24b0656cEb3681654805D2'
+      abi: FarmAuction
+      startBlock: 9678443
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/index.ts
+      entities:
+        - Auction
+        - Bidder
+      abis:
+        - name: FarmAuction
+          file: ./abis/FarmAuction.json
+      eventHandlers:
+        - event: WhitelistAdd(indexed address)
+          handler: handleWhitelistAdd
+        - event: WhitelistRemove(indexed address)
+          handler: handleWhitelistRemove
+        - event: AuctionStart(indexed uint256,uint256,uint256,uint256,uint256)
+          handler: handleAuctionStart
+        - event: AuctionClose(indexed uint256,uint256,uint256)
+          handler: handleAuctionClose
+        - event: AuctionBid(indexed uint256,indexed address,uint256)
+          handler: handleAuctionBid
