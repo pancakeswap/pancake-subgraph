@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
-import { Address, ethereum, BigDecimal, BigInt, ipfs, Bytes, json } from "@graphprotocol/graph-ts";
-import { Attribute, Collection, NFT, Transaction, User } from "../generated/schema";
+import { Address, ethereum, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
+import { Collection, NFT, Transaction, User } from "../generated/schema";
 import {
   AskCancel,
   AskNew,
@@ -137,56 +137,10 @@ export function handleAskNew(event: AskNew): void {
     token.totalTrades = ZERO_BI;
 
     token.isTradable = true;
-
-    let rawData = ipfs.cat(token.metadataUrl);
-
-    if (rawData != null) {
-      let obj = json.fromBytes(rawData as Bytes).toObject();
-
-      if (obj != null) {
-        token.name = obj.get("name").toString();
-
-        token.description = obj.get("description").toString();
-
-        let fields: string[] = ["image", "mp4_url", "gif_url", "webm_url"];
-
-        let visuals: string[];
-
-        for (let i = 0; i < fields.length; i++) {
-          let response: string;
-          response = obj.get(fields[i]).toString();
-
-          if (response != null) {
-            visuals.push(response);
-          }
-        }
-
-        token.visuals = visuals;
-
-        let rawAttributes = obj.get("attributes").toObject();
-
-        if (rawAttributes != null) {
-          for (let i = 0; i < rawAttributes.entries.length; i++) {
-            let attributeName = rawAttributes.entries[i].key;
-            let attributeValue = rawAttributes.entries[i].value;
-            let attributeId =
-              event.params.collection.toString() +
-              "-" +
-              event.params.tokenId.toString() +
-              "-" +
-              attributeName.toString();
-
-            let attribute = new Attribute(attributeId);
-            attribute.name = attributeName.toString();
-            attribute.value = attributeValue.toString();
-            attribute.save();
-          }
-        }
-      }
-    }
-  } else {
-    token.isTradable = true;
   }
+
+  token.isTradable = true;
+
   user.save();
   token.save();
   collection.save();

@@ -1,17 +1,3 @@
-type Attribute @entity {
-  "Collection + name + value"
-  id: ID!
-
-  "Name"
-  name: String!
-
-  "Value"
-  value: String!
-
-  "Collection + tokenId"
-  collectionTokenId: NFT!
-}
-
 type Collection @entity {
   "Contract address"
   id: ID!
@@ -61,19 +47,7 @@ type NFT @entity {
   collection: Collection!
 
   "Metadata url"
-  metadataUrl: String
-
-  "Name"
-  name: String
-
-  "Description"
-  description: String
-
-  "Attributes (if any)"
-  attributes: [Attribute!] @derivedFrom(field: "collectionTokenId")
-
-  "Visual(s)"
-  visuals: [String!]
+  metadataUrl: String!
 
   "Latest traded price in BNB"
   latestTradedPriceInBNB: BigDecimal!
