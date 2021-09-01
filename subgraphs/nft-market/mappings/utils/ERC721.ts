@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 
 import { IERC721 } from "../../generated/ERC721NFTMarketV1/IERC721";
