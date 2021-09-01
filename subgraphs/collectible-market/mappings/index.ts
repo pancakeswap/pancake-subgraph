@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { Address, ethereum, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
+import { ethereum, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { Collection, NFT, Transaction, User } from "../generated/schema";
 import {
   AskCancel,
@@ -12,46 +12,13 @@ import {
 } from "../generated/CollectibleMarketV1/CollectibleMarketV1";
 
 import { toBigDecimal } from "./utils";
+import { fetchCollectionName, fetchCollectionSymbol, fetchTokenURI } from "./utils/ERC721";
 
-import { IERC721 } from "../generated/CollectibleMarketV1/IERC721";
-
+// BigNumber-like references
 let ZERO_BI = BigInt.fromI32(0);
 let ONE_BI = BigInt.fromI32(1);
 let ZERO_BD = BigDecimal.fromString("0");
 let EIGHTEEN_BD = BigDecimal.fromString("1e18");
-
-export function fetchCollectionName(collectionAddress: Address): string {
-  let contract = IERC721.bind(collectionAddress);
-  let nameValue = "unknown";
-  let nameResult = contract.try_name();
-
-  if (!nameResult.reverted) {
-    nameValue = nameResult.value;
-  }
-  return nameValue;
-}
-
-export function fetchCollectionSymbol(collectionAddress: Address): string {
-  let contract = IERC721.bind(collectionAddress);
-  let symbolValue = "unknown";
-  let symbolResult = contract.try_symbol();
-
-  if (!symbolResult.reverted) {
-    symbolValue = symbolResult.value;
-  }
-  return symbolValue;
-}
-
-export function fetchTokenURI(collectionAddress: Address, tokenId: BigInt): string {
-  let contract = IERC721.bind(collectionAddress);
-  let tokenURIValue = "unknown";
-  let tokenURIResult = contract.try_tokenURI(tokenId);
-
-  if (!tokenURIResult.reverted) {
-    tokenURIValue = tokenURIResult.value;
-  }
-  return tokenURIValue;
-}
 
 /**
  * COLLECTION
