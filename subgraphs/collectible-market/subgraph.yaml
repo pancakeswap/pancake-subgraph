@@ -8,7 +8,7 @@ dataSources:
     name: CollectibleMarketV1
     network: bsc
     source:
-      address: '0x0000000000000000000000000000000000000000' # To be updated
+      address: "0x0000000000000000000000000000000000000000" # To be updated
       abi: CollectibleMarketV1
       startBlock: 10000000 # To be updated
     mapping:
@@ -19,8 +19,8 @@ dataSources:
       entities:
         - Collection
         - NFT
-        - Transaction
         - User
+        - Transaction
       abis:
         - name: CollectibleMarketV1
           file: ./abis/CollectibleMarketV1.json
