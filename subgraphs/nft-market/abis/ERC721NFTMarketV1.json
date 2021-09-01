@@ -79,7 +79,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "price",
+        "name": "askPrice",
         "type": "uint256"
       }
     ],
@@ -110,7 +110,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "price",
+        "name": "askPrice",
         "type": "uint256"
       }
     ],
@@ -348,7 +348,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "price",
+        "name": "askPrice",
         "type": "uint256"
       },
       {
@@ -590,7 +590,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "_price",
+        "name": "_askPrice",
         "type": "uint256"
       }
     ],
@@ -885,7 +885,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct CollectibleMarketV1.Ask[]",
+        "internalType": "struct ERC721NFTMarketV1.Ask[]",
         "name": "askInfo",
         "type": "tuple[]"
       },
@@ -941,7 +941,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct CollectibleMarketV1.Ask[]",
+        "internalType": "struct ERC721NFTMarketV1.Ask[]",
         "name": "askInfo",
         "type": "tuple[]"
       },
@@ -977,7 +977,7 @@
       {
         "components": [
           {
-            "internalType": "enum CollectibleMarketV1.CollectionStatus",
+            "internalType": "enum ERC721NFTMarketV1.CollectionStatus",
             "name": "status",
             "type": "uint8"
           },
@@ -1002,7 +1002,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct CollectibleMarketV1.Collection[]",
+        "internalType": "struct ERC721NFTMarketV1.Collection[]",
         "name": "collectionDetails",
         "type": "tuple[]"
       },

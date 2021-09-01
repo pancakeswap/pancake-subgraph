@@ -9,7 +9,7 @@ import {
   CollectionUpdate,
   RevenueClaim,
   Trade,
-} from "../generated/CollectibleMarketV1/CollectibleMarketV1";
+} from "../generated/ERC721NFTMarketV1/ERC721NFTMarketV1";
 
 import { toBigDecimal } from "./utils";
 import { fetchCollectionName, fetchCollectionSymbol, fetchTokenURI } from "./utils/ERC721";

@@ -1,15 +1,15 @@
 specVersion: 0.0.2
-description: NFT Markets
+description: NFT market for ERC721 tokens on Binance Smart Chain ("BSC")
 repository: https://github.com/pancakeswap
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: CollectibleMarketV1
+    name: ERC721NFTMarketV1
     network: bsc
     source:
       address: "0x0000000000000000000000000000000000000000" # To be updated
-      abi: CollectibleMarketV1
+      abi: ERC721NFTMarketV1
       startBlock: 10000000 # To be updated
     mapping:
       kind: ethereum/events
@@ -22,8 +22,8 @@ dataSources:
         - User
         - Transaction
       abis:
-        - name: CollectibleMarketV1
-          file: ./abis/CollectibleMarketV1.json
+        - name: ERC721NFTMarketV1
+          file: ./abis/ERC721NFTMarketV1.json
         - name: IERC721
           file: ./abis/IERC721.json
       eventHandlers:
