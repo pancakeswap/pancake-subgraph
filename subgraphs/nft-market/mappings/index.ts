@@ -146,7 +146,7 @@ export function handleTrade(block: ethereum.Block, event: Trade): void {
     buyer.numberTokensListed = ZERO_BI;
     buyer.numberTokensPurchased = ONE_BI; // 1 token purchased
     buyer.numberTokensSold = ZERO_BI;
-    buyer.totalVolumeInBNBTokensPurchased = toBigDecimal(event.params.price, 18);
+    buyer.totalVolumeInBNBTokensPurchased = toBigDecimal(event.params.netPrice, 18);
     buyer.totalVolumeInBNBTokensSold = ZERO_BD;
     buyer.totalFeesCollectedInBNB = ZERO_BD;
     buyer.averageTokenPriceInBNBPurchased = buyer.totalVolumeInBNBTokensPurchased;
@@ -154,7 +154,7 @@ export function handleTrade(block: ethereum.Block, event: Trade): void {
   } else {
     buyer.numberTokensPurchased = buyer.numberTokensPurchased.plus(ONE_BI);
     buyer.totalVolumeInBNBTokensPurchased = buyer.totalVolumeInBNBTokensPurchased.plus(
-      toBigDecimal(event.params.price, 18)
+      toBigDecimal(event.params.netPrice, 18)
     );
 
     buyer.averageTokenPriceInBNBPurchased = buyer.totalVolumeInBNBTokensPurchased.div(
@@ -173,7 +173,7 @@ export function handleTrade(block: ethereum.Block, event: Trade): void {
   let tokenConcatId = event.params.collection.toString() + "-" + event.params.tokenId.toString();
   let token = NFT.load(tokenConcatId);
 
-  token.latestTradedPriceInBNB = toBigDecimal(event.params.price, 18); // divDecimal
+  token.latestTradedPriceInBNB = toBigDecimal(event.params.netPrice, 18); // divDecimal
   token.tradeVolumeBNB = token.tradeVolumeBNB.plus(token.latestTradedPriceInBNB);
   token.totalTrades = token.totalTrades.plus(ONE_BI);
 
@@ -193,7 +193,7 @@ export function handleTrade(block: ethereum.Block, event: Trade): void {
   transaction.timestamp = block.timestamp;
   transaction.collection = event.params.collection.toHex();
   transaction.tokenId = event.params.collection.toString() + "-" + event.params.tokenId.toString();
-  transaction.askPrice = toBigDecimal(event.params.price, 18);
+  transaction.askPrice = toBigDecimal(event.params.netPrice, 18);
   transaction.netPrice = toBigDecimal(event.params.netPrice, 18);
 
   if (buyer.id != null) {
