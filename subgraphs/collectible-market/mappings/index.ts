@@ -137,26 +137,7 @@ export function handleAskCancel(event: AskCancel): void {
  */
 
 export function handleTrade(block: ethereum.Block, event: Trade): void {
-  // 1. Transaction
-  let transactionConcId =
-    event.params.collection.toString() +
-    "-" +
-    event.params.tokenId.toString() +
-    "-" +
-    event.transaction.hash.toHexString();
-
-  let transaction = new Transaction(transactionConcId);
-  transaction.block = block.number;
-  transaction.timestamp = block.timestamp;
-  transaction.collection = event.params.collection.toHex();
-  transaction.tokenId = event.params.collection.toString() + "-" + event.params.tokenId.toString();
-  transaction.askPrice = toBigDecimal(event.params.price, 18);
-  transaction.netPrice = toBigDecimal(event.params.netPrice, 18);
-  transaction.buyer = event.params.buyer.toHex();
-  transaction.seller = event.params.seller.toHex();
-  transaction.withBNB = event.params.withBNB;
-
-  // 2. Buyer
+  // 1. Buyer
   let buyer = User.load(event.params.buyer.toHex());
 
   // Buyer may not exist
@@ -181,14 +162,14 @@ export function handleTrade(block: ethereum.Block, event: Trade): void {
     );
   }
 
-  // 3. Seller
+  // 2. Seller
   let seller = User.load(event.params.seller.toHex());
 
   seller.numberTokensSold = seller.numberTokensSold.plus(ONE_BI);
   seller.totalVolumeInBNBTokensSold = seller.totalVolumeInBNBTokensSold.plus(toBigDecimal(event.params.netPrice, 18));
   seller.averageTokenPriceInBNBSold = seller.totalVolumeInBNBTokensSold.div(seller.numberTokensSold.toBigDecimal());
 
-  // 4. NFT
+  // 3. NFT
   let tokenConcatId = event.params.collection.toString() + "-" + event.params.tokenId.toString();
   let token = NFT.load(tokenConcatId);
 
@@ -197,6 +178,31 @@ export function handleTrade(block: ethereum.Block, event: Trade): void {
   token.totalTrades = token.totalTrades.plus(ONE_BI);
 
   token.isTradable = false;
+
+  // 4. Transaction
+  let transactionConcId =
+    event.params.collection.toString() +
+    "-" +
+    event.params.tokenId.toString() +
+    "-" +
+    event.transaction.hash.toHexString();
+
+  let transaction = new Transaction(transactionConcId);
+
+  transaction.block = block.number;
+  transaction.timestamp = block.timestamp;
+  transaction.collection = event.params.collection.toHex();
+  transaction.tokenId = event.params.collection.toString() + "-" + event.params.tokenId.toString();
+  transaction.askPrice = toBigDecimal(event.params.price, 18);
+  transaction.netPrice = toBigDecimal(event.params.netPrice, 18);
+
+  if (buyer.id != null) {
+    transaction.buyer = buyer.id;
+  }
+  if (seller.id != null) {
+    transaction.seller = seller.id;
+  }
+  transaction.withBNB = event.params.withBNB;
 
   transaction.save();
   buyer.save();
