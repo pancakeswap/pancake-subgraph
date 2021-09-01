@@ -1,6 +1,6 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 
-import { IERC721 } from "../../generated/CollectibleMarketV1/IERC721";
+import { IERC721 } from "../../generated/ERC721NFTMarketV1/IERC721";
 
 export function fetchCollectionName(collectionAddress: Address): string {
   let contract = IERC721.bind(collectionAddress);
