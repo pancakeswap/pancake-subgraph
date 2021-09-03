@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ERC721NFTMarketV1
-    network: bsc
+    network: chapel
     source:
       address: "0x0000000000000000000000000000000000000000" # To be updated
       abi: ERC721NFTMarketV1
@@ -31,6 +31,8 @@ dataSources:
           handler: handleAskCancel
         - event: AskNew(indexed address,indexed address,indexed uint256,uint256)
           handler: handleAskNew
+        - event: AskUpdate(indexed address,indexed address,indexed uint256,uint256)
+          handler: handleAskUpdate
         - event: CollectionClose(indexed address)
           handler: handleCollectionClose
         - event: CollectionNew(indexed address,indexed address,indexed address,uint256,uint256)

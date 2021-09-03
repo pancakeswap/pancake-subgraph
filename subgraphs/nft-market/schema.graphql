@@ -49,6 +49,12 @@ type NFT @entity {
   "Metadata url"
   metadataUrl: String!
 
+  "Current ask price"
+  currentAskPrice: BigDecimal!
+
+  "Current seller"
+  currentSeller: String!
+
   "Latest traded price in BNB"
   latestTradedPriceInBNB: BigDecimal!
 
