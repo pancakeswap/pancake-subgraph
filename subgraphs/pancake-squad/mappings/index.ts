@@ -15,67 +15,64 @@ let ONE_BI = BigInt.fromI32(1);
 export function handleTransfer(event: Transfer): void {
   let contract = Contract.load(CONTRACT_ADDRESS);
   if (contract === null) {
+    // Contract
     contract = new Contract(CONTRACT_ADDRESS);
     contract.totalTokens = ZERO_BI;
     contract.totalOwners = ZERO_BI;
     contract.totalTransactions = ZERO_BI;
-    contract.save();
   }
   contract.totalTransactions = contract.totalTransactions.plus(ONE_BI);
-  contract.save();
 
   let from = Owner.load(event.params.from.toHex());
   if (from === null) {
+    // Owner - FROM
     from = new Owner(event.params.from.toHex());
     from.totalTokens = ZERO_BI;
     from.totalTransactions = ZERO_BI;
     from.block = event.block.number;
     from.timestamp = event.block.timestamp;
-    from.save();
 
+    // Contract
     contract.totalOwners = contract.totalOwners.plus(ONE_BI);
-    contract.save();
   }
   from.totalTokens = event.params.from.equals(Address.fromString(ZERO_ADDRESS))
     ? from.totalTokens
     : from.totalTokens.minus(ONE_BI);
   from.totalTransactions = from.totalTransactions.plus(ONE_BI);
-  from.save();
 
   let to = Owner.load(event.params.to.toHex());
   if (to === null) {
+    // Owner - TO
     to = new Owner(event.params.to.toHex());
     to.totalTokens = ZERO_BI;
     to.totalTransactions = ZERO_BI;
     to.block = event.block.number;
     to.timestamp = event.block.timestamp;
-    to.save();
 
+    // Contract
     contract.totalOwners = contract.totalOwners.plus(ONE_BI);
-    contract.save();
   }
   to.totalTokens = to.totalTokens.plus(ONE_BI);
   to.totalTransactions = to.totalTransactions.plus(ONE_BI);
-  to.save();
 
   let token = Token.load(event.params.tokenId.toString());
   if (token === null) {
+    // Token
     token = new Token(event.params.tokenId.toString());
     token.owner = to.id;
     token.burned = false;
     token.totalTransactions = ZERO_BI;
     token.block = event.block.number;
     token.timestamp = event.block.timestamp;
-    token.save();
 
+    // Contract
     contract.totalTokens = contract.totalTokens.plus(ONE_BI);
-    contract.save();
   }
   token.owner = to.id;
   token.burned = event.params.to.equals(Address.fromString(ZERO_ADDRESS));
   token.totalTransactions = token.totalTransactions.plus(ONE_BI);
-  token.save();
 
+  // Transaction
   let transaction = new Transaction(event.transaction.hash.toHex());
   transaction.from = from.id;
   transaction.to = to.id;
@@ -84,5 +81,11 @@ export function handleTransfer(event: Transfer): void {
   transaction.gasPrice = toBigDecimal(event.transaction.gasPrice, 9);
   transaction.block = event.block.number;
   transaction.timestamp = event.block.timestamp;
+
+  // Entities
+  from.save();
+  to.save();
+  token.save();
   transaction.save();
+  contract.save();
 }
