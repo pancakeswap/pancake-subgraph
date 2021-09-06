@@ -1,5 +1,5 @@
 {
-  "name": "cake-club",
+  "name": "pancake-squad",
   "description": "PancakeSwap Subgraph",
   "version": "1.0.0",
   "repository": "git@github.com:pancakeswap/pancake-subgraph.git",
@@ -8,6 +8,6 @@
   "scripts": {
     "codegen": "graph codegen subgraph.yaml",
     "build": "graph build subgraph.yaml",
-    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/cake-club subgraph.yaml"
+    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/pancake-squad subgraph.yaml"
   }
 }

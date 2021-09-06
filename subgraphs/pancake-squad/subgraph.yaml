@@ -1,5 +1,5 @@
 specVersion: 0.0.2
-description: PancakeSwap CAKE Club
+description: Pancake Squad NFT Collection
 repository: https://github.com/pancakeswap
 schema:
   file: ./schema.graphql
