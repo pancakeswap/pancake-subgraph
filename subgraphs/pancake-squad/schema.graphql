@@ -70,6 +70,9 @@ type Token @entity {
   "Burned"
   burned: Boolean!
 
+  "Creator"
+  creator: Owner!
+
   "Transactions"
   transactions: [Transaction!]! @derivedFrom(field: "token")
   "Total of Transactions"

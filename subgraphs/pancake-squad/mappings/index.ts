@@ -61,6 +61,7 @@ export function handleTransfer(event: Transfer): void {
     token = new Token(event.params.tokenId.toString());
     token.owner = to.id;
     token.burned = false;
+    token.creator = to.id;
     token.totalTransactions = ZERO_BI;
     token.block = event.block.number;
     token.timestamp = event.block.timestamp;
