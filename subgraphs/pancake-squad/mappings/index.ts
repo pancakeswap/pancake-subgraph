@@ -25,7 +25,7 @@ export function handleTransfer(event: Transfer): void {
 
   let from = Owner.load(event.params.from.toHex());
   if (from === null) {
-    // Owner - FROM
+    // Owner - as Sender
     from = new Owner(event.params.from.toHex());
     from.totalTokens = ZERO_BI;
     from.totalTransactions = ZERO_BI;
@@ -42,7 +42,7 @@ export function handleTransfer(event: Transfer): void {
 
   let to = Owner.load(event.params.to.toHex());
   if (to === null) {
-    // Owner - TO
+    // Owner - as Receiver
     to = new Owner(event.params.to.toHex());
     to.totalTokens = ZERO_BI;
     to.totalTransactions = ZERO_BI;
