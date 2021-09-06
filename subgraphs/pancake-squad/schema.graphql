@@ -43,7 +43,7 @@ type Owner @entity {
   tokens: [Token!]! @derivedFrom(field: "owner")
   "Total of Tokens"
   totalTokens: BigInt!
-  "Total of Tokens minted"
+  "Total of Tokens Minted"
   totalTokensMinted: BigInt!
 
   "Transactions (as Sender)"
@@ -55,8 +55,10 @@ type Owner @entity {
 
   "Block number"
   block: BigInt!
-  "Block timestamp"
-  timestamp: BigInt!
+  "Created timestamp"
+  createdAt: BigInt!
+  "Updated timestamp"
+  updatedAt: BigInt!
 }
 
 """
@@ -82,8 +84,10 @@ type Token @entity {
 
   "Block number"
   block: BigInt!
-  "Block timestamp"
-  timestamp: BigInt!
+  "Created timestamp"
+  createdAt: BigInt!
+  "Updated timestamp"
+  updatedAt: BigInt!
 }
 
 """

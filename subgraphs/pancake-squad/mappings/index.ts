@@ -31,7 +31,8 @@ export function handleTransfer(event: Transfer): void {
     from.totalTokensMinted = ZERO_BI;
     from.totalTransactions = ZERO_BI;
     from.block = event.block.number;
-    from.timestamp = event.block.timestamp;
+    from.createdAt = event.block.timestamp;
+    from.updatedAt = event.block.timestamp;
 
     // Contract
     contract.totalOwners = contract.totalOwners.plus(ONE_BI);
@@ -40,6 +41,7 @@ export function handleTransfer(event: Transfer): void {
     ? from.totalTokens
     : from.totalTokens.minus(ONE_BI);
   from.totalTransactions = from.totalTransactions.plus(ONE_BI);
+  from.updatedAt = event.block.timestamp;
 
   let to = Owner.load(event.params.to.toHex());
   if (to === null) {
@@ -49,13 +51,15 @@ export function handleTransfer(event: Transfer): void {
     to.totalTokensMinted = ZERO_BI;
     to.totalTransactions = ZERO_BI;
     to.block = event.block.number;
-    to.timestamp = event.block.timestamp;
+    to.createdAt = event.block.timestamp;
+    to.updatedAt = event.block.timestamp;
 
     // Contract
     contract.totalOwners = contract.totalOwners.plus(ONE_BI);
   }
   to.totalTokens = to.totalTokens.plus(ONE_BI);
   to.totalTransactions = to.totalTransactions.plus(ONE_BI);
+  to.updatedAt = event.block.timestamp;
 
   let token = Token.load(event.params.tokenId.toString());
   if (token === null) {
@@ -66,7 +70,8 @@ export function handleTransfer(event: Transfer): void {
     token.burned = false;
     token.totalTransactions = ZERO_BI;
     token.block = event.block.number;
-    token.timestamp = event.block.timestamp;
+    token.createdAt = event.block.timestamp;
+    token.updatedAt = event.block.timestamp;
 
     // Owner - as Receiver
     to.totalTokensMinted = to.totalTokensMinted.plus(ONE_BI);
@@ -77,6 +82,7 @@ export function handleTransfer(event: Transfer): void {
   token.owner = to.id;
   token.burned = event.params.to.equals(Address.fromString(ZERO_ADDRESS));
   token.totalTransactions = token.totalTransactions.plus(ONE_BI);
+  token.updatedAt = event.block.timestamp;
 
   // Transaction
   let transaction = new Transaction(event.transaction.hash.toHex());
