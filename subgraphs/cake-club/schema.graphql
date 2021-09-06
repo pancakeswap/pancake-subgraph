@@ -7,6 +7,13 @@ type _Schema_
     algorithm: rank
     include: [{ entity: "Token", fields: [{ name: "id" }] }]
   )
+  # Owner
+  @fulltext(
+    name: "ownerSearch"
+    language: en
+    algorithm: rank
+    include: [{ entity: "Owner", fields: [{ name: "id" }] }]
+  )
 
 """
 Pancake CAKE Club (contract)
