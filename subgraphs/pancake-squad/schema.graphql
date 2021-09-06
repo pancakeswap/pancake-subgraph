@@ -43,6 +43,8 @@ type Owner @entity {
   tokens: [Token!]! @derivedFrom(field: "owner")
   "Total of Tokens"
   totalTokens: BigInt!
+  "Total of Tokens minted"
+  totalTokensMinted: BigInt!
 
   "Transactions (as Sender)"
   fromTransactions: [Transaction!]! @derivedFrom(field: "from")
@@ -64,14 +66,14 @@ type Token @entity {
   "ID"
   id: ID!
 
+  "Creator"
+  creator: Owner!
+
   "Owner"
   owner: Owner!
 
   "Burned"
   burned: Boolean!
-
-  "Creator"
-  creator: Owner!
 
   "Transactions"
   transactions: [Transaction!]! @derivedFrom(field: "token")

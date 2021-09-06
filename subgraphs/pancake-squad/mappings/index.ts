@@ -28,6 +28,7 @@ export function handleTransfer(event: Transfer): void {
     // Owner - as Sender
     from = new Owner(event.params.from.toHex());
     from.totalTokens = ZERO_BI;
+    from.totalTokensMinted = ZERO_BI;
     from.totalTransactions = ZERO_BI;
     from.block = event.block.number;
     from.timestamp = event.block.timestamp;
@@ -45,6 +46,7 @@ export function handleTransfer(event: Transfer): void {
     // Owner - as Receiver
     to = new Owner(event.params.to.toHex());
     to.totalTokens = ZERO_BI;
+    to.totalTokensMinted = ZERO_BI;
     to.totalTransactions = ZERO_BI;
     to.block = event.block.number;
     to.timestamp = event.block.timestamp;
@@ -59,12 +61,15 @@ export function handleTransfer(event: Transfer): void {
   if (token === null) {
     // Token
     token = new Token(event.params.tokenId.toString());
+    token.creator = to.id;
     token.owner = to.id;
     token.burned = false;
-    token.creator = to.id;
     token.totalTransactions = ZERO_BI;
     token.block = event.block.number;
     token.timestamp = event.block.timestamp;
+
+    // Owner - as Receiver
+    to.totalTokensMinted = to.totalTokensMinted.plus(ONE_BI);
 
     // Contract
     contract.totalTokens = contract.totalTokens.plus(ONE_BI);
