@@ -55,9 +55,9 @@ type Owner @entity {
 
   "Block number"
   block: BigInt!
-  "Created timestamp"
+  "Created At"
   createdAt: BigInt!
-  "Updated timestamp"
+  "Updated At"
   updatedAt: BigInt!
 }
 
@@ -68,8 +68,8 @@ type Token @entity {
   "ID"
   id: ID!
 
-  "Creator"
-  creator: Owner!
+  "Minter"
+  minter: Owner!
 
   "Owner"
   owner: Owner!
@@ -84,9 +84,9 @@ type Token @entity {
 
   "Block number"
   block: BigInt!
-  "Created timestamp"
+  "Created At"
   createdAt: BigInt!
-  "Updated timestamp"
+  "Updated At"
   updatedAt: BigInt!
 }
 
