@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "repository": "git@github.com:pancakeswap/pancake-subgraph.git",
   "author": "PancakeSwap",
-  "license": "MIT",
+  "license": "MGPL-3.0-or-laterIT",
   "scripts": {
     "codegen": "graph codegen subgraph.yaml",
     "build": "graph build subgraph.yaml",
