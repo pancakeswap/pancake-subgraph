@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
-import { Collection, NFT, Transaction, User } from "../generated/schema";
+import { Collection, NFT, AskOrder, Transaction, User } from "../generated/schema";
 import {
   AskCancel,
   AskNew,
@@ -114,18 +114,39 @@ export function handleAskNew(event: AskNew): void {
   token.currentAskPrice = toBigDecimal(event.params.askPrice, 18);
   token.isTradable = true;
 
+  // 4. Ask Order
+  let askConcId =
+    event.params.collection.toHexString() +
+    "-" +
+    event.params.tokenId.toString() +
+    "-NEW-" +
+    event.transaction.hash.toHexString();
+
+  let order = new AskOrder(askConcId);
+  order.block = event.block.number;
+  order.timestamp = event.block.timestamp;
+  order.collection = event.params.collection.toHex();
+  order.tokenId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
+  order.orderType = "NEW";
+  order.askPrice = toBigDecimal(event.params.askPrice, 18);
+  order.seller = event.params.seller.toHex();
+
   user.save();
-  token.save();
   collection.save();
+  token.save();
+  order.save();
 }
 
 export function handleAskCancel(event: AskCancel): void {
+  // 1. User
   let user = User.load(event.params.seller.toHex());
   user.numberTokensListed = user.numberTokensListed.minus(ONE_BI);
 
+  // 2. Collection
   let collection = Collection.load(event.params.collection.toHex());
   collection.numberTokensListed = collection.numberTokensListed.minus(ONE_BI);
 
+  // 3. Token
   let tokenConcatId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
   let token = NFT.load(tokenConcatId);
 
@@ -133,18 +154,55 @@ export function handleAskCancel(event: AskCancel): void {
   token.currentAskPrice = ZERO_BD;
   token.isTradable = false;
 
+  // 4. Ask Order
+  let askConcId =
+    event.params.collection.toHexString() +
+    "-" +
+    event.params.tokenId.toString() +
+    "-CANCEL-" +
+    event.transaction.hash.toHexString();
+
+  let order = new AskOrder(askConcId);
+  order.block = event.block.number;
+  order.timestamp = event.block.timestamp;
+  order.collection = event.params.collection.toHex();
+  order.tokenId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
+  order.orderType = "CANCEL";
+  order.askPrice = toBigDecimal(ZERO_BI, 18);
+  order.seller = event.params.seller.toHex();
+
   user.save();
   collection.save();
   token.save();
+  order.save();
 }
 
 export function handleAskUpdate(event: AskUpdate): void {
+  // 1. Token
   let tokenConcatId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
   let token = NFT.load(tokenConcatId);
 
   token.currentAskPrice = toBigDecimal(event.params.askPrice, 18);
 
+  // 2. Order
+  let askConcId =
+    event.params.collection.toHexString() +
+    "-" +
+    event.params.tokenId.toString() +
+    "-MODIFY-" +
+    event.transaction.hash.toHexString();
+
+  let order = new AskOrder(askConcId);
+  order.block = event.block.number;
+  order.timestamp = event.block.timestamp;
+  order.collection = event.params.collection.toHex();
+  order.tokenId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
+  order.orderType = "MODIFY";
+  order.askPrice = toBigDecimal(event.params.askPrice, 18);
+  order.seller = event.params.seller.toHex();
+
   token.save();
+  order.save();
 }
 
 /**

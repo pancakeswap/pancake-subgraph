@@ -93,11 +93,43 @@ type User @entity {
   "Total fees collected (in BNB)" # For creator/treasury addresses
   totalFeesCollectedInBNB: BigDecimal!
 
+  "Transactions buy"
+  buyTradeHistory: [Transaction!]! @derivedFrom(field: "buyer")
+
+  "Transactions sold"
+  sellTradeHistory: [Transaction!]! @derivedFrom(field: "seller")
+
+  "Ask order history"
+  askOrderHistory: [AskOrder!]! @derivedFrom(field: "seller")
+
   "Average price of tokens purchased (in BNB)"
   averageTokenPriceInBNBPurchased: BigDecimal!
 
   "Average price of tokens sold (in BNB)"
   averageTokenPriceInBNBSold: BigDecimal!
+}
+
+type AskOrder @entity {
+  id: ID!
+
+  block: BigInt!
+
+  timestamp: BigInt!
+
+  "Collection"
+  collection: Collection!
+
+  "NFT"
+  tokenId: NFT!
+
+  "Order type: New/Modify/Cancel"
+  orderType: String!
+
+  "Ask Price (in BNB)"
+  askPrice: BigDecimal!
+
+  "Seller"
+  seller: User!
 }
 
 type Transaction @entity {
