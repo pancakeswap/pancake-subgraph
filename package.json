@@ -5,7 +5,7 @@
   "private": true,
   "repository": "git@github.com:pancakeswap/pancake-subgraph.git",
   "author": "PancakeSwap",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "workspaces": [
     "subgraphs/**/*"
   ],
