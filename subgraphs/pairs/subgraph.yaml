@@ -1,5 +1,5 @@
 specVersion: 0.0.2
-description: PancakeSwap is a decentralized protocol for automated token exchange on Binance Smart Chain.
+description: Track Pairs and Tokens on PancakeSwap (v2) protocol
 repository: https://github.com/pancakeswap
 schema:
   file: ./schema.graphql
@@ -18,17 +18,13 @@ dataSources:
       file: ./mappings/factory.ts
       entities:
         - Factory
-        - Pair
         - Token
+        - Pair
       abis:
         - name: Factory
           file: ./abis/Factory.json
         - name: ERC20
           file: ./abis/ERC20.json
-        - name: ERC20NameBytes
-          file: ./abis/ERC20NameBytes.json
-        - name: ERC20SymbolBytes
-          file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
         - event: PairCreated(indexed address,indexed address,address,uint256)
           handler: handlePairCreated
