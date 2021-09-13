@@ -2,7 +2,7 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { Factory, Pair, Token } from "../generated/schema";
 import { PairCreated } from "../generated/Factory/Factory";
-import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol } from "./utils/erc20";
+import { fetchDecimals, fetchName, fetchSymbol } from "./utils/erc20";
 
 // Constants
 let FACTORY_ADDRESS = "0xca143ce32fe78f1f7019d7d551a6402fc5350c73";
@@ -19,19 +19,14 @@ export function handlePairCreated(event: PairCreated): void {
     factory.totalPairs = ZERO_BI;
     factory.totalTokens = ZERO_BI;
   }
-  factory.totalPairs = factory.totalPairs.plus(ONE_BI);
 
   let token0 = Token.load(event.params.token0.toHex());
   if (token0 === null) {
     // Token0
     token0 = new Token(event.params.token0.toHex());
-    token0.name = fetchTokenName(event.params.token0);
-    token0.symbol = fetchTokenSymbol(event.params.token0);
-    let decimals = fetchTokenDecimals(event.params.token0);
-    if (decimals === null) {
-      return;
-    }
-    token0.decimals = decimals;
+    token0.name = fetchName(event.params.token0);
+    token0.symbol = fetchSymbol(event.params.token0);
+    token0.decimals = fetchDecimals(event.params.token0);
 
     // Factory
     factory.totalTokens = factory.totalTokens.plus(ONE_BI);
@@ -41,13 +36,9 @@ export function handlePairCreated(event: PairCreated): void {
   if (token1 === null) {
     // Token1
     token1 = new Token(event.params.token1.toHex());
-    token1.name = fetchTokenName(event.params.token1);
-    token1.symbol = fetchTokenSymbol(event.params.token1);
-    let decimals = fetchTokenDecimals(event.params.token1);
-    if (decimals === null) {
-      return;
-    }
-    token1.decimals = decimals;
+    token1.name = fetchName(event.params.token1);
+    token1.symbol = fetchSymbol(event.params.token1);
+    token1.decimals = fetchDecimals(event.params.token1);
 
     // Factory
     factory.totalTokens = factory.totalTokens.plus(ONE_BI);
@@ -61,6 +52,9 @@ export function handlePairCreated(event: PairCreated): void {
   pair.hash = event.transaction.hash;
   pair.block = event.block.number;
   pair.timestamp = event.block.timestamp;
+
+  // Factory
+  factory.totalPairs = factory.totalPairs.plus(ONE_BI);
 
   // Entities
   token0.save();

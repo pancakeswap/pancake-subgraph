@@ -47,7 +47,22 @@ type Factory @entity {
 }
 
 """
-PancakeSwap Pairs (Pancake LPs - Cake-LP)
+PancakeSwap Tokens
+"""
+type Token @entity {
+  "ID (address)"
+  id: ID!
+
+  "Name"
+  name: String!
+  "Symbol"
+  symbol: String!
+  "Decimals"
+  decimals: BigInt
+}
+
+"""
+PancakeSwap Pairs (Cake-LP)
 """
 type Pair @entity {
   "ID (address)"
@@ -67,19 +82,4 @@ type Pair @entity {
   block: BigInt!
   "Block timestamp"
   timestamp: BigInt!
-}
-
-"""
-PancakeSwap Tokens
-"""
-type Token @entity {
-  "ID (address)"
-  id: ID!
-
-  "Name"
-  name: String!
-  "Symbol"
-  symbol: String!
-  "Decimals"
-  decimals: BigInt!
 }
