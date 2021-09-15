@@ -49,6 +49,9 @@ type NFT @entity {
   "Metadata url"
   metadataUrl: String!
 
+  "Updated at"
+  updatedAt: BigInt!
+
   "Current ask price"
   currentAskPrice: BigDecimal!
 
@@ -64,8 +67,11 @@ type NFT @entity {
   "Number of unique trades"
   totalTrades: BigInt!
 
-  "Transactions"
-  transactionHistory: [Transaction!]! @derivedFrom(field: "tokenId")
+  "Transaction history"
+  transactionHistory: [Transaction!]! @derivedFrom(field: "NFT")
+
+  "Ask history"
+  askHistory: [AskOrder!]! @derivedFrom(field: "NFT")
 
   "isTradable"
   isTradable: Boolean!
@@ -120,7 +126,7 @@ type AskOrder @entity {
   collection: Collection!
 
   "NFT"
-  tokenId: NFT!
+  NFT: NFT!
 
   "Order type: New/Modify/Cancel"
   orderType: String!
@@ -143,7 +149,7 @@ type Transaction @entity {
   collection: Collection!
 
   "NFT"
-  tokenId: NFT!
+  NFT: NFT!
 
   "Ask Price (in BNB)"
   askPrice: BigDecimal!
