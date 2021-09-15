@@ -110,23 +110,17 @@ export function handleAskNew(event: AskNew): void {
     token.totalTrades = ZERO_BI;
   }
 
+  token.updatedAt = event.block.timestamp;
   token.currentSeller = event.params.seller.toHex();
   token.currentAskPrice = toBigDecimal(event.params.askPrice, 18);
   token.isTradable = true;
 
   // 4. Ask Order
-  let askConcId =
-    event.params.collection.toHexString() +
-    "-" +
-    event.params.tokenId.toString() +
-    "-NEW-" +
-    event.transaction.hash.toHexString();
-
-  let order = new AskOrder(askConcId);
+  let order = new AskOrder(event.transaction.hash.toHexString());
   order.block = event.block.number;
   order.timestamp = event.block.timestamp;
   order.collection = event.params.collection.toHex();
-  order.tokenId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
+  order.NFT = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
   order.orderType = "NEW";
   order.askPrice = toBigDecimal(event.params.askPrice, 18);
   order.seller = event.params.seller.toHex();
@@ -151,22 +145,16 @@ export function handleAskCancel(event: AskCancel): void {
   let token = NFT.load(tokenConcatId);
 
   token.currentSeller = ZERO_ADDRESS;
+  token.updatedAt = event.block.timestamp;
   token.currentAskPrice = ZERO_BD;
   token.isTradable = false;
 
   // 4. Ask Order
-  let askConcId =
-    event.params.collection.toHexString() +
-    "-" +
-    event.params.tokenId.toString() +
-    "-CANCEL-" +
-    event.transaction.hash.toHexString();
-
-  let order = new AskOrder(askConcId);
+  let order = new AskOrder(event.transaction.hash.toHexString());
   order.block = event.block.number;
   order.timestamp = event.block.timestamp;
   order.collection = event.params.collection.toHex();
-  order.tokenId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
+  order.NFT = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
   order.orderType = "CANCEL";
   order.askPrice = toBigDecimal(ZERO_BI, 18);
   order.seller = event.params.seller.toHex();
@@ -182,21 +170,15 @@ export function handleAskUpdate(event: AskUpdate): void {
   let tokenConcatId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
   let token = NFT.load(tokenConcatId);
 
+  token.updatedAt = event.block.timestamp;
   token.currentAskPrice = toBigDecimal(event.params.askPrice, 18);
 
   // 2. Order
-  let askConcId =
-    event.params.collection.toHexString() +
-    "-" +
-    event.params.tokenId.toString() +
-    "-MODIFY-" +
-    event.transaction.hash.toHexString();
-
-  let order = new AskOrder(askConcId);
+  let order = new AskOrder(event.transaction.hash.toHexString());
   order.block = event.block.number;
   order.timestamp = event.block.timestamp;
   order.collection = event.params.collection.toHex();
-  order.tokenId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
+  order.NFT = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
   order.orderType = "MODIFY";
   order.askPrice = toBigDecimal(event.params.askPrice, 18);
   order.seller = event.params.seller.toHex();
@@ -249,25 +231,19 @@ export function handleTrade(event: Trade): void {
 
   token.latestTradedPriceInBNB = toBigDecimal(event.params.askPrice, 18); // divDecimal
   token.tradeVolumeBNB = token.tradeVolumeBNB.plus(token.latestTradedPriceInBNB);
+  token.updatedAt = event.block.timestamp;
   token.totalTrades = token.totalTrades.plus(ONE_BI);
   token.currentAskPrice = ZERO_BD;
   token.currentSeller = ZERO_ADDRESS;
   token.isTradable = false;
 
   // 4. Transaction
-  let transactionConcId =
-    event.params.collection.toHexString() +
-    "-" +
-    event.params.tokenId.toString() +
-    "-" +
-    event.transaction.hash.toHexString();
-
-  let transaction = new Transaction(transactionConcId);
+  let transaction = new Transaction(event.transaction.hash.toHexString());
 
   transaction.block = event.block.number;
   transaction.timestamp = event.block.timestamp;
   transaction.collection = event.params.collection.toHex();
-  transaction.tokenId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
+  transaction.NFT = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
   transaction.askPrice = toBigDecimal(event.params.askPrice, 18);
   transaction.netPrice = toBigDecimal(event.params.netPrice, 18);
 
