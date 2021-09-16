@@ -120,7 +120,7 @@ export function handleAskNew(event: AskNew): void {
   order.block = event.block.number;
   order.timestamp = event.block.timestamp;
   order.collection = event.params.collection.toHex();
-  order.NFT = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
+  order.nft = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
   order.orderType = "NEW";
   order.askPrice = toBigDecimal(event.params.askPrice, 18);
   order.seller = event.params.seller.toHex();
@@ -154,7 +154,7 @@ export function handleAskCancel(event: AskCancel): void {
   order.block = event.block.number;
   order.timestamp = event.block.timestamp;
   order.collection = event.params.collection.toHex();
-  order.NFT = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
+  order.nft = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
   order.orderType = "CANCEL";
   order.askPrice = toBigDecimal(ZERO_BI, 18);
   order.seller = event.params.seller.toHex();
@@ -178,7 +178,7 @@ export function handleAskUpdate(event: AskUpdate): void {
   order.block = event.block.number;
   order.timestamp = event.block.timestamp;
   order.collection = event.params.collection.toHex();
-  order.NFT = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
+  order.nft = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
   order.orderType = "MODIFY";
   order.askPrice = toBigDecimal(event.params.askPrice, 18);
   order.seller = event.params.seller.toHex();
@@ -229,7 +229,7 @@ export function handleTrade(event: Trade): void {
   let tokenConcatId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
   let token = NFT.load(tokenConcatId);
 
-  token.latestTradedPriceInBNB = toBigDecimal(event.params.askPrice, 18); // divDecimal
+  token.latestTradedPriceInBNB = toBigDecimal(event.params.askPrice, 18);
   token.tradeVolumeBNB = token.tradeVolumeBNB.plus(token.latestTradedPriceInBNB);
   token.updatedAt = event.block.timestamp;
   token.totalTrades = token.totalTrades.plus(ONE_BI);
@@ -243,7 +243,7 @@ export function handleTrade(event: Trade): void {
   transaction.block = event.block.number;
   transaction.timestamp = event.block.timestamp;
   transaction.collection = event.params.collection.toHex();
-  transaction.NFT = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
+  transaction.nft = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
   transaction.askPrice = toBigDecimal(event.params.askPrice, 18);
   transaction.netPrice = toBigDecimal(event.params.netPrice, 18);
 

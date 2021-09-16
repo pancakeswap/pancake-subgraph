@@ -21,7 +21,7 @@ type Collection @entity {
   numberTokensListed: BigInt!
 
   "Array of NFTs"
-  NFTs: [NFT!]! @derivedFrom(field: "collection")
+  nfts: [NFT!]! @derivedFrom(field: "collection")
 
   "Creator address"
   creatorAddress: String!
@@ -68,10 +68,10 @@ type NFT @entity {
   totalTrades: BigInt!
 
   "Transaction history"
-  transactionHistory: [Transaction!]! @derivedFrom(field: "NFT")
+  transactionHistory: [Transaction!]! @derivedFrom(field: "nft")
 
   "Ask history"
-  askHistory: [AskOrder!]! @derivedFrom(field: "NFT")
+  askHistory: [AskOrder!]! @derivedFrom(field: "nft")
 
   "isTradable"
   isTradable: Boolean!
@@ -126,7 +126,7 @@ type AskOrder @entity {
   collection: Collection!
 
   "NFT"
-  NFT: NFT!
+  nft: NFT!
 
   "Order type: New/Modify/Cancel"
   orderType: String!
@@ -149,7 +149,7 @@ type Transaction @entity {
   collection: Collection!
 
   "NFT"
-  NFT: NFT!
+  nft: NFT!
 
   "Ask Price (in BNB)"
   askPrice: BigDecimal!
