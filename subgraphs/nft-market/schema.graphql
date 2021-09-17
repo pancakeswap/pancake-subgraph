@@ -20,6 +20,9 @@ type Collection @entity {
   "Number tokens listed"
   numberTokensListed: BigInt!
 
+  "Day history"
+  dayData: [CollectionDayData!]! @derivedFrom(field: "collection")
+
   "Array of NFTs"
   nfts: [NFT!]! @derivedFrom(field: "collection")
 
@@ -165,4 +168,31 @@ type Transaction @entity {
 
   "Whether the buyer used BNB"
   withBNB: Boolean!
+}
+
+type CollectionDayData @entity {
+  id: ID!
+
+  date: Int!
+
+  "Collection"
+  collection: Collection!
+
+  "Daily volume (in BNB)"
+  dailyVolumeBNB: BigDecimal!
+
+  "Daily unique trades"
+  dailyTrades: BigInt!
+}
+
+type MarketPlaceDayData @entity {
+  id: ID!
+
+  date: Int!
+
+  "Daily volume (in BNB)"
+  dailyVolumeBNB: BigDecimal!
+
+  "Daily unique trades"
+  dailyTrades: BigInt!
 }

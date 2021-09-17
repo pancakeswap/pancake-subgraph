@@ -13,6 +13,7 @@ import {
 } from "../generated/ERC721NFTMarketV1/ERC721NFTMarketV1";
 
 import { toBigDecimal } from "./utils";
+import { updateCollectionDayData, updateMarketPlaceDayData } from "./utils/dayUpdates";
 import { fetchCollectionName, fetchCollectionSymbol, fetchTokenURI } from "./utils/ERC721";
 
 // BigNumber-like references
@@ -256,6 +257,10 @@ export function handleTrade(event: Trade): void {
   buyer.save();
   seller.save();
   token.save();
+
+  // 5. Update day data for collection and marketplace
+  updateCollectionDayData(event.params.collection, toBigDecimal(event.params.askPrice, 18), event);
+  updateMarketPlaceDayData(toBigDecimal(event.params.askPrice, 18), event);
 }
 
 /**
