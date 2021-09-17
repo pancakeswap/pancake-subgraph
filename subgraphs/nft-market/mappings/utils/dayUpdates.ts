@@ -5,11 +5,7 @@ import { Address, BigInt, BigDecimal, ethereum } from "@graphprotocol/graph-ts";
 // BigNumber-like references
 let ONE_BI = BigInt.fromI32(1);
 
-export function updateCollectionDayData(
-  collection: Address,
-  newVolumeinBNB: BigDecimal,
-  event: ethereum.Event
-): CollectionDayData {
+export function updateCollectionDayData(collection: Address, newVolumeinBNB: BigDecimal, event: ethereum.Event): void {
   let timestamp = event.block.timestamp.toI32();
   let dayID = timestamp / 86400;
   let dayStartTimestamp = dayID * 86400;
@@ -18,7 +14,7 @@ export function updateCollectionDayData(
 
   let collectionDayData = CollectionDayData.load(ID.toString());
 
-  if (collectionDayData === null) {
+  if (collectionDayData == null) {
     collectionDayData = new CollectionDayData(ID.toString());
     collectionDayData.date = dayStartTimestamp;
     collectionDayData.collection = collection.toHexString();
@@ -30,17 +26,16 @@ export function updateCollectionDayData(
   }
 
   collectionDayData.save();
-  return collectionDayData as CollectionDayData;
 }
 
-export function updateMarketPlaceDayData(newVolumeinBNB: BigDecimal, event: ethereum.Event): MarketPlaceDayData {
+export function updateMarketPlaceDayData(newVolumeinBNB: BigDecimal, event: ethereum.Event): void {
   let timestamp = event.block.timestamp.toI32();
   let dayID = timestamp / 86400;
   let dayStartTimestamp = dayID * 86400;
 
   let marketPlaceDayData = MarketPlaceDayData.load(dayID.toString());
 
-  if (marketPlaceDayData === null) {
+  if (marketPlaceDayData == null) {
     marketPlaceDayData = new MarketPlaceDayData(dayID.toString());
     marketPlaceDayData.date = dayStartTimestamp;
     marketPlaceDayData.dailyVolumeBNB = newVolumeinBNB;
@@ -51,5 +46,4 @@ export function updateMarketPlaceDayData(newVolumeinBNB: BigDecimal, event: ethe
   }
 
   marketPlaceDayData.save();
-  return marketPlaceDayData as MarketPlaceDayData;
 }

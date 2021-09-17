@@ -123,6 +123,7 @@ type AskOrder @entity {
 
   block: BigInt!
 
+  "Timestamp"
   timestamp: BigInt!
 
   "Collection"
@@ -146,6 +147,7 @@ type Transaction @entity {
 
   block: BigInt!
 
+  "Timestamp"
   timestamp: BigInt!
 
   "Collection"
@@ -173,6 +175,7 @@ type Transaction @entity {
 type CollectionDayData @entity {
   id: ID!
 
+  "Start date (timestamp)"
   date: Int!
 
   "Collection"
@@ -188,6 +191,7 @@ type CollectionDayData @entity {
 type MarketPlaceDayData @entity {
   id: ID!
 
+  "Start date (timestamp)"
   date: Int!
 
   "Daily volume (in BNB)"
