@@ -46,9 +46,9 @@ type Owner @entity {
   "Total of Tokens Minted"
   totalTokensMinted: BigInt!
 
-  "Transactions (as Sender)"
+  "List of Transactions (as Sender)"
   fromTransactions: [Transaction!]! @derivedFrom(field: "from")
-  "Transactions (as Receiver)"
+  "List of Transactions (as Receiver)"
   toTransactions: [Transaction!]! @derivedFrom(field: "to")
   "Total of Transactions"
   totalTransactions: BigInt!
@@ -77,7 +77,7 @@ type Token @entity {
   "Burned"
   burned: Boolean!
 
-  "Transactions"
+  "List of Transactions"
   transactions: [Transaction!]! @derivedFrom(field: "token")
   "Total of Transactions"
   totalTransactions: BigInt!
@@ -104,6 +104,7 @@ type Transaction @entity {
   from: Owner!
   "Receiver"
   to: Owner!
+
   "Token"
   token: Token!
 

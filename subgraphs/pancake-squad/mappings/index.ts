@@ -20,8 +20,10 @@ export function handleTransfer(event: Transfer): void {
     contract.totalTokens = ZERO_BI;
     contract.totalOwners = ZERO_BI;
     contract.totalTransactions = ZERO_BI;
+    contract.save();
   }
   contract.totalTransactions = contract.totalTransactions.plus(ONE_BI);
+  contract.save();
 
   let from = Owner.load(event.params.from.toHex());
   if (from === null) {
@@ -33,15 +35,18 @@ export function handleTransfer(event: Transfer): void {
     from.block = event.block.number;
     from.createdAt = event.block.timestamp;
     from.updatedAt = event.block.timestamp;
+    from.save();
 
     // Contract
     contract.totalOwners = contract.totalOwners.plus(ONE_BI);
+    contract.save();
   }
   from.totalTokens = event.params.from.equals(Address.fromString(ZERO_ADDRESS))
     ? from.totalTokens
     : from.totalTokens.minus(ONE_BI);
   from.totalTransactions = from.totalTransactions.plus(ONE_BI);
   from.updatedAt = event.block.timestamp;
+  from.save();
 
   let to = Owner.load(event.params.to.toHex());
   if (to === null) {
@@ -53,13 +58,16 @@ export function handleTransfer(event: Transfer): void {
     to.block = event.block.number;
     to.createdAt = event.block.timestamp;
     to.updatedAt = event.block.timestamp;
+    to.save();
 
     // Contract
     contract.totalOwners = contract.totalOwners.plus(ONE_BI);
+    contract.save();
   }
   to.totalTokens = to.totalTokens.plus(ONE_BI);
   to.totalTransactions = to.totalTransactions.plus(ONE_BI);
   to.updatedAt = event.block.timestamp;
+  to.save();
 
   let token = Token.load(event.params.tokenId.toString());
   if (token === null) {
@@ -72,17 +80,21 @@ export function handleTransfer(event: Transfer): void {
     token.block = event.block.number;
     token.createdAt = event.block.timestamp;
     token.updatedAt = event.block.timestamp;
+    token.save();
 
     // Owner - as Receiver
     to.totalTokensMinted = to.totalTokensMinted.plus(ONE_BI);
+    to.save();
 
     // Contract
     contract.totalTokens = contract.totalTokens.plus(ONE_BI);
+    contract.save();
   }
   token.owner = to.id;
   token.burned = event.params.to.equals(Address.fromString(ZERO_ADDRESS));
   token.totalTransactions = token.totalTransactions.plus(ONE_BI);
   token.updatedAt = event.block.timestamp;
+  token.save();
 
   // Transaction
   let transaction = new Transaction(event.transaction.hash.toHex());
@@ -94,11 +106,5 @@ export function handleTransfer(event: Transfer): void {
   transaction.gasPrice = toBigDecimal(event.transaction.gasPrice, 9);
   transaction.block = event.block.number;
   transaction.timestamp = event.block.timestamp;
-
-  // Entities
-  from.save();
-  to.save();
-  token.save();
   transaction.save();
-  contract.save();
 }
