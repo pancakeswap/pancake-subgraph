@@ -3,6 +3,7 @@ import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { Contract, Owner, Token, Transaction } from "../generated/schema";
 import { Transfer } from "../generated/ERC721/ERC721";
 import { toBigDecimal } from "./utils";
+import { fetchName, fetchSymbol, fetchTokenUri } from "./utils/erc-721";
 
 // Constants
 let CONTRACT_ADDRESS = "0x0000000000000000000000000000000000001000";
@@ -17,6 +18,8 @@ export function handleTransfer(event: Transfer): void {
   if (contract === null) {
     // Contract
     contract = new Contract(CONTRACT_ADDRESS);
+    contract.name = fetchName();
+    contract.symbol = fetchSymbol();
     contract.totalTokens = ZERO_BI;
     contract.totalOwners = ZERO_BI;
     contract.totalTransactions = ZERO_BI;
@@ -76,6 +79,7 @@ export function handleTransfer(event: Transfer): void {
     token.minter = to.id;
     token.owner = to.id;
     token.burned = false;
+    token.uri = fetchTokenUri(event.params.tokenId);
     token.totalTransactions = ZERO_BI;
     token.block = event.block.number;
     token.createdAt = event.block.timestamp;

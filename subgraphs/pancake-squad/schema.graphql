@@ -22,6 +22,12 @@ type Contract @entity {
   "ID (address)"
   id: ID!
 
+  "Name"
+  name: String!
+
+  "Symbol"
+  symbol: String!
+
   "Total of Tokens"
   totalTokens: BigInt!
 
@@ -76,6 +82,9 @@ type Token @entity {
 
   "Burned"
   burned: Boolean!
+
+  "URI"
+  uri: String
 
   "List of Transactions"
   transactions: [Transaction!]! @derivedFrom(field: "token")
