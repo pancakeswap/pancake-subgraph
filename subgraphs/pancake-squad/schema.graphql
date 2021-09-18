@@ -97,6 +97,9 @@ type Transaction @entity {
   "ID (hash)"
   id: ID!
 
+  "Hash"
+  hash: Bytes!
+
   "Sender"
   from: Owner!
   "Receiver"

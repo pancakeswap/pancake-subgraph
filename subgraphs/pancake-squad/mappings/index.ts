@@ -86,6 +86,7 @@ export function handleTransfer(event: Transfer): void {
 
   // Transaction
   let transaction = new Transaction(event.transaction.hash.toHex());
+  transaction.hash = event.transaction.hash;
   transaction.from = from.id;
   transaction.to = to.id;
   transaction.token = token.id;
