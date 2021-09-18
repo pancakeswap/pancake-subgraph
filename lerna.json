@@ -3,6 +3,6 @@
   "packages": [
     "subgraphs/**/*"
   ],
-  "version": "independent",
-  "useWorkspaces": true
+  "useWorkspaces": true,
+  "version": "independent"
 }
