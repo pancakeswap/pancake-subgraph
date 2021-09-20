@@ -93,7 +93,6 @@ export function handleAskNew(event: AskNew): void {
 
   // 2. Collection
   let collection = Collection.load(event.params.collection.toHex());
-
   collection.numberTokensListed = collection.numberTokensListed.plus(ONE_BI);
 
   // 3. Token
@@ -133,37 +132,38 @@ export function handleAskNew(event: AskNew): void {
 }
 
 export function handleAskCancel(event: AskCancel): void {
-  // 1. User
   let user = User.load(event.params.seller.toHex());
-  user.numberTokensListed = user.numberTokensListed.minus(ONE_BI);
+  if (user !== null) {
+    user.numberTokensListed = user.numberTokensListed.minus(ONE_BI);
+    user.save();
+  }
 
-  // 2. Collection
   let collection = Collection.load(event.params.collection.toHex());
-  collection.numberTokensListed = collection.numberTokensListed.minus(ONE_BI);
+  if (collection != null) {
+    collection.numberTokensListed = collection.numberTokensListed.minus(ONE_BI);
+    collection.save();
+  }
 
-  // 3. Token
-  let tokenConcatId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
-  let token = NFT.load(tokenConcatId);
+  let token = NFT.load(event.params.collection.toHex() + "-" + event.params.tokenId.toString());
+  if (token !== null) {
+    token.currentSeller = ZERO_ADDRESS;
+    token.updatedAt = event.block.timestamp;
+    token.currentAskPrice = ZERO_BD;
+    token.isTradable = false;
+    token.save();
+  }
 
-  token.currentSeller = ZERO_ADDRESS;
-  token.updatedAt = event.block.timestamp;
-  token.currentAskPrice = ZERO_BD;
-  token.isTradable = false;
-
-  // 4. Ask Order
-  let order = new AskOrder(event.transaction.hash.toHexString());
-  order.block = event.block.number;
-  order.timestamp = event.block.timestamp;
-  order.collection = event.params.collection.toHex();
-  order.nft = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
-  order.orderType = "Cancel";
-  order.askPrice = toBigDecimal(ZERO_BI, 18);
-  order.seller = event.params.seller.toHex();
-
-  user.save();
-  collection.save();
-  token.save();
-  order.save();
+  if (token !== null && collection !== null) {
+    let order = new AskOrder(event.transaction.hash.toHex());
+    order.block = event.block.number;
+    order.timestamp = event.block.timestamp;
+    order.collection = ZERO_ADDRESS;
+    order.nft = ZERO_ADDRESS;
+    order.orderType = "Cancel";
+    order.askPrice = toBigDecimal(ZERO_BI, 18);
+    order.seller = event.params.seller.toHex();
+    order.save();
+  }
 }
 
 export function handleAskUpdate(event: AskUpdate): void {
