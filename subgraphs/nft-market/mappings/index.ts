@@ -24,7 +24,7 @@ let ONE_BI = BigInt.fromI32(1);
 let ZERO_BD = BigDecimal.fromString("0");
 
 /**
- * COLLECTION
+ * COLLECTION(S)
  */
 
 export function handleCollectionNew(event: CollectionNew): void {
@@ -37,18 +37,16 @@ export function handleCollectionNew(event: CollectionNew): void {
     collection.totalTrades = ZERO_BI;
     collection.totalVolumeBNB = ZERO_BD;
     collection.numberTokensListed = ZERO_BI;
-    collection.creatorAddress = event.params.creator.toHex();
+    collection.creatorAddress = event.params.creator;
     collection.tradingFee = toBigDecimal(event.params.tradingFee, 2);
     collection.creatorFee = toBigDecimal(event.params.creatorFee, 2);
-    collection.whitelistChecker = event.params.whitelistChecker.toHex();
-  } else {
-    // Collection has existed, was closed, but is re-listed
-    collection.active = true;
-    collection.creatorAddress = event.params.creator.toHex();
-    collection.tradingFee = toBigDecimal(event.params.tradingFee, 2);
-    collection.creatorFee = toBigDecimal(event.params.creatorFee, 2);
-    collection.whitelistChecker = event.params.whitelistChecker.toHex();
+    collection.whitelistChecker = event.params.whitelistChecker;
   }
+  collection.active = true;
+  collection.creatorAddress = event.params.creator;
+  collection.tradingFee = toBigDecimal(event.params.tradingFee, 2);
+  collection.creatorFee = toBigDecimal(event.params.creatorFee, 2);
+  collection.whitelistChecker = event.params.whitelistChecker;
   collection.save();
 }
 
@@ -63,10 +61,10 @@ export function handleCollectionClose(event: CollectionClose): void {
 export function handleCollectionUpdate(event: CollectionUpdate): void {
   let collection = Collection.load(event.params.collection.toHex());
   if (collection !== null) {
-    collection.creatorAddress = event.params.creator.toHex();
+    collection.creatorAddress = event.params.creator;
     collection.tradingFee = toBigDecimal(event.params.tradingFee, 2);
     collection.creatorFee = toBigDecimal(event.params.creatorFee, 2);
-    collection.whitelistChecker = event.params.whitelistChecker.toHex();
+    collection.whitelistChecker = event.params.whitelistChecker;
     collection.save();
   }
 }
