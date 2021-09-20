@@ -11,16 +11,17 @@ import {
   RevenueClaim,
   Trade,
 } from "../generated/ERC721NFTMarketV1/ERC721NFTMarketV1";
-
 import { toBigDecimal } from "./utils";
 import { updateCollectionDayData, updateMarketPlaceDayData } from "./utils/dayUpdates";
-import { fetchCollectionName, fetchCollectionSymbol, fetchTokenURI } from "./utils/ERC721";
+import { fetchName, fetchSymbol, fetchTokenURI } from "./utils/erc721";
+
+// Constants
+let ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 // BigNumber-like references
 let ZERO_BI = BigInt.fromI32(0);
 let ONE_BI = BigInt.fromI32(1);
 let ZERO_BD = BigDecimal.fromString("0");
-let ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 /**
  * COLLECTION
@@ -30,8 +31,8 @@ export function handleCollectionNew(event: CollectionNew): void {
   let collection = Collection.load(event.params.collection.toHex());
   if (collection == null) {
     collection = new Collection(event.params.collection.toHex());
-    collection.name = fetchCollectionName(event.params.collection);
-    collection.symbol = fetchCollectionSymbol(event.params.collection);
+    collection.name = fetchName(event.params.collection);
+    collection.symbol = fetchSymbol(event.params.collection);
     collection.active = true;
     collection.totalTrades = ZERO_BI;
     collection.totalVolumeBNB = ZERO_BD;

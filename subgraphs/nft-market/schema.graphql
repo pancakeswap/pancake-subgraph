@@ -50,7 +50,7 @@ type NFT @entity {
   collection: Collection!
 
   "Metadata url"
-  metadataUrl: String!
+  metadataUrl: String
 
   "Updated at"
   updatedAt: BigInt!
