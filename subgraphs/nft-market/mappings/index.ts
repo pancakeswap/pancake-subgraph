@@ -41,6 +41,7 @@ export function handleCollectionNew(event: CollectionNew): void {
     collection.tradingFee = toBigDecimal(event.params.tradingFee, 2);
     collection.creatorFee = toBigDecimal(event.params.creatorFee, 2);
     collection.whitelistChecker = event.params.whitelistChecker;
+    collection.save();
   }
   collection.active = true;
   collection.creatorAddress = event.params.creator;
@@ -262,25 +263,23 @@ export function handleTrade(event: Trade): void {
 }
 
 /**
- * REVENUE CLAIMS BY CREATOR/TREASURY
+ * ROYALTIES
  */
 
 export function handleRevenueClaim(event: RevenueClaim): void {
   let user = User.load(event.params.claimer.toHex());
-
-  if (user == null) {
+  if (user === null) {
     user = new User(event.params.claimer.toHex());
     user.numberTokensListed = ZERO_BI;
     user.numberTokensPurchased = ZERO_BI;
     user.numberTokensSold = ZERO_BI;
     user.totalVolumeInBNBTokensPurchased = ZERO_BD;
     user.totalVolumeInBNBTokensSold = ZERO_BD;
-    user.totalFeesCollectedInBNB = toBigDecimal(event.params.amount, 18);
+    user.totalFeesCollectedInBNB = ZERO_BD;
     user.averageTokenPriceInBNBPurchased = ZERO_BD;
     user.averageTokenPriceInBNBSold = ZERO_BD;
-  } else {
-    user.totalFeesCollectedInBNB = user.totalFeesCollectedInBNB.plus(toBigDecimal(event.params.amount, 18));
+    user.save();
   }
-
+  user.totalFeesCollectedInBNB = user.totalFeesCollectedInBNB.plus(toBigDecimal(event.params.amount, 18));
   user.save();
 }
