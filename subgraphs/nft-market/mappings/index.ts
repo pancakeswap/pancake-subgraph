@@ -122,7 +122,7 @@ export function handleAskNew(event: AskNew): void {
   order.timestamp = event.block.timestamp;
   order.collection = event.params.collection.toHex();
   order.nft = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
-  order.orderType = "NEW";
+  order.orderType = "New";
   order.askPrice = toBigDecimal(event.params.askPrice, 18);
   order.seller = event.params.seller.toHex();
 
@@ -156,7 +156,7 @@ export function handleAskCancel(event: AskCancel): void {
   order.timestamp = event.block.timestamp;
   order.collection = event.params.collection.toHex();
   order.nft = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
-  order.orderType = "CANCEL";
+  order.orderType = "Cancel";
   order.askPrice = toBigDecimal(ZERO_BI, 18);
   order.seller = event.params.seller.toHex();
 
@@ -167,25 +167,22 @@ export function handleAskCancel(event: AskCancel): void {
 }
 
 export function handleAskUpdate(event: AskUpdate): void {
-  // 1. Token
-  let tokenConcatId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
-  let token = NFT.load(tokenConcatId);
+  let token = NFT.load(event.params.collection.toHex() + "-" + event.params.tokenId.toString());
+  if (token !== null) {
+    token.updatedAt = event.block.timestamp;
+    token.currentAskPrice = toBigDecimal(event.params.askPrice, 18);
+    token.save();
 
-  token.updatedAt = event.block.timestamp;
-  token.currentAskPrice = toBigDecimal(event.params.askPrice, 18);
-
-  // 2. Order
-  let order = new AskOrder(event.transaction.hash.toHexString());
-  order.block = event.block.number;
-  order.timestamp = event.block.timestamp;
-  order.collection = event.params.collection.toHex();
-  order.nft = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
-  order.orderType = "MODIFY";
-  order.askPrice = toBigDecimal(event.params.askPrice, 18);
-  order.seller = event.params.seller.toHex();
-
-  token.save();
-  order.save();
+    let order = new AskOrder(event.transaction.hash.toHex());
+    order.block = event.block.number;
+    order.timestamp = event.block.timestamp;
+    order.collection = token.collection;
+    order.nft = event.params.collection.toHex() + "-" + event.params.tokenId.toString();
+    order.orderType = "Modify";
+    order.askPrice = toBigDecimal(event.params.askPrice, 18);
+    order.seller = event.params.seller.toHex();
+    order.save();
+  }
 }
 
 /**

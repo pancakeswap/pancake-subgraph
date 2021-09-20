@@ -1,3 +1,9 @@
+enum OrderType {
+  New
+  Modify
+  Cancel
+}
+
 type Collection @entity {
   "ID (address)"
   id: ID!
@@ -132,8 +138,8 @@ type AskOrder @entity {
   "NFT"
   nft: NFT!
 
-  "Order type: New/Modify/Cancel"
-  orderType: String!
+  "Order type"
+  orderType: OrderType!
 
   "Ask Price (in BNB)"
   askPrice: BigDecimal!
