@@ -27,6 +27,8 @@ dataSources:
           file: ./abis/ERC721NFTMarketV1.json
         - name: IERC721
           file: ./abis/IERC721.json
+        - name: PancakeBunnies
+          file: ./abis/PancakeBunnies.json
       eventHandlers:
         - event: AskCancel(indexed address,indexed address,indexed uint256)
           handler: handleAskCancel
