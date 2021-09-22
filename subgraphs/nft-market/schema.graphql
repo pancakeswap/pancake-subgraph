@@ -52,6 +52,9 @@ type NFT @entity {
   "tokenId"
   tokenId: BigInt!
 
+  "otherId"
+  otherId: BigInt
+
   "Collection address"
   collection: Collection!
 
