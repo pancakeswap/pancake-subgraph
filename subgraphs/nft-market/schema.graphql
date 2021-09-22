@@ -1,5 +1,11 @@
+enum OrderType {
+  New
+  Modify
+  Cancel
+}
+
 type Collection @entity {
-  "Contract address"
+  "ID (address)"
   id: ID!
 
   "Name"
@@ -11,7 +17,7 @@ type Collection @entity {
   "Is active"
   active: Boolean!
 
-  "Number of unique trades"
+  "Total of Trades"
   totalTrades: BigInt!
 
   "Total volume of collection traded (in BNB)"
@@ -20,14 +26,11 @@ type Collection @entity {
   "Number tokens listed"
   numberTokensListed: BigInt!
 
-  "Day history"
-  dayData: [CollectionDayData!]! @derivedFrom(field: "collection")
-
-  "Array of NFTs"
+  "List of NFTs"
   nfts: [NFT!]! @derivedFrom(field: "collection")
 
   "Creator address"
-  creatorAddress: String!
+  creatorAddress: Bytes!
 
   "Trading fee"
   tradingFee: BigDecimal!
@@ -36,7 +39,10 @@ type Collection @entity {
   creatorFee: BigDecimal!
 
   "Whitelist checker"
-  whitelistChecker: String!
+  whitelistChecker: Bytes!
+
+  "Day history"
+  dayData: [CollectionDayData!]! @derivedFrom(field: "collection")
 }
 
 type NFT @entity {
@@ -50,7 +56,7 @@ type NFT @entity {
   collection: Collection!
 
   "Metadata url"
-  metadataUrl: String!
+  metadataUrl: String
 
   "Updated at"
   updatedAt: BigInt!
@@ -132,8 +138,8 @@ type AskOrder @entity {
   "NFT"
   nft: NFT!
 
-  "Order type: New/Modify/Cancel"
-  orderType: String!
+  "Order type"
+  orderType: OrderType!
 
   "Ask Price (in BNB)"
   askPrice: BigDecimal!

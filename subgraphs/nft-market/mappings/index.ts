@@ -11,43 +11,43 @@ import {
   RevenueClaim,
   Trade,
 } from "../generated/ERC721NFTMarketV1/ERC721NFTMarketV1";
-
 import { toBigDecimal } from "./utils";
 import { updateCollectionDayData, updateMarketPlaceDayData } from "./utils/dayUpdates";
-import { fetchCollectionName, fetchCollectionSymbol, fetchTokenURI } from "./utils/ERC721";
+import { fetchName, fetchSymbol, fetchTokenURI } from "./utils/erc721";
+
+// Constants
+let ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 // BigNumber-like references
 let ZERO_BI = BigInt.fromI32(0);
 let ONE_BI = BigInt.fromI32(1);
 let ZERO_BD = BigDecimal.fromString("0");
-let ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 /**
- * COLLECTION
+ * COLLECTION(S)
  */
 
 export function handleCollectionNew(event: CollectionNew): void {
   let collection = Collection.load(event.params.collection.toHex());
   if (collection == null) {
     collection = new Collection(event.params.collection.toHex());
-    collection.name = fetchCollectionName(event.params.collection);
-    collection.symbol = fetchCollectionSymbol(event.params.collection);
+    collection.name = fetchName(event.params.collection);
+    collection.symbol = fetchSymbol(event.params.collection);
     collection.active = true;
     collection.totalTrades = ZERO_BI;
     collection.totalVolumeBNB = ZERO_BD;
     collection.numberTokensListed = ZERO_BI;
-    collection.creatorAddress = event.params.creator.toHex();
+    collection.creatorAddress = event.params.creator;
     collection.tradingFee = toBigDecimal(event.params.tradingFee, 2);
     collection.creatorFee = toBigDecimal(event.params.creatorFee, 2);
-    collection.whitelistChecker = event.params.whitelistChecker.toHex();
-  } else {
-    // Collection has existed, was closed, but is re-listed
-    collection.active = true;
-    collection.creatorAddress = event.params.creator.toHex();
-    collection.tradingFee = toBigDecimal(event.params.tradingFee, 2);
-    collection.creatorFee = toBigDecimal(event.params.creatorFee, 2);
-    collection.whitelistChecker = event.params.whitelistChecker.toHex();
+    collection.whitelistChecker = event.params.whitelistChecker;
+    collection.save();
   }
+  collection.active = true;
+  collection.creatorAddress = event.params.creator;
+  collection.tradingFee = toBigDecimal(event.params.tradingFee, 2);
+  collection.creatorFee = toBigDecimal(event.params.creatorFee, 2);
+  collection.whitelistChecker = event.params.whitelistChecker;
   collection.save();
 }
 
@@ -62,10 +62,10 @@ export function handleCollectionClose(event: CollectionClose): void {
 export function handleCollectionUpdate(event: CollectionUpdate): void {
   let collection = Collection.load(event.params.collection.toHex());
   if (collection !== null) {
-    collection.creatorAddress = event.params.creator.toHex();
+    collection.creatorAddress = event.params.creator;
     collection.tradingFee = toBigDecimal(event.params.tradingFee, 2);
     collection.creatorFee = toBigDecimal(event.params.creatorFee, 2);
-    collection.whitelistChecker = event.params.whitelistChecker.toHex();
+    collection.whitelistChecker = event.params.whitelistChecker;
     collection.save();
   }
 }
@@ -93,7 +93,6 @@ export function handleAskNew(event: AskNew): void {
 
   // 2. Collection
   let collection = Collection.load(event.params.collection.toHex());
-
   collection.numberTokensListed = collection.numberTokensListed.plus(ONE_BI);
 
   // 3. Token
@@ -122,7 +121,7 @@ export function handleAskNew(event: AskNew): void {
   order.timestamp = event.block.timestamp;
   order.collection = event.params.collection.toHex();
   order.nft = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
-  order.orderType = "NEW";
+  order.orderType = "New";
   order.askPrice = toBigDecimal(event.params.askPrice, 18);
   order.seller = event.params.seller.toHex();
 
@@ -133,59 +132,57 @@ export function handleAskNew(event: AskNew): void {
 }
 
 export function handleAskCancel(event: AskCancel): void {
-  // 1. User
   let user = User.load(event.params.seller.toHex());
-  user.numberTokensListed = user.numberTokensListed.minus(ONE_BI);
+  if (user !== null) {
+    user.numberTokensListed = user.numberTokensListed.minus(ONE_BI);
+    user.save();
+  }
 
-  // 2. Collection
   let collection = Collection.load(event.params.collection.toHex());
-  collection.numberTokensListed = collection.numberTokensListed.minus(ONE_BI);
+  if (collection != null) {
+    collection.numberTokensListed = collection.numberTokensListed.minus(ONE_BI);
+    collection.save();
+  }
 
-  // 3. Token
-  let tokenConcatId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
-  let token = NFT.load(tokenConcatId);
+  let token = NFT.load(event.params.collection.toHex() + "-" + event.params.tokenId.toString());
+  if (token !== null) {
+    token.currentSeller = ZERO_ADDRESS;
+    token.updatedAt = event.block.timestamp;
+    token.currentAskPrice = ZERO_BD;
+    token.isTradable = false;
+    token.save();
+  }
 
-  token.currentSeller = ZERO_ADDRESS;
-  token.updatedAt = event.block.timestamp;
-  token.currentAskPrice = ZERO_BD;
-  token.isTradable = false;
-
-  // 4. Ask Order
-  let order = new AskOrder(event.transaction.hash.toHexString());
-  order.block = event.block.number;
-  order.timestamp = event.block.timestamp;
-  order.collection = event.params.collection.toHex();
-  order.nft = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
-  order.orderType = "CANCEL";
-  order.askPrice = toBigDecimal(ZERO_BI, 18);
-  order.seller = event.params.seller.toHex();
-
-  user.save();
-  collection.save();
-  token.save();
-  order.save();
+  if (token !== null && collection !== null) {
+    let order = new AskOrder(event.transaction.hash.toHex());
+    order.block = event.block.number;
+    order.timestamp = event.block.timestamp;
+    order.collection = ZERO_ADDRESS;
+    order.nft = ZERO_ADDRESS;
+    order.orderType = "Cancel";
+    order.askPrice = toBigDecimal(ZERO_BI, 18);
+    order.seller = event.params.seller.toHex();
+    order.save();
+  }
 }
 
 export function handleAskUpdate(event: AskUpdate): void {
-  // 1. Token
-  let tokenConcatId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
-  let token = NFT.load(tokenConcatId);
+  let token = NFT.load(event.params.collection.toHex() + "-" + event.params.tokenId.toString());
+  if (token !== null) {
+    token.updatedAt = event.block.timestamp;
+    token.currentAskPrice = toBigDecimal(event.params.askPrice, 18);
+    token.save();
 
-  token.updatedAt = event.block.timestamp;
-  token.currentAskPrice = toBigDecimal(event.params.askPrice, 18);
-
-  // 2. Order
-  let order = new AskOrder(event.transaction.hash.toHexString());
-  order.block = event.block.number;
-  order.timestamp = event.block.timestamp;
-  order.collection = event.params.collection.toHex();
-  order.nft = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
-  order.orderType = "MODIFY";
-  order.askPrice = toBigDecimal(event.params.askPrice, 18);
-  order.seller = event.params.seller.toHex();
-
-  token.save();
-  order.save();
+    let order = new AskOrder(event.transaction.hash.toHex());
+    order.block = event.block.number;
+    order.timestamp = event.block.timestamp;
+    order.collection = token.collection;
+    order.nft = event.params.collection.toHex() + "-" + event.params.tokenId.toString();
+    order.orderType = "Modify";
+    order.askPrice = toBigDecimal(event.params.askPrice, 18);
+    order.seller = event.params.seller.toHex();
+    order.save();
+  }
 }
 
 /**
@@ -258,31 +255,28 @@ export function handleTrade(event: Trade): void {
   seller.save();
   token.save();
 
-  // 5. Update day data for collection and marketplace
   updateCollectionDayData(event.params.collection, toBigDecimal(event.params.askPrice, 18), event);
   updateMarketPlaceDayData(toBigDecimal(event.params.askPrice, 18), event);
 }
 
 /**
- * REVENUE CLAIMS BY CREATOR/TREASURY
+ * ROYALTIES
  */
 
 export function handleRevenueClaim(event: RevenueClaim): void {
   let user = User.load(event.params.claimer.toHex());
-
-  if (user == null) {
+  if (user === null) {
     user = new User(event.params.claimer.toHex());
     user.numberTokensListed = ZERO_BI;
     user.numberTokensPurchased = ZERO_BI;
     user.numberTokensSold = ZERO_BI;
     user.totalVolumeInBNBTokensPurchased = ZERO_BD;
     user.totalVolumeInBNBTokensSold = ZERO_BD;
-    user.totalFeesCollectedInBNB = toBigDecimal(event.params.amount, 18);
+    user.totalFeesCollectedInBNB = ZERO_BD;
     user.averageTokenPriceInBNBPurchased = ZERO_BD;
     user.averageTokenPriceInBNBSold = ZERO_BD;
-  } else {
-    user.totalFeesCollectedInBNB = user.totalFeesCollectedInBNB.plus(toBigDecimal(event.params.amount, 18));
+    user.save();
   }
-
+  user.totalFeesCollectedInBNB = user.totalFeesCollectedInBNB.plus(toBigDecimal(event.params.amount, 18));
   user.save();
 }

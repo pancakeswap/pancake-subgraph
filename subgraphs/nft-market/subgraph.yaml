@@ -8,9 +8,9 @@ dataSources:
     name: ERC721NFTMarketV1
     network: chapel
     source:
-      address: "0x0000000000000000000000000000000000000000" # To be updated
+      address: "0x7F9F37Ddcaa33893F9bEB3D8748c8D6BfbDE6AB2"
       abi: ERC721NFTMarketV1
-      startBlock: 11981905 # To be updated
+      startBlock: 11981905
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
