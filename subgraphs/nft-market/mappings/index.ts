@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { Collection, NFT, AskOrder, Transaction, User } from "../generated/schema";
 import {
   AskCancel,
@@ -17,7 +17,7 @@ import { fetchBunnyId, fetchName, fetchSymbol, fetchTokenURI } from "./utils/erc
 
 // Constants
 let ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
-let PANCAKE_BUNNIES_ADDRESS = "0x60935f36e4631f73f0f407e68642144e07ac7f5e";
+let PANCAKE_BUNNIES_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 // BigNumber-like references
 let ZERO_BI = BigInt.fromI32(0);
@@ -104,7 +104,7 @@ export function handleAskNew(event: AskNew): void {
     token = new NFT(tokenConcatId);
     token.tokenId = event.params.tokenId;
     // If collection is Pancake Bunnies --> try fetching the bunnyId
-    if (event.params.collection.toHexString() == PANCAKE_BUNNIES_ADDRESS) {
+    if (event.params.collection.equals(Address.fromString(PANCAKE_BUNNIES_ADDRESS))) {
       token.otherId = fetchBunnyId(event.params.collection, event.params.tokenId);
     }
     token.collection = collection.id;
