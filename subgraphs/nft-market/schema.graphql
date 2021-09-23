@@ -130,6 +130,7 @@ type User @entity {
 type AskOrder @entity {
   id: ID!
 
+  "Block number"
   block: BigInt!
 
   "Timestamp"
