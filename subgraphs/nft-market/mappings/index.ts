@@ -17,7 +17,7 @@ import { fetchBunnyId, fetchName, fetchSymbol, fetchTokenURI } from "./utils/erc
 
 // Constants
 let ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
-let PANCAKE_BUNNIES_ADDRESS = "0x0000000000000000000000000000000000000000";
+let PANCAKE_BUNNIES_ADDRESS = "0xdf7952b35f24acf7fc0487d01c8d5690a60dba07";
 
 // BigNumber-like references
 let ZERO_BI = BigInt.fromI32(0);
@@ -30,7 +30,7 @@ let ZERO_BD = BigDecimal.fromString("0");
 
 export function handleCollectionNew(event: CollectionNew): void {
   let collection = Collection.load(event.params.collection.toHex());
-  if (collection == null) {
+  if (collection === null) {
     collection = new Collection(event.params.collection.toHex());
     collection.name = fetchName(event.params.collection);
     collection.symbol = fetchSymbol(event.params.collection);
@@ -76,9 +76,8 @@ export function handleCollectionUpdate(event: CollectionUpdate): void {
  */
 
 export function handleAskNew(event: AskNew): void {
-  // 1. User
   let user = User.load(event.params.seller.toHex());
-  if (user == null) {
+  if (user === null) {
     user = new User(event.params.seller.toHex());
     user.numberTokensListed = ONE_BI;
     user.numberTokensPurchased = ZERO_BI;
@@ -88,51 +87,47 @@ export function handleAskNew(event: AskNew): void {
     user.totalFeesCollectedInBNB = ZERO_BD;
     user.averageTokenPriceInBNBPurchased = ZERO_BD;
     user.averageTokenPriceInBNBSold = ZERO_BD;
-  } else {
-    user.numberTokensListed = user.numberTokensListed.plus(ONE_BI);
+    user.save();
   }
+  user.numberTokensListed = user.numberTokensListed.plus(ONE_BI);
+  user.save();
 
-  // 2. Collection
   let collection = Collection.load(event.params.collection.toHex());
   collection.numberTokensListed = collection.numberTokensListed.plus(ONE_BI);
+  collection.save();
 
-  // 3. Token
-  let tokenConcatId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
-  let token = NFT.load(tokenConcatId);
-
-  if (token == null) {
-    token = new NFT(tokenConcatId);
+  let token = NFT.load(event.params.collection.toHex() + "-" + event.params.tokenId.toString());
+  if (token === null) {
+    token = new NFT(event.params.collection.toHex() + "-" + event.params.tokenId.toString());
     token.tokenId = event.params.tokenId;
-    // If collection is Pancake Bunnies --> try fetching the bunnyId
     if (event.params.collection.equals(Address.fromString(PANCAKE_BUNNIES_ADDRESS))) {
       token.otherId = fetchBunnyId(event.params.collection, event.params.tokenId);
     }
     token.collection = collection.id;
     token.metadataUrl = fetchTokenURI(event.params.collection, event.params.tokenId);
-
+    token.updatedAt = event.block.timestamp;
+    token.currentAskPrice = toBigDecimal(event.params.askPrice, 18);
+    token.currentSeller = event.params.seller.toHex();
     token.latestTradedPriceInBNB = ZERO_BD;
     token.tradeVolumeBNB = ZERO_BD;
     token.totalTrades = ZERO_BI;
+    token.isTradable = true;
+    token.save();
   }
-
   token.updatedAt = event.block.timestamp;
-  token.currentSeller = event.params.seller.toHex();
   token.currentAskPrice = toBigDecimal(event.params.askPrice, 18);
+  token.currentSeller = event.params.seller.toHex();
   token.isTradable = true;
+  token.save();
 
-  // 4. Ask Order
-  let order = new AskOrder(event.transaction.hash.toHexString());
+  let order = new AskOrder(event.transaction.hash.toHex());
   order.block = event.block.number;
   order.timestamp = event.block.timestamp;
-  order.collection = event.params.collection.toHex();
-  order.nft = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
+  order.collection = collection.id;
+  order.nft = token.id;
   order.orderType = "New";
   order.askPrice = toBigDecimal(event.params.askPrice, 18);
-  order.seller = event.params.seller.toHex();
-
-  user.save();
-  collection.save();
-  token.save();
+  order.seller = user.id;
   order.save();
 }
 
@@ -162,8 +157,8 @@ export function handleAskCancel(event: AskCancel): void {
     let order = new AskOrder(event.transaction.hash.toHex());
     order.block = event.block.number;
     order.timestamp = event.block.timestamp;
-    order.collection = ZERO_ADDRESS;
-    order.nft = ZERO_ADDRESS;
+    order.collection = collection.id;
+    order.nft = token.id;
     order.orderType = "Cancel";
     order.askPrice = toBigDecimal(ZERO_BI, 18);
     order.seller = event.params.seller.toHex();
@@ -199,7 +194,7 @@ export function handleTrade(event: Trade): void {
   let buyer = User.load(event.params.buyer.toHex());
 
   // Buyer may not exist
-  if (buyer == null) {
+  if (buyer === null) {
     buyer = new User(event.params.buyer.toHex());
     buyer.numberTokensListed = ZERO_BI;
     buyer.numberTokensPurchased = ONE_BI; // 1 token purchased
@@ -229,7 +224,7 @@ export function handleTrade(event: Trade): void {
   seller.averageTokenPriceInBNBSold = seller.totalVolumeInBNBTokensSold.div(seller.numberTokensSold.toBigDecimal());
 
   // 3. NFT
-  let tokenConcatId = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
+  let tokenConcatId = event.params.collection.toHex() + "-" + event.params.tokenId.toString();
   let token = NFT.load(tokenConcatId);
 
   token.latestTradedPriceInBNB = toBigDecimal(event.params.askPrice, 18);
@@ -241,12 +236,12 @@ export function handleTrade(event: Trade): void {
   token.isTradable = false;
 
   // 4. Transaction
-  let transaction = new Transaction(event.transaction.hash.toHexString());
+  let transaction = new Transaction(event.transaction.hash.toHex());
 
   transaction.block = event.block.number;
   transaction.timestamp = event.block.timestamp;
   transaction.collection = event.params.collection.toHex();
-  transaction.nft = event.params.collection.toHexString() + "-" + event.params.tokenId.toString();
+  transaction.nft = event.params.collection.toHex() + "-" + event.params.tokenId.toString();
   transaction.askPrice = toBigDecimal(event.params.askPrice, 18);
   transaction.netPrice = toBigDecimal(event.params.netPrice, 18);
 
