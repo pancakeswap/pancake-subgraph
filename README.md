@@ -2,7 +2,9 @@
 
 TheGraph exposes a GraphQL endpoint to query the events and entities within the Binance Smart Chain and PancakeSwap ecosystem.
 
-Currently, there are multiple subgraphs, but additional subgraphs can be added to this repo:
+Currently, there are multiple subgraphs, but additional subgraphs can be added to this repository, following the current architecture.
+
+## Subgraphs
 
 1. **[Blocks](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/blocks)**: Tracks all blocks on Binance Smart Chain.
 
@@ -30,11 +32,16 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 
 13. **[Trading Competition (v1)](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/trading-competition-v1)**: Tracks all metrics for the Easter Battle (April 07—14, 2021).
 
-## v1
+## Dependencies
 
-To access subgraphs related to PancakeSwap v1 ecosystem ([article](https://pancakeswap.medium.com/the-great-migration-vote-4093cb3edf23)), use [`v1`](https://github.com/pancakeswap/pancake-subgraph/tree/v1) branch.
+- [Graph CLI](https://github.com/graphprotocol/graph-cli)
+    - Required to generate and build local GraphQL dependencies.
 
-## To setup and deploy
+```shell
+yarn global add @graphprotocol/graph-cli
+```
+
+## Deployment
 
 For any of the subgraph: `blocks` as `[subgraph]`
 
@@ -47,3 +54,7 @@ For any of the subgraph: `blocks` as `[subgraph]`
 4. Run `graph auth --product hosted-service '<ACCESS_TOKEN>'`
 
 5. Deploy via `yarn deploy`.
+
+## v1
+
+To access subgraphs related to PancakeSwap v1 ecosystem ([article](https://pancakeswap.medium.com/the-great-migration-vote-4093cb3edf23)), use [`v1`](https://github.com/pancakeswap/pancake-subgraph/tree/v1) branch.
