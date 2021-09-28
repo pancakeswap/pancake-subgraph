@@ -34,7 +34,16 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 
 To access subgraphs related to PancakeSwap v1 ecosystem ([article](https://pancakeswap.medium.com/the-great-migration-vote-4093cb3edf23)), use [`v1`](https://github.com/pancakeswap/pancake-subgraph/tree/v1) branch.
 
-## To setup and deploy
+## Dependencies
+
+- [Graph CLI](https://github.com/graphprotocol/graph-cli)
+    - Required to generate and build local GraphQL dependencies.
+
+```shell
+yarn global add @graphprotocol/graph-cli
+```
+
+## Deployment
 
 For any of the subgraph: `blocks` as `[subgraph]`
 
