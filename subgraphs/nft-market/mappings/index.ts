@@ -223,7 +223,15 @@ export function handleTrade(event: Trade): void {
   seller.totalVolumeInBNBTokensSold = seller.totalVolumeInBNBTokensSold.plus(toBigDecimal(event.params.netPrice, 18));
   seller.averageTokenPriceInBNBSold = seller.totalVolumeInBNBTokensSold.div(seller.numberTokensSold.toBigDecimal());
 
-  // 3. NFT
+  // 3. Collection
+  let collection = Collection.load(event.params.collection.toHex());
+  if (collection !== null) {
+    collection.totalTrades = collection.totalTrades.plus(ONE_BI);
+    collection.totalVolumeBNB = collection.totalVolumeBNB.plus(toBigDecimal(event.params.askPrice, 18));
+    collection.save();
+  }
+
+  // 4. NFT
   let tokenConcatId = event.params.collection.toHex() + "-" + event.params.tokenId.toString();
   let token = NFT.load(tokenConcatId);
 
@@ -235,7 +243,7 @@ export function handleTrade(event: Trade): void {
   token.currentSeller = ZERO_ADDRESS;
   token.isTradable = false;
 
-  // 4. Transaction
+  // 5. Transaction
   let transaction = new Transaction(event.transaction.hash.toHex());
 
   transaction.block = event.block.number;
