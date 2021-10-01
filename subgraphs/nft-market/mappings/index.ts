@@ -177,7 +177,7 @@ export function handleAskUpdate(event: AskUpdate): void {
     order.block = event.block.number;
     order.timestamp = event.block.timestamp;
     order.collection = token.collection;
-    order.nft = event.params.collection.toHex() + "-" + event.params.tokenId.toString();
+    order.nft = token.id;
     order.orderType = "Modify";
     order.askPrice = toBigDecimal(event.params.askPrice, 18);
     order.seller = event.params.seller.toHex();
@@ -228,6 +228,7 @@ export function handleTrade(event: Trade): void {
   if (collection !== null) {
     collection.totalTrades = collection.totalTrades.plus(ONE_BI);
     collection.totalVolumeBNB = collection.totalVolumeBNB.plus(toBigDecimal(event.params.askPrice, 18));
+    collection.numberTokensListed = collection.numberTokensListed.minus(ONE_BI);
     collection.save();
   }
 
