@@ -9,7 +9,7 @@ import { BD_1E18, BI_ONE, TRACKED_TOKEN_BNB_PAIRS, TRACKED_TOKEN_BUSD_PAIRS } fr
  */
 
 export function handleSwap(event: Swap): void {
-  let competition = Competition.load("1");
+  let competition = Competition.load("2");
   // Competition is not in progress, ignoring trade.
   if (competition.status.notEqual(BI_ONE)) {
     log.info("Competition is not in progress, ignoring trade; status: {}", [competition.status.toString()]);
@@ -30,9 +30,12 @@ export function handleSwap(event: Swap): void {
   let bnbIN: BigDecimal;
   let bnbOUT: BigDecimal;
 
+  let busdIN: BigDecimal;
+  let busdOUT: BigDecimal;
+
   if (TRACKED_TOKEN_BUSD_PAIRS.some((address) => event.address.equals(Address.fromString(address)))) {
-    bnbIN = event.params.amount0In.toBigDecimal().div(BD_1E18);
-    bnbOUT = event.params.amount0Out.toBigDecimal().div(BD_1E18);
+    busdIN = event.params.amount1In.toBigDecimal().div(BD_1E18);
+    busdOUT = event.params.amount1Out.toBigDecimal().div(BD_1E18);
   } else if (TRACKED_TOKEN_BNB_PAIRS.some((address) => event.address.equals(Address.fromString(address)))) {
     bnbIN = event.params.amount1In.toBigDecimal().div(BD_1E18);
     bnbOUT = event.params.amount1Out.toBigDecimal().div(BD_1E18);
@@ -40,8 +43,15 @@ export function handleSwap(event: Swap): void {
     return;
   }
 
-  let volumeBNB = bnbOUT.plus(bnbIN);
-  let volumeUSD = volumeBNB.times(bundle.bnbPrice);
+  let volumeBNB: BigDecimal;
+  let volumeUSD: BigDecimal;
+  if (bnbIN) {
+    volumeBNB = bnbOUT.plus(bnbIN);
+    volumeUSD = volumeBNB.times(bundle.bnbPrice);
+  } else {
+    volumeUSD = busdIN.plus(busdOUT);
+    volumeBNB = volumeUSD.div(bundle.bnbPrice);
+  }
 
   log.info("Volume: {} for {} BNB, or {} USD", [
     event.transaction.from.toHex(),
