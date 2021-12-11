@@ -7,7 +7,7 @@ export let BI_ONE = BigInt.fromI32(1);
 export let BD_ZERO = BigDecimal.fromString("0");
 export let BD_1E18 = BigDecimal.fromString("1e18");
 
-export const WBNB_BUSD = "0x1b96b92314c44b159149f7e0303511fb2fc4774f";
+export const WBNB_BUSD = "0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16";
 
 export let TRACKED_TOKEN_BNB_PAIRS: string[] = [
   "0x11c0b2bb4fbb430825d07507a9e24e4c32f7704d", // LAZIO/BNB
