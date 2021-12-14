@@ -21,6 +21,7 @@ dataSources:
         - Competition
         - Team
         - User
+        - PairStats
       abis:
         - name: TradingCompetitionV2
           file: ./abis/TradingCompetitionV2.json
@@ -51,6 +52,7 @@ templates:
         - Competition
         - Team
         - User
+        - PairStats
       abis:
         - name: Factory
           file: ./abis/Factory.json

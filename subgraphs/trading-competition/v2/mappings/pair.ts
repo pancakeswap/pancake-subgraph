@@ -1,8 +1,8 @@
 /* eslint-disable prefer-const */
 import { BigDecimal, log } from "@graphprotocol/graph-ts";
-import { Bundle, Competition, Team, User } from "../generated/schema";
+import { Bundle, Competition, Team, User, PairStats } from "../generated/schema";
 import { Swap } from "../generated/templates/Pair/Pair";
-import { BD_1E18, BI_ONE, TRACKED_TOKEN_BNB_PAIRS, TRACKED_TOKEN_BUSD_PAIRS } from "./utils";
+import { BD_1E18, BD_ZERO, BI_ONE, TRACKED_TOKEN_BNB_PAIRS, TRACKED_TOKEN_BUSD_PAIRS } from "./utils";
 
 /**
  * SWAP
@@ -69,6 +69,18 @@ export function handleSwap(event: Swap): void {
     volumeBNB.toString(),
     volumeUSD.toString(),
   ]);
+
+  // Fail safe condition in case the pairStats has already been created.
+  let pairStats = PairStats.load(event.address.toHex());
+  if (pairStats === null) {
+    pairStats = new PairStats(event.address.toHex());
+    pairStats.volumeUSD = BD_ZERO;
+    pairStats.volumeBNB = BD_ZERO;
+    pairStats.save();
+  }
+  pairStats.volumeUSD = pairStats.volumeUSD.plus(volumeUSD);
+  pairStats.volumeBNB = pairStats.volumeBNB.plus(volumeBNB);
+  pairStats.save();
 
   user.volumeUSD = user.volumeUSD.plus(volumeUSD);
   user.volumeBNB = user.volumeBNB.plus(volumeBNB);

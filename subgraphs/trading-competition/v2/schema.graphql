@@ -60,3 +60,11 @@ type User @entity {
     # Transactions count
     txCount: BigInt!
 }
+
+type PairStats @entity {
+    id: ID! # address
+
+    # Volume
+    volumeUSD: BigDecimal!
+    volumeBNB: BigDecimal!
+}
