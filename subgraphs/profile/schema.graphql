@@ -20,6 +20,8 @@ type Team @entity {
 type User @entity {
     id: ID! # address
 
+    internalId: BigInt! # auto increment
+
     isActive: Boolean!
 
     createdAt: BigInt!
@@ -34,6 +36,9 @@ type User @entity {
     # Points with campaignId
     totalPoints: BigInt!
     points: [Point!]! @derivedFrom(field: "user")
+
+    nftAddress: Bytes
+    tokenId: BigInt
 }
 
 type Point @entity {
@@ -52,4 +57,10 @@ type Point @entity {
     # Block number when the point was triggered.
     block: BigInt!
     timestamp: BigInt!
+}
+
+type IdIncrement @entity {
+    id: ID! # address
+
+    autoIncrement: BigInt! # auto increment
 }

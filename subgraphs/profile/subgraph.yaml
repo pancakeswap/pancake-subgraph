@@ -30,6 +30,8 @@ dataSources:
           handler: handleTeamPointIncrease
         - event: UserNew(indexed address,uint256,address,uint256)
           handler: handleUserNew
+        - event: UserUpdate(indexed address,address,uint256)
+          handler: handleUserUpdate
         - event: UserPause(indexed address,uint256)
           handler: handleUserPause
         - event: UserReactivate(indexed address,uint256,address,uint256)
