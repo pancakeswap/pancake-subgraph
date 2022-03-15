@@ -39,11 +39,6 @@ export function handleNewSmartChefContract(event: NewSmartChefContract): void {
 }
 
 export function handleNewSmartChefContractV2(event: NewSmartChefContract): void {
-  // Do not process some SmartChef smart contract, hiccup.
-  if (BLACKLISTED_ADDRESSES.includes(event.params.smartChef.toHex())) {
-    return;
-  }
-
   let factory = Factory.load(FACTORY_V2_ADDRESS);
   if (factory === null) {
     factory = new Factory(FACTORY_V2_ADDRESS);
