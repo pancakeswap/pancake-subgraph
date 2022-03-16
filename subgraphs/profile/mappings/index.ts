@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import { Address, BigInt, Bytes, log } from "@graphprotocol/graph-ts";
 import { concat } from "@graphprotocol/graph-ts/helper-functions";
-import { Point, Team, User } from "../generated/schema";
+import { IdIncrement, Point, Team, User } from "../generated/schema";
 import {
   TeamAdd,
   TeamPointIncrease,
@@ -11,6 +11,7 @@ import {
   UserPointIncrease,
   UserPointIncreaseMultiple,
   UserReactivate,
+  UserUpdate,
 } from "../generated/Profile/Profile";
 
 // BigNumber-like references
@@ -68,12 +69,15 @@ export function handleUserNew(event: UserNew): void {
   let user = User.load(event.params.userAddress.toHex());
   if (user === null) {
     user = new User(event.params.userAddress.toHex());
+    user.internalId = getAutoIncrementId();
     user.isActive = true;
     user.createdAt = event.block.timestamp;
     user.updatedAt = event.block.timestamp;
     user.block = event.block.number;
     user.team = event.params.teamId.toString();
     user.totalPoints = ZERO_BI;
+    user.nftAddress = event.params.nftAddress;
+    user.tokenId = event.params.tokenId;
     user.save();
   }
 
@@ -84,6 +88,27 @@ export function handleUserNew(event: UserNew): void {
   }
   team.totalUsers = team.totalUsers.plus(ONE_BI);
   team.save();
+}
+
+export function handleUserUpdate(event: UserUpdate): void {
+  // Fail safe condition in case the user has already been created.
+  let user = User.load(event.params.userAddress.toHex());
+  if (user === null) {
+    user = new User(event.params.userAddress.toHex());
+    user.internalId = getAutoIncrementId();
+    user.isActive = true;
+    user.createdAt = event.block.timestamp;
+    user.updatedAt = event.block.timestamp;
+    user.block = event.block.number;
+    user.totalPoints = ZERO_BI;
+    user.nftAddress = event.params.nftAddress;
+    user.tokenId = event.params.tokenId;
+    user.save();
+  }
+
+  user.nftAddress = event.params.nftAddress;
+  user.tokenId = event.params.tokenId;
+  user.save();
 }
 
 export function handleUserPause(event: UserPause): void {
@@ -110,6 +135,8 @@ export function handleUserReactivate(event: UserReactivate): void {
     log.error("Error in contract, resumed user when userId: {} was not created.", [event.params.userAddress.toHex()]);
   }
   user.isActive = true;
+  user.nftAddress = event.params.nftAddress;
+  user.tokenId = event.params.tokenId;
   user.updatedAt = event.block.timestamp;
   user.save();
 
@@ -201,3 +228,16 @@ export function handleUserPointIncreaseMultiple(event: UserPointIncreaseMultiple
     user.save();
   });
 }
+
+const getAutoIncrementId = (): BigInt => {
+  let idIncrement = IdIncrement.load("1");
+  if (idIncrement === null) {
+    idIncrement = new IdIncrement("1");
+    idIncrement.autoIncrement = ONE_BI;
+    idIncrement.save();
+  }
+  idIncrement.autoIncrement = idIncrement.autoIncrement.plus(ONE_BI);
+  idIncrement.save();
+
+  return idIncrement.autoIncrement;
+};
