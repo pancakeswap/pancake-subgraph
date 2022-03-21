@@ -1,5 +1,10 @@
 specVersion: 0.0.2
 description: Pancake Prediction V2
+features:
+  - grafting
+graft:
+  base: QmSp7LDkCuEuxQDWXvgVfhEVMQM7QwMxhawARAkBjMZyHW # Subgraph ID of base subgraph
+  block: 15994691
 repository: https://github.com/pancakeswap
 schema:
   file: ./schema.graphql
