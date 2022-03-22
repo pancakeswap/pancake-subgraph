@@ -69,3 +69,29 @@ dataSources:
       eventHandlers:
         - event: NewSmartChefContract(indexed address)
           handler: handleNewSmartChefContractV2
+templates:
+  - name: SmartChefInitializable
+    kind: ethereum/contract
+    network: bsc
+    source:
+      abi: SmartChef
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/index.ts
+      entities:
+        - SmartChef
+        - User
+      abis:
+        - name: SmartChef
+          file: ./abis/SmartChef.json
+      eventHandlers:
+        - event: Deposit(indexed address,uint256)
+          handler: handleDeposit
+        - event: EmergencyWithdraw(indexed address,uint256)
+          handler: handleEmergencyWithdraw
+        - event: Withdraw(indexed address,uint256)
+          handler: handleWithdraw
+        # NewStartAndEndBlocks(uint256,uint256)
+        # NewRewardPerBlock
