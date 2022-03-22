@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import { Factory } from "../generated/schema";
 import { NewSmartChefContract } from "../generated/SmartChefFactory/SmartChefFactory";
 import { BLACKLISTED_ADDRESSES, convertTokenToDecimal } from "./utils";
@@ -74,4 +74,5 @@ function process(event: NewSmartChefContract): void {
   smartChef.timestamp = event.block.timestamp;
   smartChef.save();
   SmartChefInitializable.create(event.params.smartChef);
+  log.info("SmartChef initialized: {}", [smartChef.id]);
 }
