@@ -67,11 +67,11 @@ export function fetchUserLimit(smartChefAddress: Address): BigInt {
   return decimalValue;
 }
 
-export function getOrCreateSmartChef(adress: Address): SmartChef {
-  const id = adress.toHex();
+export function getOrCreateSmartChef(address: Address): SmartChef {
+  let id = address.toHex();
   let smartChef = SmartChef.load(id);
   if (smartChef === null) {
-    smartChef = new SmartChef(adress.toHex());
+    smartChef = new SmartChef(id);
   }
-  return smartChef;
+  return smartChef as SmartChef;
 }

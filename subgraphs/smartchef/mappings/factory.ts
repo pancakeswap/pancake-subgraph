@@ -1,10 +1,11 @@
 /* eslint-disable prefer-const */
 import { BigInt } from "@graphprotocol/graph-ts";
-import { Factory, SmartChef, Token } from "../generated/schema";
+import { Factory } from "../generated/schema";
 import { NewSmartChefContract } from "../generated/SmartChefFactory/SmartChefFactory";
 import { BLACKLISTED_ADDRESSES, convertTokenToDecimal } from "./utils";
 import { SmartChefInitializable } from "../generated/templates";
-import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, getOrCreateToken } from "./utils/erc20";
+import { BLACKLISTED_ADDRESSES, convertTokenToDecimal } from "./utils";
+import { getOrCreateToken } from "./utils/erc20";
 import {
   fetchEndBlock,
   fetchRewardPerBlock,

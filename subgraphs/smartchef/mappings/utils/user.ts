@@ -2,7 +2,7 @@ import { Address, BigDecimal } from "@graphprotocol/graph-ts";
 import { User } from "../../generated/schema";
 
 export function getOrCreateUser(poolAddress: Address, address: Address): User {
-  const id = poolAddress + "-" + address.toHex();
+  const id = poolAddress.toHex() + "-" + address.toHex();
 
   let user = User.load(id);
 
@@ -14,5 +14,5 @@ export function getOrCreateUser(poolAddress: Address, address: Address): User {
     user.save();
   }
 
-  return user;
+  return user as User;
 }

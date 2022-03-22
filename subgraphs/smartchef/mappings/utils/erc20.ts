@@ -69,5 +69,5 @@ export function getOrCreateToken(address: Address): Token {
     token.save();
   }
 
-  return token;
+  return token as Token;
 }

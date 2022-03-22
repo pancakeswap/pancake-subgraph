@@ -93,5 +93,7 @@ templates:
           handler: handleEmergencyWithdraw
         - event: Withdraw(indexed address,uint256)
           handler: handleWithdraw
-        # NewStartAndEndBlocks(uint256,uint256)
-        # NewRewardPerBlock
+        - event: NewStartAndEndBlocks(uint256,uint256)
+          handler: handleNewStartAndEndBlocks
+        - event: NewRewardPerBlock(uint256)
+          handler: handleNewRewardPerBlock
