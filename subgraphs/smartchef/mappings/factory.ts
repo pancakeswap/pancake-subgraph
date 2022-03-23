@@ -2,6 +2,7 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { Factory, SmartChef, Token } from "../generated/schema";
 import { NewSmartChefContract } from "../generated/SmartChefFactory/SmartChefFactory";
+import { BLACKLISTED_ADDRESSES, convertTokenToDecimal } from "./utils";
 import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol } from "./utils/erc20";
 import {
   fetchEndBlock,
@@ -11,11 +12,11 @@ import {
   fetchStartBlock,
   fetchUserLimit,
 } from "./utils/smartchef";
-import { BLACKLISTED_ADDRESSES, convertTokenToDecimal } from "./utils";
 
 let ZERO_BI = BigInt.fromI32(0);
 let ONE_BI = BigInt.fromI32(1);
 let FACTORY_ADDRESS = "0x927158be21fe3d4da7e96931bb27fd5059a8cbc2";
+let FACTORY_V2_ADDRESS = "0xFfF5812C35eC100dF51D5C9842e8cC3fe60f9ad7";
 
 export function handleNewSmartChefContract(event: NewSmartChefContract): void {
   // Do not process some SmartChef smart contract, hiccup.
@@ -32,6 +33,23 @@ export function handleNewSmartChefContract(event: NewSmartChefContract): void {
   factory.totalSmartChef = factory.totalSmartChef.plus(ONE_BI);
   factory.save();
 
+  process(event);
+}
+
+export function handleNewSmartChefContractV2(event: NewSmartChefContract): void {
+  let factory = Factory.load(FACTORY_V2_ADDRESS);
+  if (factory === null) {
+    factory = new Factory(FACTORY_V2_ADDRESS);
+    factory.totalSmartChef = ZERO_BI;
+    factory.save();
+  }
+  factory.totalSmartChef = factory.totalSmartChef.plus(ONE_BI);
+  factory.save();
+
+  process(event);
+}
+
+function process(event: NewSmartChefContract): void {
   let stakeTokenAddress = fetchStakeToken(event.params.smartChef);
   let stakeToken = Token.load(stakeTokenAddress.toHex());
   if (stakeToken === null) {
