@@ -1,4 +1,4 @@
-import { Address, BigDecimal } from "@graphprotocol/graph-ts";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { User } from "../../generated/schema";
 
 export function getOrCreateUser(poolAddress: Address, address: Address): User {
@@ -8,7 +8,7 @@ export function getOrCreateUser(poolAddress: Address, address: Address): User {
 
   if (user === null) {
     user = new User(id);
-    user.amount = BigDecimal.fromString("0");
+    user.amount = BigInt.fromI32(0);
     user.pool = poolAddress.toHex();
     user.address = address;
     user.save();
