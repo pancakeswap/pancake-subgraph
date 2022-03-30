@@ -1,0 +1,62 @@
+specVersion: 0.0.2
+description: MasterChefV2
+repository: https://github.com/sushiswap/sushiswap-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: MasterChefV2
+    network: bsc
+    source:
+      address: "0x753aAfBEe43D88aED31A82aDABCa12d3F5455fd3" # mock
+      abi: MasterChefV2
+      startBlock: 16167062 # update it
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/masterchefV2.ts
+      entities:
+        - MasterChefV2
+        - Pool
+        - User
+      abis:
+        - name: MasterChefV2
+          file: ./abis/MasterChefV2.json
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: Pair
+          file: ./abis/Pair.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Deposit(indexed address,indexed uint256,uint256)
+          handler: handleDeposit
+        - event: Withdraw(indexed address,indexed uint256,uint256)
+          handler: handleWithdraw
+        - event: EmergencyWithdraw(indexed address,indexed uint256,uint256)
+          handler: handleEmergencyWithdraw
+        - event: AddPool(indexed uint256,uint256,indexed address,bool)
+          handler: handleAddPool
+        - event: SetPool(indexed uint256,uint256)
+          handler: handleSetPool
+        - event: UpdatePool(indexed uint256,uint256,uint256,uint256)
+          handler: handleUpdatePool
+        # - event: UpdateUserBoost(indexed address, unit256, unit256)
+        #   handler: handleUpdateUserBoost
+        - event: UpdateBoostContract(indexed address)
+          handler: handleUpdateBoostContract
+
+  # - AddPool(indexed uint256,uint256,indexed address,bool)
+  # - Deposit(indexed address,indexed uint256,uint256)
+  # - EmergencyWithdraw(indexed address,indexed uint256,uint256)
+  # - Init()
+  # - OwnershipTransferred(indexed address,indexed address)
+  # - SetPool(indexed uint256,uint256)
+  # - UpdateBoostContract(indexed address)
+  # - UpdateBoostMultiplier(indexed address,uint256,uint256)
+  # - UpdateBurnAdmin(indexed address,indexed address)
+  # - UpdateCakeRate(uint256,uint256,uint256)
+  # - UpdatePool(indexed uint256,uint256,uint256,uint256)
+  # - UpdateWhiteList(indexed address,bool)
+  # - Withdraw(indexed address,indexed uint256,uint256)
