@@ -7,6 +7,7 @@ import {
   SetPool,
   UpdatePool,
   Withdraw,
+  UpdateCakeRate,
 } from "../../generated/MasterChefV2/MasterChefV2";
 import { getOrCreateMasterChef } from "../entities/masterchef";
 import { getOrCreatePool } from "../entities/pool";
@@ -77,7 +78,7 @@ export function handleUpdatePool(event: UpdatePool): void {
 }
 
 export function handleDeposit(event: Deposit): void {
-  log.info("[MasterChefV2] Log Deposit {} {} {} {}", [
+  log.info("[MasterChefV2] Log Deposit {} {} {}", [
     event.params.user.toHex(),
     event.params.pid.toString(),
     event.params.amount.toString(),
@@ -100,7 +101,7 @@ export function handleDeposit(event: Deposit): void {
 }
 
 export function handleWithdraw(event: Withdraw): void {
-  log.info("[MasterChefV2] Log Withdraw {} {} {} {}", [
+  log.info("[MasterChefV2] Log Withdraw {} {} {}", [
     event.params.user.toHex(),
     event.params.pid.toString(),
     event.params.amount.toString(),
@@ -114,12 +115,13 @@ export function handleWithdraw(event: Withdraw): void {
   pool.save();
 
   user.amount = user.amount.minus(event.params.amount);
+  // TODO: user boost val / BASIC_BOOST_PRECISION
   user.rewardDebt = user.rewardDebt.minus(event.params.amount.times(pool.accCakePerShare).div(ACC_CAKE_PRECISION));
   user.save();
 }
 
 export function handleEmergencyWithdraw(event: EmergencyWithdraw): void {
-  log.info("[MasterChefV2] Log Emergency Withdraw {} {} {} {}", [
+  log.info("[MasterChefV2] Log Emergency Withdraw {} {} {}", [
     event.params.user.toHex(),
     event.params.pid.toString(),
     event.params.amount.toString(),
@@ -136,4 +138,20 @@ export function handleEmergencyWithdraw(event: EmergencyWithdraw): void {
   user.amount = BI_ZERO;
   user.rewardDebt = BI_ZERO;
   user.save();
+}
+
+export function handleUpdateCakeRate(event: UpdateCakeRate): void {
+  log.info("[MasterChefV2] Update Cake Rate {} {} {}", [
+    event.params.burnRate.toString(),
+    event.params.regularFarmRate.toString(),
+    event.params.specialFarmRate.toString(),
+  ]);
+
+  const masterChef = getOrCreateMasterChef(event.block);
+
+  masterChef.cakeRateToBurn = event.params.burnRate;
+  masterChef.cakeRateToRegularFarm = event.params.regularFarmRate;
+  masterChef.cakeRateToSpecialFarm = event.params.specialFarmRate;
+
+  masterChef.save();
 }

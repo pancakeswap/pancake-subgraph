@@ -4,12 +4,13 @@ type MasterChef @entity {
 
   totalRegularAllocPoint: BigInt!
   totalSpecialAllocPoint: BigInt!
+  cakeRateToBurn: BigInt!
   cakeRateToRegularFarm: BigInt!
   cakeRateToSpecialFarm: BigInt!
 
   pools: [Pool!] @derivedFrom(field: "masterChef")
   poolCount: BigInt!
-  boostContract: Bytes!
+  lastBurnedBlock: BigInt
 
   timestamp: BigInt!
   block: BigInt!
@@ -27,7 +28,7 @@ type Pool @entity {
   lastRewardBlock: BigInt!
   accCakePerShare: BigInt!
   totalBoostedShare: BigInt!
-  isRegular: Boolean!
+  isRegular: Boolean
 
   slpBalance: BigInt!
 

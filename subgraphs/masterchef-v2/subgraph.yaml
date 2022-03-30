@@ -1,6 +1,6 @@
-specVersion: 0.0.2
+specVersion: 0.0.3
 description: MasterChefV2
-repository: https://github.com/sushiswap/sushiswap-subgraph
+repository: https://github.com/pancakeswap/pancakeswapswap-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
@@ -44,19 +44,6 @@ dataSources:
           handler: handleUpdatePool
         # - event: UpdateUserBoost(indexed address, unit256, unit256)
         #   handler: handleUpdateUserBoost
-        - event: UpdateBoostContract(indexed address)
-          handler: handleUpdateBoostContract
+        - event: UpdateCakeRate(uint256,uint256,uint256)
+          handler: handleUpdateCakeRate
 
-  # - AddPool(indexed uint256,uint256,indexed address,bool)
-  # - Deposit(indexed address,indexed uint256,uint256)
-  # - EmergencyWithdraw(indexed address,indexed uint256,uint256)
-  # - Init()
-  # - OwnershipTransferred(indexed address,indexed address)
-  # - SetPool(indexed uint256,uint256)
-  # - UpdateBoostContract(indexed address)
-  # - UpdateBoostMultiplier(indexed address,uint256,uint256)
-  # - UpdateBurnAdmin(indexed address,indexed address)
-  # - UpdateCakeRate(uint256,uint256,uint256)
-  # - UpdatePool(indexed uint256,uint256,uint256,uint256)
-  # - UpdateWhiteList(indexed address,bool)
-  # - Withdraw(indexed address,indexed uint256,uint256)
