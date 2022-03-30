@@ -53,6 +53,6 @@ type User @entity {
 
   pool: SmartChef!
 
-  amount: BigInt!
+  stakeAmount: BigInt!
   stakeToken: Token
 }

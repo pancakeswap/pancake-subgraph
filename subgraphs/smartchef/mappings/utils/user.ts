@@ -8,7 +8,7 @@ export function getOrCreateUser(poolAddress: Address, address: Address): User {
 
   if (user === null) {
     user = new User(id);
-    user.amount = BigInt.fromI32(0);
+    user.stakeAmount = BigInt.fromI32(0);
     user.pool = poolAddress.toHex();
     user.address = address;
     user.save();

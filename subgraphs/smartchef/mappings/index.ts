@@ -15,19 +15,19 @@ export function handleDeposit(event: Deposit): void {
   const user = getOrCreateUser(dataSource.address(), event.params.user);
   const pool = getOrCreateSmartChef(dataSource.address());
   user.stakeToken = pool.stakeToken;
-  user.amount = user.amount.plus(event.params.amount);
+  user.stakeAmount = user.stakeAmount.plus(event.params.amount);
   user.save();
 }
 
 export function handleWithdraw(event: Withdraw): void {
   const user = getOrCreateUser(dataSource.address(), event.params.user);
-  user.amount = user.amount.minus(event.params.amount);
+  user.stakeAmount = user.stakeAmount.minus(event.params.amount);
   user.save();
 }
 
 export function handleEmergencyWithdraw(event: EmergencyWithdraw): void {
   const user = getOrCreateUser(dataSource.address(), event.params.user);
-  user.amount = BigInt.fromI32(0);
+  user.stakeAmount = BigInt.fromI32(0);
   user.save();
 }
 
