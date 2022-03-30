@@ -12,7 +12,7 @@ import {
 import { getOrCreateMasterChef } from "../entities/masterchef";
 import { getOrCreatePool } from "../entities/pool";
 import { getOrCreateUser } from "../entities/user";
-import { ACC_CAKE_PRECISION, BASIC_BOOST_PRECISION, BI_ZERO } from "../utils";
+import { ACC_CAKE_PRECISION, BASIC_BOOST_PRECISION, BI_ONE, BI_ZERO } from "../utils";
 
 export function handleAddPool(event: AddPool): void {
   log.info("[MasterChefV2] Add Pool {} {} {} {}", [
@@ -35,12 +35,12 @@ export function handleAddPool(event: AddPool): void {
   } else {
     masterChef.totalSpecialAllocPoint = masterChef.totalSpecialAllocPoint.plus(pool.allocPoint);
   }
-  masterChef.poolCount = masterChef.poolCount.plus(BI_ZERO);
+  masterChef.poolCount = masterChef.poolCount.plus(BI_ONE);
   masterChef.save();
 }
 
 export function handleSetPool(event: SetPool): void {
-  log.info("[MasterChefV2] ˝Set Pool {} {} {} {}", [event.params.pid.toString(), event.params.allocPoint.toString()]);
+  log.info("[MasterChefV2] ˝Set Pool {} {}", [event.params.pid.toString(), event.params.allocPoint.toString()]);
 
   const masterChef = getOrCreateMasterChef(event.block);
   const pool = getOrCreatePool(event.params.pid, event.block);
