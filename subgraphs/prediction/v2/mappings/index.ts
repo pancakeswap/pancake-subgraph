@@ -203,7 +203,7 @@ export function handleEndRound(event: EndRound): void {
   round.closeRoundId = event.params.roundId;
 
   // Get round result based on lock/close price.
-  if (round.closePrice) {
+  if (round.closePrice !== null) {
     if (round.closePrice.equals(round.lockPrice as BigDecimal)) {
       round.position = "House";
 
@@ -411,7 +411,9 @@ export function handleClaim(event: Claim): void {
   bet.claimedBlock = event.block.number;
   bet.claimedHash = event.transaction.hash;
   bet.claimedBNB = event.params.amount.divDecimal(EIGHTEEN_BD);
-  bet.claimedNetBNB = event.params.amount.divDecimal(EIGHTEEN_BD).minus(bet.amount);
+  if (bet.amount !== null) {
+    bet.claimedNetBNB = event.params.amount.divDecimal(EIGHTEEN_BD).minus(bet.amount);
+  }
   bet.updatedAt = event.block.timestamp;
   bet.save();
 
