@@ -1,10 +1,5 @@
-specVersion: 0.0.4
+specVersion: 0.0.2
 description: PancakeSwap is a decentralized protocol for automated token exchange on Binance Smart Chain.
-features:
-  - grafting
-graft:
-  base: QmSEmSDh8ZZEPeXHGaj2sNhf3nRjrnQxDT5M619h4vUkA2
-  block: 14552132
 repository: https://github.com/pancakeswap
 schema:
   file: ./schema.graphql
@@ -69,3 +64,31 @@ dataSources:
       eventHandlers:
         - event: NewSmartChefContract(indexed address)
           handler: handleNewSmartChefContractV2
+templates:
+  - name: SmartChefInitializable
+    kind: ethereum/contract
+    network: bsc
+    source:
+      abi: SmartChef
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/index.ts
+      entities:
+        - SmartChef
+        - User
+      abis:
+        - name: SmartChef
+          file: ./abis/SmartChef.json
+      eventHandlers:
+        - event: Deposit(indexed address,uint256)
+          handler: handleDeposit
+        - event: EmergencyWithdraw(indexed address,uint256)
+          handler: handleEmergencyWithdraw
+        - event: Withdraw(indexed address,uint256)
+          handler: handleWithdraw
+        - event: NewStartAndEndBlocks(uint256,uint256)
+          handler: handleNewStartAndEndBlocks
+        - event: NewRewardPerBlock(uint256)
+          handler: handleNewRewardPerBlock

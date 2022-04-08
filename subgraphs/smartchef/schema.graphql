@@ -30,6 +30,8 @@ type SmartChef @entity {
   block: BigInt!
   "Block timestamp"
   timestamp: BigInt!
+
+  users: [User!]! @derivedFrom(field: "pool")
 }
 
 # Token
@@ -42,4 +44,15 @@ type Token @entity {
   symbol: String!
   "Decimals"
   decimals: BigInt!
+}
+
+type User @entity {
+  "User Address bound to Pool"
+  id: ID!
+  address: Bytes!
+
+  pool: SmartChef!
+
+  stakeAmount: BigInt!
+  stakeToken: Token
 }

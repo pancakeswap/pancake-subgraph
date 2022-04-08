@@ -1,9 +1,10 @@
 /* eslint-disable prefer-const */
-import { BigInt } from "@graphprotocol/graph-ts";
-import { Factory, SmartChef, Token } from "../generated/schema";
+import { BigInt, log } from "@graphprotocol/graph-ts";
+import { Factory } from "../generated/schema";
 import { NewSmartChefContract } from "../generated/SmartChefFactory/SmartChefFactory";
 import { BLACKLISTED_ADDRESSES, convertTokenToDecimal } from "./utils";
-import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol } from "./utils/erc20";
+import { SmartChefInitializable } from "../generated/templates";
+import { getOrCreateToken } from "./utils/erc20";
 import {
   fetchEndBlock,
   fetchRewardPerBlock,
@@ -11,6 +12,7 @@ import {
   fetchStakeToken,
   fetchStartBlock,
   fetchUserLimit,
+  getOrCreateSmartChef,
 } from "./utils/smartchef";
 
 let ZERO_BI = BigInt.fromI32(0);
@@ -51,26 +53,12 @@ export function handleNewSmartChefContractV2(event: NewSmartChefContract): void 
 
 function process(event: NewSmartChefContract): void {
   let stakeTokenAddress = fetchStakeToken(event.params.smartChef);
-  let stakeToken = Token.load(stakeTokenAddress.toHex());
-  if (stakeToken === null) {
-    stakeToken = new Token(stakeTokenAddress.toHex());
-    stakeToken.name = fetchTokenName(stakeTokenAddress);
-    stakeToken.symbol = fetchTokenSymbol(stakeTokenAddress);
-    stakeToken.decimals = fetchTokenDecimals(stakeTokenAddress);
-    stakeToken.save();
-  }
+  let stakeToken = getOrCreateToken(stakeTokenAddress);
 
   let earnTokenAddress = fetchRewardToken(event.params.smartChef);
-  let earnToken = Token.load(earnTokenAddress.toHex());
-  if (earnToken === null) {
-    earnToken = new Token(earnTokenAddress.toHex());
-    earnToken.name = fetchTokenName(earnTokenAddress);
-    earnToken.symbol = fetchTokenSymbol(earnTokenAddress);
-    earnToken.decimals = fetchTokenDecimals(earnTokenAddress);
-    earnToken.save();
-  }
+  let earnToken = getOrCreateToken(earnTokenAddress);
 
-  let smartChef = new SmartChef(event.params.smartChef.toHex());
+  let smartChef = getOrCreateSmartChef(event.params.smartChef);
   smartChef.stakeToken = stakeToken.id;
   smartChef.earnToken = earnToken.id;
   smartChef.startBlock = fetchStartBlock(event.params.smartChef);
@@ -85,4 +73,6 @@ function process(event: NewSmartChefContract): void {
   smartChef.block = event.block.number;
   smartChef.timestamp = event.block.timestamp;
   smartChef.save();
+  SmartChefInitializable.create(event.params.smartChef);
+  log.info("SmartChef initialized: {}", [smartChef.id]);
 }

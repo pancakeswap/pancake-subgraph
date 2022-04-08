@@ -1,5 +1,6 @@
 /* eslint-disable prefer-const */
 import { Address, BigInt } from "@graphprotocol/graph-ts";
+import { Token } from "../../generated/schema";
 import { ERC20 } from "../../generated/SmartChefFactory/ERC20";
 import { ERC20NameBytes } from "../../generated/SmartChefFactory/ERC20NameBytes";
 import { ERC20SymbolBytes } from "../../generated/SmartChefFactory/ERC20SymbolBytes";
@@ -56,4 +57,17 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
     decimalValue = decimalResult.value;
   }
   return BigInt.fromI32(decimalValue as i32);
+}
+
+export function getOrCreateToken(address: Address): Token {
+  let token = Token.load(address.toHex());
+  if (token === null) {
+    token = new Token(address.toHex());
+    token.name = fetchTokenName(address);
+    token.symbol = fetchTokenSymbol(address);
+    token.decimals = fetchTokenDecimals(address);
+    token.save();
+  }
+
+  return token as Token;
 }
