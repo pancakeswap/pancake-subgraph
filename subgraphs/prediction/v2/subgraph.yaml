@@ -3,8 +3,8 @@ description: Pancake Prediction V2
 features:
   - grafting
 graft:
-  base: QmR86J87rcjfqmcigEMpdENT3aDdeGrCdUdJhctY7vamMB # Subgraph ID of base subgraph
-  block: 16476257
+  base: QmQWTBVtdqr2i9N6T3NYsp2rDt9HuDueXhH1ckuC4TuKkq
+  block: 16845300
 repository: https://github.com/pancakeswap
 schema:
   file: ./schema.graphql
