@@ -405,13 +405,14 @@ export function handleClaim(event: Claim): void {
   if (bet === null) {
     log.warning("Tried to query bet without an existing ID (betId: {})", [betId]);
     bet = new Bet(betId);
+    bet.amount = BigDecimal.fromString("0");
   }
   bet.claimed = true;
   bet.claimedAt = event.block.timestamp;
   bet.claimedBlock = event.block.number;
   bet.claimedHash = event.transaction.hash;
   bet.claimedBNB = event.params.amount.divDecimal(EIGHTEEN_BD);
-  if (bet.amount !== null) {
+  if (bet.amount.gt(ZERO_BD)) {
     bet.claimedNetBNB = event.params.amount.divDecimal(EIGHTEEN_BD).minus(bet.amount);
   }
   bet.updatedAt = event.block.timestamp;
