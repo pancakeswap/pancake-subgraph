@@ -203,7 +203,7 @@ export function handleEndRound(event: EndRound): void {
   round.closeRoundId = event.params.roundId;
 
   // Get round result based on lock/close price.
-  if (round.closePrice !== null) {
+  if (round.closePrice) {
     if (round.closePrice.equals(round.lockPrice as BigDecimal)) {
       round.position = "House";
 
@@ -404,19 +404,18 @@ export function handleClaim(event: Claim): void {
   let bet = Bet.load(betId);
   if (bet === null) {
     log.warning("Tried to query bet without an existing ID (betId: {})", [betId]);
-    bet = new Bet(betId);
-    bet.amount = BigDecimal.fromString("0");
+  } else {
+    bet.claimed = true;
+    bet.claimedAt = event.block.timestamp;
+    bet.claimedBlock = event.block.number;
+    bet.claimedHash = event.transaction.hash;
+    bet.claimedBNB = event.params.amount.divDecimal(EIGHTEEN_BD);
+    if (bet.amount.gt(ZERO_BD)) {
+      bet.claimedNetBNB = event.params.amount.divDecimal(EIGHTEEN_BD).minus(bet.amount);
+    }
+    bet.updatedAt = event.block.timestamp;
+    bet.save();
   }
-  bet.claimed = true;
-  bet.claimedAt = event.block.timestamp;
-  bet.claimedBlock = event.block.number;
-  bet.claimedHash = event.transaction.hash;
-  bet.claimedBNB = event.params.amount.divDecimal(EIGHTEEN_BD);
-  if (bet.amount.gt(ZERO_BD)) {
-    bet.claimedNetBNB = event.params.amount.divDecimal(EIGHTEEN_BD).minus(bet.amount);
-  }
-  bet.updatedAt = event.block.timestamp;
-  bet.save();
 
   let user = User.load(event.params.sender.toHex());
   if (user === null) {
