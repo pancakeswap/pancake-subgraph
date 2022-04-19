@@ -8,9 +8,9 @@ dataSources:
     name: MasterChefV2
     network: bsc
     source:
-      address: "0x753aAfBEe43D88aED31A82aDABCa12d3F5455fd3" # mock
+      address: "0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652"
       abi: MasterChefV2
-      startBlock: 16167062 # update it
+      startBlock: 17047980
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -42,8 +42,7 @@ dataSources:
           handler: handleSetPool
         - event: UpdatePool(indexed uint256,uint256,uint256,uint256)
           handler: handleUpdatePool
-        # - event: UpdateUserBoost(indexed address, unit256, unit256)
-        #   handler: handleUpdateUserBoost
+        - event: UpdateBoostMultiplier(indexed address,uint256,uint256,uint256)
+          handler: handleUpdateBoostMultiplier
         - event: UpdateCakeRate(uint256,uint256,uint256)
           handler: handleUpdateCakeRate
-

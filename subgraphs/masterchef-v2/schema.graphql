@@ -45,7 +45,7 @@ type User @entity {
 
   address: Bytes!
   pool: Pool
-  boostedValue: BigInt!
+  boostMultiplier: BigInt!
 
   amount: BigInt!
   rewardDebt: BigInt!

@@ -3,7 +3,7 @@ import { User } from "../../generated/schema";
 import { BigInt, Address, ethereum } from "@graphprotocol/graph-ts";
 import { getOrCreateMasterChef } from "./masterChef";
 import { getOrCreatePool } from "./pool";
-import { BI_ZERO, BI_ONE, BASIC_BOOST_PRECISION } from "../utils";
+import { BI_ZERO, BI_ONE, BOOST_PRECISION } from "../utils";
 
 export function getOrCreateUser(address: Address, pid: BigInt, block: ethereum.Block): User {
   const masterChef = getOrCreateMasterChef(block);
@@ -19,7 +19,7 @@ export function getOrCreateUser(address: Address, pid: BigInt, block: ethereum.B
     user.pool = pool.id;
     user.amount = BI_ZERO;
     user.rewardDebt = BI_ZERO;
-    user.boostedValue = BASIC_BOOST_PRECISION;
+    user.boostMultiplier = BOOST_PRECISION;
 
     pool.userCount = pool.userCount.plus(BI_ONE);
     pool.save();
@@ -30,4 +30,8 @@ export function getOrCreateUser(address: Address, pid: BigInt, block: ethereum.B
   user.save();
 
   return user as User;
+}
+
+export function getBoostMultiplier(user: User): BigInt {
+  return user.boostMultiplier.gt(BOOST_PRECISION) ? user.boostMultiplier : BOOST_PRECISION;
 }

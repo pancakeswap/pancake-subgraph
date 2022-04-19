@@ -69,6 +69,7 @@
     "anonymous": false,
     "inputs": [
       { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "pid", "type": "uint256" },
       { "indexed": false, "internalType": "uint256", "name": "oldMultiplier", "type": "uint256" },
       { "indexed": false, "internalType": "uint256", "name": "newMultiplier", "type": "uint256" }
     ],

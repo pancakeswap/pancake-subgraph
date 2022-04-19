@@ -8,11 +8,12 @@ import {
   UpdatePool,
   Withdraw,
   UpdateCakeRate,
+  UpdateBoostMultiplier,
 } from "../../generated/MasterChefV2/MasterChefV2";
 import { getOrCreateMasterChef } from "../entities/masterchef";
 import { getOrCreatePool } from "../entities/pool";
-import { getOrCreateUser } from "../entities/user";
-import { ACC_CAKE_PRECISION, BASIC_BOOST_PRECISION, BI_ONE, BI_ZERO } from "../utils";
+import { getOrCreateUser, getBoostMultiplier } from "../entities/user";
+import { ACC_CAKE_PRECISION, BOOST_PRECISION, BI_ONE, BI_ZERO } from "../utils";
 
 export function handleAddPool(event: AddPool): void {
   log.info("[MasterChefV2] Add Pool {} {} {} {}", [
@@ -88,15 +89,22 @@ export function handleDeposit(event: Deposit): void {
   const pool = getOrCreatePool(event.params.pid, event.block);
   const user = getOrCreateUser(event.params.user, event.params.pid, event.block);
 
-  pool.slpBalance = pool.slpBalance.plus(event.params.amount);
-  // TODO: user boost val / BASIC_BOOST_PRECISION
-  pool.totalBoostedShare = pool.totalBoostedShare.plus(
-    event.params.amount.times(BASIC_BOOST_PRECISION).div(BASIC_BOOST_PRECISION)
-  );
-  pool.save();
+  const multiplier = getBoostMultiplier(user);
 
-  user.amount = user.amount.plus(event.params.amount);
-  user.rewardDebt = user.rewardDebt.plus(event.params.amount.times(pool.accCakePerShare).div(ACC_CAKE_PRECISION));
+  if (event.params.amount.gt(BI_ZERO)) {
+    pool.slpBalance = pool.slpBalance.plus(event.params.amount);
+
+    user.amount = user.amount.plus(event.params.amount);
+    pool.totalBoostedShare = pool.totalBoostedShare.plus(event.params.amount.times(multiplier).div(BOOST_PRECISION));
+  }
+
+  user.rewardDebt = user.amount
+    .times(multiplier)
+    .div(BOOST_PRECISION)
+    .times(pool.accCakePerShare)
+    .div(ACC_CAKE_PRECISION);
+
+  pool.save();
   user.save();
 }
 
@@ -111,12 +119,20 @@ export function handleWithdraw(event: Withdraw): void {
   const pool = getOrCreatePool(event.params.pid, event.block);
   const user = getOrCreateUser(event.params.user, event.params.pid, event.block);
 
-  pool.slpBalance = pool.slpBalance.minus(event.params.amount);
-  pool.save();
+  const multiplier = getBoostMultiplier(user);
 
-  user.amount = user.amount.minus(event.params.amount);
-  // TODO: user boost val / BASIC_BOOST_PRECISION
-  user.rewardDebt = user.rewardDebt.minus(event.params.amount.times(pool.accCakePerShare).div(ACC_CAKE_PRECISION));
+  if (event.params.amount.gt(BI_ZERO)) {
+    pool.slpBalance = pool.slpBalance.minus(event.params.amount);
+    user.amount = user.amount.minus(event.params.amount);
+  }
+
+  user.rewardDebt = user.amount
+    .times(multiplier)
+    .div(BOOST_PRECISION)
+    .times(pool.accCakePerShare)
+    .div(ACC_CAKE_PRECISION);
+
+  pool.save();
   user.save();
 }
 
@@ -130,7 +146,11 @@ export function handleEmergencyWithdraw(event: EmergencyWithdraw): void {
   const masterChefV2 = getOrCreateMasterChef(event.block);
   const pool = getOrCreatePool(event.params.pid, event.block);
   const user = getOrCreateUser(event.params.user, event.params.pid, event.block);
-  const boostedAmount = event.params.amount.times(user.boostedValue).div(BASIC_BOOST_PRECISION);
+
+  const multiplier = getBoostMultiplier(user);
+
+  const boostedAmount = event.params.amount.times(multiplier).div(BOOST_PRECISION);
+
   pool.totalBoostedShare = pool.totalBoostedShare.gt(boostedAmount)
     ? pool.totalBoostedShare.minus(boostedAmount)
     : BI_ZERO;
@@ -152,6 +172,35 @@ export function handleUpdateCakeRate(event: UpdateCakeRate): void {
   masterChef.cakeRateToBurn = event.params.burnRate;
   masterChef.cakeRateToRegularFarm = event.params.regularFarmRate;
   masterChef.cakeRateToSpecialFarm = event.params.specialFarmRate;
+
+  masterChef.save();
+}
+
+export function handleUpdateBoostMultiplier(event: UpdateBoostMultiplier): void {
+  log.info("[MasterChefV2] Update Boost Multiplier {} {} {} {}", [
+    event.params.user.toString(),
+    event.params.pid.toString(),
+    event.params.oldMultiplier.toString(),
+    event.params.newMultiplier.toString(),
+  ]);
+
+  const masterChef = getOrCreateMasterChef(event.block);
+
+  const user = getOrCreateUser(event.params.user, event.params.pid, event.block);
+  const pool = getOrCreatePool(event.params.pid, event.block);
+
+  user.rewardDebt = user.amount
+    .times(event.params.newMultiplier)
+    .div(BOOST_PRECISION)
+    .times(pool.accCakePerShare)
+    .div(ACC_CAKE_PRECISION);
+
+  pool.totalBoostedShare = pool.totalBoostedShare
+    .minus(user.amount.times(event.params.oldMultiplier).div(BOOST_PRECISION))
+    .plus(user.amount.times(event.params.newMultiplier).div(BOOST_PRECISION));
+
+  user.save();
+  pool.save();
 
   masterChef.save();
 }
