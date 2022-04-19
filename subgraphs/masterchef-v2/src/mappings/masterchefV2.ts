@@ -10,7 +10,7 @@ import {
   UpdateCakeRate,
   UpdateBoostMultiplier,
 } from "../../generated/MasterChefV2/MasterChefV2";
-import { getOrCreateMasterChef } from "../entities/masterchef";
+import { getOrCreateMasterChef } from "../entities/master-chef";
 import { getOrCreatePool } from "../entities/pool";
 import { getOrCreateUser, getBoostMultiplier } from "../entities/user";
 import { ACC_CAKE_PRECISION, BOOST_PRECISION, BI_ONE, BI_ZERO } from "../utils";
