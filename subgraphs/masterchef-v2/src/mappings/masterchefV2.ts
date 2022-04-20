@@ -126,6 +126,10 @@ export function handleWithdraw(event: Withdraw): void {
     user.amount = user.amount.minus(event.params.amount);
   }
 
+  if (user.amount.equals(BI_ZERO)) {
+    pool.userCount = pool.userCount.minus(BI_ONE);
+  }
+
   user.rewardDebt = user.amount
     .times(multiplier)
     .div(BOOST_PRECISION)
@@ -157,6 +161,7 @@ export function handleEmergencyWithdraw(event: EmergencyWithdraw): void {
 
   user.amount = BI_ZERO;
   user.rewardDebt = BI_ZERO;
+  pool.userCount = pool.userCount.minus(BI_ONE);
   user.save();
 }
 

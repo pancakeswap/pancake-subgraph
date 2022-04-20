@@ -17,6 +17,7 @@ export function getOrCreatePool(pid: BigInt, block: ethereum.Block): Pool {
     pool.accCakePerShare = BI_ZERO;
     pool.slpBalance = BI_ZERO;
     pool.userCount = BI_ZERO;
+    pool.totalUsersCount = BI_ZERO;
     pool.totalBoostedShare = BI_ZERO;
   }
 

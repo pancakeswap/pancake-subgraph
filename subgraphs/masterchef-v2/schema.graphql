@@ -30,6 +30,8 @@ type Pool @entity {
   slpBalance: BigInt!
 
   users: [User!]! @derivedFrom(field: "pool")
+  # total user include deposit and withdraw all
+  totalUsersCount: BigInt!
   userCount: BigInt!
 
   timestamp: BigInt!

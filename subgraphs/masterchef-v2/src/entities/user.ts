@@ -22,6 +22,7 @@ export function getOrCreateUser(address: Address, pid: BigInt, block: ethereum.B
     user.boostMultiplier = BOOST_PRECISION;
 
     pool.userCount = pool.userCount.plus(BI_ONE);
+    pool.totalUsersCount = pool.totalUsersCount.plus(BI_ONE);
     pool.save();
   }
 
