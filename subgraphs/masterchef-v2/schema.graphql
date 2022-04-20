@@ -10,7 +10,6 @@ type MasterChef @entity {
 
   pools: [Pool!] @derivedFrom(field: "masterChef")
   poolCount: BigInt!
-  lastBurnedBlock: BigInt
 
   timestamp: BigInt!
   block: BigInt!
@@ -21,8 +20,6 @@ type Pool @entity {
   id: ID!
   masterChef: MasterChef!
   pair: Bytes!
-
-  # rewarder: Rewarder
 
   allocPoint: BigInt!
   lastRewardBlock: BigInt!
@@ -44,7 +41,7 @@ type User @entity {
   id: ID!
 
   address: Bytes!
-  pool: Pool
+  pool: Pool!
   boostMultiplier: BigInt!
 
   amount: BigInt!
