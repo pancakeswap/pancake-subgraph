@@ -1,16 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { User } from "../../generated/schema";
+import { Pool, User } from "../../generated/schema";
 import { BigInt, Address, ethereum } from "@graphprotocol/graph-ts";
 import { getOrCreateMasterChef } from "./master-chef";
 import { getOrCreatePool } from "./pool";
 import { BI_ZERO, BI_ONE, BOOST_PRECISION } from "../utils";
 
-export function getOrCreateUser(address: Address, pid: BigInt, block: ethereum.Block): User {
+export function getOrCreateUser(address: Address, pool: Pool, block: ethereum.Block): User {
   const masterChef = getOrCreateMasterChef(block);
-  const pool = getOrCreatePool(pid, block);
 
   const uid = address.toHex();
-  const id = pid.toString().concat("-").concat(uid);
+  const id = pool.id.concat("-").concat(uid);
   let user = User.load(id);
 
   if (user === null) {

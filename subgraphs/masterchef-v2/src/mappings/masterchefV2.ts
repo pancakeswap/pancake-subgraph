@@ -87,16 +87,14 @@ export function handleDeposit(event: Deposit): void {
 
   const masterChef = getOrCreateMasterChef(event.block);
   const pool = getOrCreatePool(event.params.pid, event.block);
-  const user = getOrCreateUser(event.params.user, event.params.pid, event.block);
+  const user = getOrCreateUser(event.params.user, pool, event.block);
 
   const multiplier = getBoostMultiplier(user);
 
-  if (event.params.amount.gt(BI_ZERO)) {
-    pool.slpBalance = pool.slpBalance.plus(event.params.amount);
+  pool.slpBalance = pool.slpBalance.plus(event.params.amount);
 
-    user.amount = user.amount.plus(event.params.amount);
-    pool.totalBoostedShare = pool.totalBoostedShare.plus(event.params.amount.times(multiplier).div(BOOST_PRECISION));
-  }
+  user.amount = user.amount.plus(event.params.amount);
+  pool.totalBoostedShare = pool.totalBoostedShare.plus(event.params.amount.times(multiplier).div(BOOST_PRECISION));
 
   user.rewardDebt = user.amount
     .times(multiplier)
@@ -117,14 +115,12 @@ export function handleWithdraw(event: Withdraw): void {
 
   const masterChef = getOrCreateMasterChef(event.block);
   const pool = getOrCreatePool(event.params.pid, event.block);
-  const user = getOrCreateUser(event.params.user, event.params.pid, event.block);
+  const user = getOrCreateUser(event.params.user, pool, event.block);
 
   const multiplier = getBoostMultiplier(user);
 
-  if (event.params.amount.gt(BI_ZERO)) {
-    pool.slpBalance = pool.slpBalance.minus(event.params.amount);
-    user.amount = user.amount.minus(event.params.amount);
-  }
+  pool.slpBalance = pool.slpBalance.minus(event.params.amount);
+  user.amount = user.amount.minus(event.params.amount);
 
   if (user.amount.equals(BI_ZERO)) {
     pool.userCount = pool.userCount.minus(BI_ONE);
@@ -149,7 +145,7 @@ export function handleEmergencyWithdraw(event: EmergencyWithdraw): void {
 
   const masterChefV2 = getOrCreateMasterChef(event.block);
   const pool = getOrCreatePool(event.params.pid, event.block);
-  const user = getOrCreateUser(event.params.user, event.params.pid, event.block);
+  const user = getOrCreateUser(event.params.user, pool, event.block);
 
   const multiplier = getBoostMultiplier(user);
 
@@ -191,8 +187,8 @@ export function handleUpdateBoostMultiplier(event: UpdateBoostMultiplier): void 
 
   const masterChef = getOrCreateMasterChef(event.block);
 
-  const user = getOrCreateUser(event.params.user, event.params.pid, event.block);
   const pool = getOrCreatePool(event.params.pid, event.block);
+  const user = getOrCreateUser(event.params.user, pool, event.block);
 
   user.rewardDebt = user.amount
     .times(event.params.newMultiplier)
