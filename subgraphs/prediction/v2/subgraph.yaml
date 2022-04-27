@@ -3,8 +3,8 @@ description: Pancake Prediction V2
 features:
   - grafting
 graft:
-  base: QmQWTBVtdqr2i9N6T3NYsp2rDt9HuDueXhH1ckuC4TuKkq
-  block: 16845300
+  base: QmaHRgUYDNKEXueDTA1Ntnv4rTWsignS9LojZFwyBr2mVm
+  block: 17140600
 repository: https://github.com/pancakeswap
 schema:
   file: ./schema.graphql

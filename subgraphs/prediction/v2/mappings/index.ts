@@ -296,8 +296,10 @@ export function handleBetBull(event: BetBull): void {
   user.totalBetsBull = user.totalBetsBull.plus(ONE_BI);
   user.totalBNB = user.totalBNB.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   user.totalBNBBull = user.totalBNBBull.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
-  user.winRate = user.totalBetsClaimed.divDecimal(user.totalBets.toBigDecimal()).times(HUNDRED_BD);
-  user.averageBNB = user.totalBNB.div(user.totalBets.toBigDecimal());
+  if (user.totalBets.gt(ZERO_BI)) {
+    user.winRate = user.totalBetsClaimed.divDecimal(user.totalBets.toBigDecimal()).times(HUNDRED_BD);
+    user.averageBNB = user.totalBNB.div(user.totalBets.toBigDecimal());
+  }
   user.netBNB = user.netBNB.minus(event.params.amount.divDecimal(EIGHTEEN_BD));
   user.save();
 
@@ -380,8 +382,10 @@ export function handleBetBear(event: BetBear): void {
   user.totalBetsBear = user.totalBetsBear.plus(ONE_BI);
   user.totalBNB = user.totalBNB.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   user.totalBNBBear = user.totalBNBBear.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
-  user.winRate = user.totalBetsClaimed.divDecimal(user.totalBets.toBigDecimal()).times(HUNDRED_BD);
-  user.averageBNB = user.totalBNB.div(user.totalBets.toBigDecimal());
+  if (user.totalBets.gt(ZERO_BI)) {
+    user.winRate = user.totalBetsClaimed.divDecimal(user.totalBets.toBigDecimal()).times(HUNDRED_BD);
+    user.averageBNB = user.totalBNB.div(user.totalBets.toBigDecimal());
+  }
   user.netBNB = user.netBNB.minus(event.params.amount.divDecimal(EIGHTEEN_BD));
   user.save();
 
@@ -438,7 +442,9 @@ export function handleClaim(event: Claim): void {
   }
   user.totalBetsClaimed = user.totalBetsClaimed.plus(ONE_BI);
   user.totalBNBClaimed = user.totalBNBClaimed.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
-  user.winRate = user.totalBetsClaimed.divDecimal(user.totalBets.toBigDecimal()).times(HUNDRED_BD);
+  if (user.totalBets.gt(ZERO_BI)) {
+    user.winRate = user.totalBetsClaimed.divDecimal(user.totalBets.toBigDecimal()).times(HUNDRED_BD);
+  }
   user.netBNB = user.netBNB.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   user.save();
 
