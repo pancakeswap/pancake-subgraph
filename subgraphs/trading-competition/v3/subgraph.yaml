@@ -1,0 +1,63 @@
+specVersion: 0.0.2
+description: Pancake Trading Competition V3
+repository: https://github.com/pancakeswap
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: TradingCompetitionV3
+    network: bsc
+    source:
+      address: '0x1C5161CdB145dE35a8961F82b065fd1F75C3BaDf'
+      abi: TradingCompetitionV3
+      startBlock: 16557618
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/competition.ts
+      entities:
+        - Bundle
+        - Competition
+        - Team
+        - User
+        - PairStats
+      abis:
+        - name: TradingCompetitionV3
+          file: ./abis/TradingCompetitionV3.json
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: Pair
+          file: ./abis/Pair.json
+      blockHandlers:
+        - handler: handleBlock
+      eventHandlers:
+        - event: UserRegister(address,uint256,uint256)
+          handler: handleUserRegister
+        - event: NewCompetitionStatus(uint8,uint256)
+          handler: handleNewCompetitionStatus
+templates:
+  - kind: ethereum/contract
+    name: Pair
+    network: bsc
+    source:
+      abi: Pair
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/pair.ts
+      entities:
+        - Bundle
+        - Competition
+        - Team
+        - User
+        - PairStats
+      abis:
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: Pair
+          file: ./abis/Pair.json
+      eventHandlers:
+        - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
+          handler: handleSwap

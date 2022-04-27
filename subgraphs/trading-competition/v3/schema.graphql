@@ -1,0 +1,74 @@
+type Bundle @entity {
+    id: ID!
+
+    # Price in USD for BNB, derived from WBNB/BUSD pair
+    bnbPrice: BigDecimal!
+
+    # Block number
+    block: BigInt!
+}
+
+type Competition @entity {
+    id: ID!
+
+    # Status
+    status: BigInt!
+
+    # Users
+    userCount: BigInt!
+    users: [User!]! @derivedFrom(field: "competition")
+
+    # Volume
+    volumeUSD: BigDecimal!
+    volumeBNB: BigDecimal!
+
+    # Transactions count
+    txCount: BigInt!
+}
+
+type Team @entity {
+    id: ID! # address
+
+    # Users
+    userCount: BigInt!
+    users: [User!]! @derivedFrom(field: "team")
+
+    # Volume
+    volumeUSD: BigDecimal!
+    volumeBNB: BigDecimal!
+
+    # Transactions count
+    txCount: BigInt!
+}
+
+type User @entity {
+    id: ID! # address
+
+    # Competition
+    competition: Competition!
+
+    # Team
+    team: Team!
+
+    # Block number
+    block: BigInt!
+
+    # Total Volume
+    volumeUSD: BigDecimal!
+    volumeBNB: BigDecimal!
+
+    # Mobox Volume
+    moboxVolumeUSD: BigDecimal!
+    moboxVolumeBNB: BigDecimal!
+
+    # Transactions count
+    txCount: BigInt!
+}
+
+type PairStats @entity {
+    id: ID! # address
+
+    # Volume
+    volumeUSD: BigDecimal!
+    volumeBNB: BigDecimal!
+}
