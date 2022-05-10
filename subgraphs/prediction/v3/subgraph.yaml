@@ -1,10 +1,5 @@
 specVersion: 0.0.2
 description: Pancake Prediction V3
-features:
-  - grafting
-graft:
-  base: QmaHRgUYDNKEXueDTA1Ntnv4rTWsignS9LojZFwyBr2mVm
-  block: 17140600
 repository: https://github.com/pancakeswap
 schema:
   file: ./schema.graphql
@@ -13,9 +8,9 @@ dataSources:
     name: PredictionV3
     network: bsc
     source:
-      address: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA'
+      address: "0x0da8AD335ff18020b749DE6CEB77e67F4D159F0F"
       abi: PredictionV3
-      startBlock: 10333825
+      startBlock: 17677290
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
