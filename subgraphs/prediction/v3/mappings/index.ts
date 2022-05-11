@@ -35,15 +35,15 @@ export function handlePause(event: Pause): void {
     market.totalBets = ZERO_BI;
     market.totalBetsBull = ZERO_BI;
     market.totalBetsBear = ZERO_BI;
-    market.totalToken = ZERO_BD;
-    market.totalTokenBull = ZERO_BD;
-    market.totalTokenBear = ZERO_BD;
-    market.totalTokenTreasury = ZERO_BD;
+    market.totalCAKE = ZERO_BD;
+    market.totalCAKEBull = ZERO_BD;
+    market.totalCAKEBear = ZERO_BD;
+    market.totalCAKETreasury = ZERO_BD;
     market.totalBetsClaimed = ZERO_BI;
-    market.totalTokenClaimed = ZERO_BD;
+    market.totalCAKEClaimed = ZERO_BD;
     market.winRate = HUNDRED_BD;
-    market.averageToken = ZERO_BD;
-    market.netToken = ZERO_BD;
+    market.averageCAKE = ZERO_BD;
+    market.netCAKE = ZERO_BD;
     market.save();
   }
   market.epoch = event.params.epoch.toString();
@@ -88,15 +88,15 @@ export function handleUnpause(event: Unpause): void {
     market.totalBets = ZERO_BI;
     market.totalBetsBull = ZERO_BI;
     market.totalBetsBear = ZERO_BI;
-    market.totalToken = ZERO_BD;
-    market.totalTokenBull = ZERO_BD;
-    market.totalTokenBear = ZERO_BD;
-    market.totalTokenTreasury = ZERO_BD;
+    market.totalCAKE = ZERO_BD;
+    market.totalCAKEBull = ZERO_BD;
+    market.totalCAKEBear = ZERO_BD;
+    market.totalCAKETreasury = ZERO_BD;
     market.totalBetsClaimed = ZERO_BI;
-    market.totalTokenClaimed = ZERO_BD;
+    market.totalCAKEClaimed = ZERO_BD;
     market.winRate = HUNDRED_BD;
-    market.averageToken = ZERO_BD;
-    market.netToken = ZERO_BD;
+    market.averageCAKE = ZERO_BD;
+    market.netCAKE = ZERO_BD;
     market.save();
   }
   market.epoch = event.params.epoch.toString();
@@ -118,15 +118,15 @@ export function handleStartRound(event: StartRound): void {
     market.totalBets = ZERO_BI;
     market.totalBetsBull = ZERO_BI;
     market.totalBetsBear = ZERO_BI;
-    market.totalToken = ZERO_BD;
-    market.totalTokenBull = ZERO_BD;
-    market.totalTokenBear = ZERO_BD;
-    market.totalTokenTreasury = ZERO_BD;
+    market.totalCAKE = ZERO_BD;
+    market.totalCAKEBull = ZERO_BD;
+    market.totalCAKEBear = ZERO_BD;
+    market.totalCAKETreasury = ZERO_BD;
     market.totalBetsClaimed = ZERO_BI;
-    market.totalTokenClaimed = ZERO_BD;
+    market.totalCAKEClaimed = ZERO_BD;
     market.winRate = HUNDRED_BD;
-    market.averageToken = ZERO_BD;
-    market.netToken = ZERO_BD;
+    market.averageCAKE = ZERO_BD;
+    market.netCAKE = ZERO_BD;
     market.save();
   }
   market.epoch = event.params.epoch.toString();
@@ -213,8 +213,8 @@ export function handleEndRound(event: EndRound): void {
           event.params.epoch.toString(),
         ]);
       } else {
-        market.totalTokenTreasury = market.totalTokenTreasury.plus(round.totalAmount);
-        market.netToken = market.netToken.plus(round.totalAmount);
+        market.totalCAKETreasury = market.totalCAKETreasury.plus(round.totalAmount);
+        market.netCAKE = market.netCAKE.plus(round.totalAmount);
         market.save();
       }
     } else if (round.closePrice.gt(round.lockPrice as BigDecimal)) {
@@ -239,11 +239,11 @@ export function handleBetBull(event: BetBull): void {
   }
   market.totalBets = market.totalBets.plus(ONE_BI);
   market.totalBetsBull = market.totalBetsBull.plus(ONE_BI);
-  market.totalToken = market.totalToken.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
-  market.totalTokenBull = market.totalTokenBull.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  market.totalCAKE = market.totalCAKE.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  market.totalCAKEBull = market.totalCAKEBull.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   market.winRate = market.totalBetsClaimed.divDecimal(market.totalBets.toBigDecimal()).times(HUNDRED_BD);
-  market.averageToken = market.totalToken.div(market.totalBets.toBigDecimal());
-  market.netToken = market.netToken.minus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  market.averageCAKE = market.totalCAKE.div(market.totalBets.toBigDecimal());
+  market.netCAKE = market.netCAKE.minus(event.params.amount.divDecimal(EIGHTEEN_BD));
   market.save();
 
   let round = Round.load(event.params.epoch.toString());
@@ -279,14 +279,14 @@ export function handleBetBull(event: BetBull): void {
     user.totalBets = ZERO_BI;
     user.totalBetsBull = ZERO_BI;
     user.totalBetsBear = ZERO_BI;
-    user.totalToken = ZERO_BD;
-    user.totalTokenBull = ZERO_BD;
-    user.totalTokenBear = ZERO_BD;
+    user.totalCAKE = ZERO_BD;
+    user.totalCAKEBull = ZERO_BD;
+    user.totalCAKEBear = ZERO_BD;
     user.totalBetsClaimed = ZERO_BI;
-    user.totalTokenClaimed = ZERO_BD;
+    user.totalCAKEClaimed = ZERO_BD;
     user.winRate = HUNDRED_BD;
-    user.averageToken = ZERO_BD;
-    user.netToken = ZERO_BD;
+    user.averageCAKE = ZERO_BD;
+    user.netCAKE = ZERO_BD;
 
     market.totalUsers = market.totalUsers.plus(ONE_BI);
     market.save();
@@ -294,13 +294,13 @@ export function handleBetBull(event: BetBull): void {
   user.updatedAt = event.block.timestamp;
   user.totalBets = user.totalBets.plus(ONE_BI);
   user.totalBetsBull = user.totalBetsBull.plus(ONE_BI);
-  user.totalToken = user.totalToken.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
-  user.totalTokenBull = user.totalTokenBull.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  user.totalCAKE = user.totalCAKE.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  user.totalCAKEBull = user.totalCAKEBull.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   if (user.totalBets.gt(ZERO_BI)) {
     user.winRate = user.totalBetsClaimed.divDecimal(user.totalBets.toBigDecimal()).times(HUNDRED_BD);
-    user.averageToken = user.totalToken.div(user.totalBets.toBigDecimal());
+    user.averageCAKE = user.totalCAKE.div(user.totalBets.toBigDecimal());
   }
-  user.netToken = user.netToken.minus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  user.netCAKE = user.netCAKE.minus(event.params.amount.divDecimal(EIGHTEEN_BD));
   user.save();
 
   let betId = concat(event.params.sender, Bytes.fromI32(event.params.epoch.toI32())).toHex();
@@ -325,11 +325,11 @@ export function handleBetBear(event: BetBear): void {
   }
   market.totalBets = market.totalBets.plus(ONE_BI);
   market.totalBetsBear = market.totalBetsBear.plus(ONE_BI);
-  market.totalToken = market.totalToken.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
-  market.totalTokenBear = market.totalTokenBear.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  market.totalCAKE = market.totalCAKE.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  market.totalCAKEBear = market.totalCAKEBear.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   market.winRate = market.totalBetsClaimed.divDecimal(market.totalBets.toBigDecimal()).times(HUNDRED_BD);
-  market.averageToken = market.totalToken.div(market.totalBets.toBigDecimal());
-  market.netToken = market.netToken.minus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  market.averageCAKE = market.totalCAKE.div(market.totalBets.toBigDecimal());
+  market.netCAKE = market.netCAKE.minus(event.params.amount.divDecimal(EIGHTEEN_BD));
   market.save();
 
   let round = Round.load(event.params.epoch.toString());
@@ -365,14 +365,14 @@ export function handleBetBear(event: BetBear): void {
     user.totalBets = ZERO_BI;
     user.totalBetsBull = ZERO_BI;
     user.totalBetsBear = ZERO_BI;
-    user.totalToken = ZERO_BD;
-    user.totalTokenBull = ZERO_BD;
-    user.totalTokenBear = ZERO_BD;
+    user.totalCAKE = ZERO_BD;
+    user.totalCAKEBull = ZERO_BD;
+    user.totalCAKEBear = ZERO_BD;
     user.totalBetsClaimed = ZERO_BI;
-    user.totalTokenClaimed = ZERO_BD;
+    user.totalCAKEClaimed = ZERO_BD;
     user.winRate = HUNDRED_BD;
-    user.averageToken = ZERO_BD;
-    user.netToken = ZERO_BD;
+    user.averageCAKE = ZERO_BD;
+    user.netCAKE = ZERO_BD;
 
     market.totalUsers = market.totalUsers.plus(ONE_BI);
     market.save();
@@ -380,13 +380,13 @@ export function handleBetBear(event: BetBear): void {
   user.updatedAt = event.block.timestamp;
   user.totalBets = user.totalBets.plus(ONE_BI);
   user.totalBetsBear = user.totalBetsBear.plus(ONE_BI);
-  user.totalToken = user.totalToken.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
-  user.totalTokenBear = user.totalTokenBear.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  user.totalCAKE = user.totalCAKE.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  user.totalCAKEBear = user.totalCAKEBear.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   if (user.totalBets.gt(ZERO_BI)) {
     user.winRate = user.totalBetsClaimed.divDecimal(user.totalBets.toBigDecimal()).times(HUNDRED_BD);
-    user.averageToken = user.totalToken.div(user.totalBets.toBigDecimal());
+    user.averageCAKE = user.totalCAKE.div(user.totalBets.toBigDecimal());
   }
-  user.netToken = user.netToken.minus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  user.netCAKE = user.netCAKE.minus(event.params.amount.divDecimal(EIGHTEEN_BD));
   user.save();
 
   let betId = concat(event.params.sender, Bytes.fromI32(event.params.epoch.toI32())).toHex();
@@ -413,9 +413,9 @@ export function handleClaim(event: Claim): void {
     bet.claimedAt = event.block.timestamp;
     bet.claimedBlock = event.block.number;
     bet.claimedHash = event.transaction.hash;
-    bet.claimedToken = event.params.amount.divDecimal(EIGHTEEN_BD);
+    bet.claimedCAKE = event.params.amount.divDecimal(EIGHTEEN_BD);
     if (bet.amount.gt(ZERO_BD)) {
-      bet.claimedNetToken = event.params.amount.divDecimal(EIGHTEEN_BD).minus(bet.amount);
+      bet.claimedNetCAKE = event.params.amount.divDecimal(EIGHTEEN_BD).minus(bet.amount);
     }
     bet.updatedAt = event.block.timestamp;
     bet.save();
@@ -430,22 +430,22 @@ export function handleClaim(event: Claim): void {
     user.totalBets = ZERO_BI;
     user.totalBetsBull = ZERO_BI;
     user.totalBetsBear = ZERO_BI;
-    user.totalToken = ZERO_BD;
-    user.totalTokenBull = ZERO_BD;
-    user.totalTokenBear = ZERO_BD;
+    user.totalCAKE = ZERO_BD;
+    user.totalCAKEBull = ZERO_BD;
+    user.totalCAKEBear = ZERO_BD;
     user.totalBetsClaimed = ZERO_BI;
-    user.totalTokenClaimed = ZERO_BD;
+    user.totalCAKEClaimed = ZERO_BD;
     user.winRate = HUNDRED_BD;
-    user.averageToken = ZERO_BD;
-    user.netToken = ZERO_BD;
+    user.averageCAKE = ZERO_BD;
+    user.netCAKE = ZERO_BD;
     user.save();
   }
   user.totalBetsClaimed = user.totalBetsClaimed.plus(ONE_BI);
-  user.totalTokenClaimed = user.totalTokenClaimed.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  user.totalCAKEClaimed = user.totalCAKEClaimed.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   if (user.totalBets.gt(ZERO_BI)) {
     user.winRate = user.totalBetsClaimed.divDecimal(user.totalBets.toBigDecimal()).times(HUNDRED_BD);
   }
-  user.netToken = user.netToken.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  user.netCAKE = user.netCAKE.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   user.save();
 
   let market = Market.load("1");
@@ -454,9 +454,9 @@ export function handleClaim(event: Claim): void {
     return;
   }
   market.totalBetsClaimed = market.totalBetsClaimed.plus(ONE_BI);
-  market.totalTokenClaimed = market.totalTokenClaimed.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  market.totalCAKEClaimed = market.totalCAKEClaimed.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   market.winRate = market.totalBetsClaimed.divDecimal(market.totalBets.toBigDecimal()).times(HUNDRED_BD);
-  market.netToken = market.netToken.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
+  market.netCAKE = market.netCAKE.plus(event.params.amount.divDecimal(EIGHTEEN_BD));
   market.save();
 }
 
@@ -468,6 +468,6 @@ export function handleRewardsCalculated(event: RewardsCalculated): void {
     ]);
     return;
   }
-  market.totalTokenTreasury = market.totalTokenTreasury.plus(event.params.treasuryAmount.divDecimal(EIGHTEEN_BD));
+  market.totalCAKETreasury = market.totalCAKETreasury.plus(event.params.treasuryAmount.divDecimal(EIGHTEEN_BD));
   market.save();
 }

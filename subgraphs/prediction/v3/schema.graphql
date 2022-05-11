@@ -17,17 +17,17 @@ type Market @entity {
   totalBets: BigInt!
   totalBetsBull: BigInt!
   totalBetsBear: BigInt!
-  totalToken: BigDecimal!
-  totalTokenBull: BigDecimal!
-  totalTokenBear: BigDecimal!
-  totalTokenTreasury: BigDecimal!
+  totalCAKE: BigDecimal!
+  totalCAKEBull: BigDecimal!
+  totalCAKEBear: BigDecimal!
+  totalCAKETreasury: BigDecimal!
 
   # Statistics
   totalBetsClaimed: BigInt!
-  totalTokenClaimed: BigDecimal!
+  totalCAKEClaimed: BigDecimal!
   winRate: BigDecimal!
-  averageToken: BigDecimal!
-  netToken: BigDecimal!
+  averageCAKE: BigDecimal!
+  netCAKE: BigDecimal!
 }
 
 type Round @entity {
@@ -80,17 +80,17 @@ type User @entity {
   totalBets: BigInt!
   totalBetsBull: BigInt!
   totalBetsBear: BigInt!
-  totalToken: BigDecimal!
-  totalTokenBull: BigDecimal!
-  totalTokenBear: BigDecimal!
+  totalCAKE: BigDecimal!
+  totalCAKEBull: BigDecimal!
+  totalCAKEBear: BigDecimal!
   bets: [Bet!]! @derivedFrom(field: "user")
 
   # Statistics
   totalBetsClaimed: BigInt!
-  totalTokenClaimed: BigDecimal!
+  totalCAKEClaimed: BigDecimal!
   winRate: BigDecimal!
-  averageToken: BigDecimal!
-  netToken: BigDecimal!
+  averageCAKE: BigDecimal!
+  netCAKE: BigDecimal!
 }
 
 type Bet @entity {
@@ -109,8 +109,8 @@ type Bet @entity {
   claimedAt: BigInt
   claimedBlock: BigInt
   claimedHash: Bytes
-  claimedToken: BigDecimal
-  claimedNetToken: BigDecimal
+  claimedCAKE: BigDecimal
+  claimedNetCAKE: BigDecimal
 
   createdAt: BigInt!
   updatedAt: BigInt!
