@@ -2,6 +2,11 @@
   {
     "inputs": [
       {
+        "internalType": "contract IERC20",
+        "name": "_token",
+        "type": "address"
+      },
+      {
         "internalType": "address",
         "name": "_oracleAddress",
         "type": "address"
@@ -200,6 +205,19 @@
       }
     ],
     "name": "NewBufferAndIntervalSeconds",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "NewKeeperAddress",
     "type": "event"
   },
   {
@@ -458,11 +476,16 @@
         "internalType": "uint256",
         "name": "epoch",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
       }
     ],
     "name": "betBear",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -471,11 +494,16 @@
         "internalType": "uint256",
         "name": "epoch",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
       }
     ],
     "name": "betBull",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -623,7 +651,7 @@
       {
         "components": [
           {
-            "internalType": "enum PancakePredictionV2.Position",
+            "internalType": "enum PancakePredictionV3.Position",
             "name": "position",
             "type": "uint8"
           },
@@ -638,7 +666,7 @@
             "type": "bool"
           }
         ],
-        "internalType": "struct PancakePredictionV2.BetInfo[]",
+        "internalType": "struct PancakePredictionV3.BetInfo[]",
         "name": "",
         "type": "tuple[]"
       },
@@ -684,6 +712,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "keeperAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -699,7 +740,7 @@
     "name": "ledger",
     "outputs": [
       {
-        "internalType": "enum PancakePredictionV2.Position",
+        "internalType": "enum PancakePredictionV3.Position",
         "name": "position",
         "type": "uint8"
       },
@@ -982,6 +1023,19 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_keeperAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setKeeper",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "_minBetAmount",
         "type": "uint256"
@@ -1042,6 +1096,19 @@
     "name": "setTreasuryFee",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "token",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
