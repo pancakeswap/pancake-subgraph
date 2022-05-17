@@ -1,0 +1,42 @@
+specVersion: 0.0.3
+description: MasterChefV2
+repository: https://github.com/pancakeswap/pancakeswapswap-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: MasterChefV2
+    network: bsc
+    source:
+      address: "0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652"
+      abi: MasterChefV2
+      startBlock: 17047980
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/masterchefV2.ts
+      entities:
+        - MasterChefV2
+        - Pool
+        - User
+      abis:
+        - name: MasterChefV2
+          file: ./abis/MasterChefV2.json
+      eventHandlers:
+        - event: Deposit(indexed address,indexed uint256,uint256)
+          handler: handleDeposit
+        - event: Withdraw(indexed address,indexed uint256,uint256)
+          handler: handleWithdraw
+        - event: EmergencyWithdraw(indexed address,indexed uint256,uint256)
+          handler: handleEmergencyWithdraw
+        - event: AddPool(indexed uint256,uint256,indexed address,bool)
+          handler: handleAddPool
+        - event: SetPool(indexed uint256,uint256)
+          handler: handleSetPool
+        - event: UpdatePool(indexed uint256,uint256,uint256,uint256)
+          handler: handleUpdatePool
+        - event: UpdateBoostMultiplier(indexed address,uint256,uint256,uint256)
+          handler: handleUpdateBoostMultiplier
+        - event: UpdateCakeRate(uint256,uint256,uint256)
+          handler: handleUpdateCakeRate
