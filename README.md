@@ -32,6 +32,9 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 
 13. **[Trading Competition (v1)](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/trading-competition-v1)**: Tracks all metrics for the Easter Battle (April 07—14, 2021).
 
+14. **[MasterChef (v2)](https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v2)**: Tracks data for MasterChefV2.
+
+
 ## Dependencies
 
 - [Graph CLI](https://github.com/graphprotocol/graph-cli)
