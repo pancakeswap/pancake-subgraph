@@ -1,0 +1,13 @@
+"""
+PancakeSwap Lottery
+"""
+type Pottery @entity {
+    id: ID!
+}
+
+"""
+PancakeSwap Vault
+"""
+type PotteryVault @entity {
+    id: ID!
+}
