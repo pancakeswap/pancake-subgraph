@@ -10,7 +10,7 @@ dataSources:
     source:
       address: '0x45c54210128a065de780C4B0Df3d16664f7f859e'
       abi: CakePool
-      startBlock: 17050265
+      startBlock: 17250470
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

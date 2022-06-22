@@ -14,6 +14,7 @@ export function startCountdown(event: NewMaxLockDuration): void {
     cakePool.blockNumber = event.block.number;
     cakePool.totalLocked = ZERO_BI;
     cakePool.maxLockDuration = event.params.maxLockDuration;
+    cakePool.usersWithLockedCake = [];
     cakePool.save();
   }
 }
@@ -34,7 +35,7 @@ export function handleDeposit(event: Deposit): void {
       } else {
         user.lockEndTime = user.lockEndTime.plus(event.params.duration);
       }
-      user.pool = cakePool.id;
+      cakePool.usersWithLockedCake = cakePool.usersWithLockedCake.concat([event.params.sender.toHex()]);
     } else {
       if (user.totalLocked.gt(ZERO_BI)) {
         user.totalLocked = user.totalLocked.plus(event.params.amount);
@@ -87,28 +88,30 @@ export function handleBlock(event: ethereum.Block): void {
 
   let cakePool = CakePool.load("1");
   if (cakePool !== null) {
-    let users = cakePool.users;
-    if (users !== null) {
-      let userCount = cakePool.users.length;
+    let users = cakePool.usersWithLockedCake;
+    if (users.length !== 0) {
+      let userCount = users.length;
       log.info("HandleBlock. Users found. Length - {}", [userCount.toString()]);
       for (let i = 0; i < userCount; i++) {
-        let user = User.load((users as Array<string>)[i].toString());
+        let user = User.load(users[i]);
         if (user !== null) {
           if (user.lockEndTime.notEqual(ZERO_BI) && user.lockEndTime < event.timestamp) {
             cakePool.totalLocked = cakePool.totalLocked.minus(user.totalLocked);
 
             user.locked = false;
             user.unlockedByUser = false;
-            user.pool = null;
+            cakePool.usersWithLockedCake = cakePool.usersWithLockedCake.splice(i, 1);
             user.totalLocked = ZERO_BI;
             user.lockStartTime = ZERO_BI;
             user.lockEndTime = ZERO_BI;
             user.save();
           }
+        } else {
+          log.error("HandleBlock. User not found: {}", [users[i]]);
         }
       }
     } else {
-      log.error("HandleBlock. No users found. {}", ["0"]);
+      log.error("HandleBlock. No users found.", []);
     }
     cakePool.save();
   }
