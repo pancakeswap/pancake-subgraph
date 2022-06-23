@@ -2,7 +2,10 @@
 import { BigInt, ethereum, log } from "@graphprotocol/graph-ts";
 import { User, CakePool } from "../generated/schema";
 import { Deposit, Lock, NewMaxLockDuration, Unlock } from "../generated/CakePool/CakePool";
-import { getOrCreateUser, ZERO_BI } from "./utils";
+import { getOrCreateBlockInfo, getOrCreateUser, ZERO_BI } from "./utils";
+
+//600 block it's around 30 min
+let BLOCK_ITERATION_STEP_BI = BigInt.fromI32(600);
 
 export function startCountdown(event: NewMaxLockDuration): void {
   let cakePool = CakePool.load("1");
@@ -86,34 +89,40 @@ export function handleUnlock(event: Unlock): void {
 export function handleBlock(event: ethereum.Block): void {
   log.info("HandleBlock. Timestamp - {}", [event.timestamp.toString()]);
 
-  let cakePool = CakePool.load("1");
-  if (cakePool !== null) {
-    let users = cakePool.usersWithLockedCake;
-    if (users.length !== 0) {
-      let userCount = users.length;
-      log.info("HandleBlock. Users found. Length - {}", [userCount.toString()]);
-      for (let i = 0; i < userCount; i++) {
-        let user = User.load(users[i]);
-        if (user !== null) {
-          if (user.lockEndTime.notEqual(ZERO_BI) && user.lockEndTime < event.timestamp) {
-            cakePool.totalLocked = cakePool.totalLocked.minus(user.totalLocked);
+  let blockInfo = getOrCreateBlockInfo();
+  if (event.number.minus(blockInfo.lastBlockNumber).gt(BLOCK_ITERATION_STEP_BI)) {
+    blockInfo.lastBlockNumber = event.number;
+    blockInfo.save();
 
-            user.locked = false;
-            user.unlockedByUser = false;
-            cakePool.usersWithLockedCake = cakePool.usersWithLockedCake.splice(i, 1);
-            user.totalLocked = ZERO_BI;
-            user.lockStartTime = ZERO_BI;
-            user.lockEndTime = ZERO_BI;
-            user.save();
+    let cakePool = CakePool.load("1");
+    if (cakePool !== null) {
+      let users = cakePool.usersWithLockedCake;
+      if (users.length !== 0) {
+        let userCount = users.length;
+        log.info("HandleBlock. Users found. Length - {}", [userCount.toString()]);
+        for (let i = 0; i < userCount; i++) {
+          let user = User.load(users[i]);
+          if (user !== null) {
+            if (user.lockEndTime.notEqual(ZERO_BI) && user.lockEndTime < event.timestamp) {
+              cakePool.totalLocked = cakePool.totalLocked.minus(user.totalLocked);
+
+              user.locked = false;
+              user.unlockedByUser = false;
+              cakePool.usersWithLockedCake = cakePool.usersWithLockedCake.splice(i, 1);
+              user.totalLocked = ZERO_BI;
+              user.lockStartTime = ZERO_BI;
+              user.lockEndTime = ZERO_BI;
+              user.save();
+            }
+          } else {
+            log.error("HandleBlock. User not found: {}", [users[i]]);
           }
-        } else {
-          log.error("HandleBlock. User not found: {}", [users[i]]);
         }
+      } else {
+        log.error("HandleBlock. No users found.", []);
       }
-    } else {
-      log.error("HandleBlock. No users found.", []);
+      cakePool.save();
     }
-    cakePool.save();
   }
   log.info("HandleBlock. End. Timestamp - {}", [event.timestamp.toString()]);
 }
