@@ -7,18 +7,18 @@
         "type": "address"
       },
       {
-        "internalType": "contract CakePool",
+        "internalType": "contract ICakePool",
         "name": "_cakePool",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IPancakeSwapPotteryDraw",
+        "name": "_potteryDraw",
         "type": "address"
       },
       {
         "internalType": "address",
         "name": "_admin",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_treasury",
         "type": "address"
       },
       {
@@ -29,6 +29,11 @@
       {
         "internalType": "uint256",
         "name": "_lockTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_maxTotalDeposit",
         "type": "uint256"
       }
     ],
@@ -146,12 +151,12 @@
       },
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "keeper",
-        "type": "address"
+        "internalType": "uint16",
+        "name": "burnPercentage",
+        "type": "uint16"
       }
     ],
-    "name": "SetKeeper",
+    "name": "SetBurnPercentage",
     "type": "event"
   },
   {
@@ -166,11 +171,11 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "treasury",
+        "name": "keeper",
         "type": "address"
       }
     ],
-    "name": "SetTreasury",
+    "name": "SetKeeper",
     "type": "event"
   },
   {
@@ -277,6 +282,19 @@
     "name": "LOCK_PERIOD",
     "outputs": [
       {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MIN_LOCK_AMOUNT",
+    "outputs": [
+      {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
@@ -360,6 +378,19 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "burnPercentage",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -516,6 +547,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "getNumberOfTickets",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "getStatus",
     "outputs": [
@@ -601,7 +651,7 @@
         "type": "uint256"
       }
     ],
-    "stateMutability": "pure",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -839,12 +889,12 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_keeper",
-        "type": "address"
+        "internalType": "uint16",
+        "name": "_burnPercentage",
+        "type": "uint16"
       }
     ],
-    "name": "setKeeper",
+    "name": "setBurnPercentage",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -853,11 +903,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_treasury",
+        "name": "_keeper",
         "type": "address"
       }
     ],
-    "name": "setTreasury",
+    "name": "setKeeper",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -978,19 +1028,6 @@
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "treasury",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {

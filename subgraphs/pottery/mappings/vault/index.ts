@@ -1,20 +1,19 @@
-import { log } from "@graphprotocol/graph-ts";
-import {
-  Approval,
-  Deposit,
-  Lock,
-  Transfer,
-  Unlock,
-  Withdraw,
-} from "../../generated/templates/PotteryVault/PancakeSwapPotteryVault";
+/* eslint-disable prefer-const */
 
-export function handleApproval(event: Approval): void {
-  log.info("PotteryVault. Approve. Owner {}, Value {}, Spender {}", [
-    event.params.owner.toHex(),
-    event.params.value.toString(),
-    event.params.spender.toHex(),
-  ]);
-}
+import { dataSource, store, log } from "@graphprotocol/graph-ts";
+import { Deposit, Transfer, Lock, Unlock } from "../../generated/templates/PotteryVault/PancakeSwapPotteryVault";
+import {
+  ZERO_BI,
+  ONE_BI,
+  getOrCreatePotteryVault,
+  getOrCreateWithdrawal,
+  ADDRESS_ZERO,
+  getOrCreateUser,
+} from "../utils";
+import { UserPotteryVault } from "../../generated/schema";
+
+let context = dataSource.context();
+let vaultAddress = context.getString("vaultAddress");
 
 export function handleDeposit(event: Deposit): void {
   log.info("PotteryVault. Deposit. Owner {}, Assets {}, Caller {}, Shares {}", [
@@ -23,14 +22,10 @@ export function handleDeposit(event: Deposit): void {
     event.params.caller.toHex(),
     event.params.shares.toString(),
   ]);
-}
 
-export function handleLock(event: Lock): void {
-  log.info("PotteryVault. Lock. LockAmount {}, Admin {}, StartTime {}", [
-    event.params.lockAmount.toString(),
-    event.params.admin.toHex(),
-    event.params.startTime.toString(),
-  ]);
+  let withdrawal = getOrCreateWithdrawal(vaultAddress, event.params.caller.toHex());
+  withdrawal.depositDate = event.block.timestamp;
+  withdrawal.save();
 }
 
 export function handleTransfer(event: Transfer): void {
@@ -39,24 +34,68 @@ export function handleTransfer(event: Transfer): void {
     event.params.to.toHex(),
     event.params.value.toString(),
   ]);
+
+  let potteryVault = getOrCreatePotteryVault(vaultAddress);
+
+  let userId = event.params.to.toHex();
+  let user = getOrCreateUser(userId);
+  let withdrawal = getOrCreateWithdrawal(vaultAddress, userId);
+
+  // Income to vault
+  if (ADDRESS_ZERO.equals(event.params.from)) {
+    log.info("PotteryVault. INCOME. From {}, To {}, Value {}", [
+      event.params.from.toHex(),
+      event.params.to.toHex(),
+      event.params.value.toString(),
+    ]);
+    user.totalShares = user.totalShares.plus(event.params.value);
+    withdrawal.shares = withdrawal.shares.plus(event.params.value);
+
+    let userPotteryVault = UserPotteryVault.load(userId.concat(potteryVault.id));
+    if (userPotteryVault === null) {
+      potteryVault.totalPlayers = potteryVault.totalPlayers.plus(ONE_BI);
+
+      userPotteryVault = new UserPotteryVault(userId.concat(potteryVault.id));
+      userPotteryVault.user = userId;
+      userPotteryVault.vault = potteryVault.id;
+      userPotteryVault.save();
+    }
+    // withdrawal.depositDate = event.block.timestamp;
+    withdrawal.save();
+  }
+  // Outcome from vault
+  else if (ADDRESS_ZERO.equals(event.params.to)) {
+    user.totalShares = user.totalShares.minus(event.params.value);
+    withdrawal.shares = withdrawal.shares.minus(event.params.value);
+    withdrawal.save();
+    log.info("PotteryVault. OUTCOME. From {}, To {}, Value {}", [
+      event.params.from.toHex(),
+      event.params.to.toHex(),
+      event.params.value.toString(),
+    ]);
+
+    if (potteryVault.status === "BEFORE_LOCK") {
+      if (withdrawal.shares.equals(ZERO_BI)) {
+        potteryVault.totalPlayers = potteryVault.totalPlayers.minus(ONE_BI);
+
+        store.remove("UserPotteryVault", event.params.from.toHex().concat(potteryVault.id));
+      }
+    }
+  }
+
+  potteryVault.save();
+}
+
+export function handleLock(event: Lock): void {
+  let potteryVault = getOrCreatePotteryVault(vaultAddress);
+  potteryVault.status = "LOCK";
+
+  potteryVault.save();
 }
 
 export function handleUnlock(event: Unlock): void {
-  log.info("PotteryVault. Unlock. Admin {}, EndTime {}, ApyAmount {}, BurnAmount {}, EarnAmount {}", [
-    event.params.admin.toHex(),
-    event.params.endTime.toString(),
-    event.params.apyAmount.toString(),
-    event.params.burnAmount.toString(),
-    event.params.earnAmount.toString(),
-  ]);
-}
+  let potteryVault = getOrCreatePotteryVault(vaultAddress);
+  potteryVault.status = "UNLOCK";
 
-export function handleWithdraw(event: Withdraw): void {
-  log.info("PotteryVault. Withdraw. Assets {}, Caller {}, Owner {}, Shares {}, Receiver {}", [
-    event.params.assets.toString(),
-    event.params.caller.toHex(),
-    event.params.owner.toHex(),
-    event.params.shares.toString(),
-    event.params.receiver.toHex(),
-  ]);
+  potteryVault.save();
 }
