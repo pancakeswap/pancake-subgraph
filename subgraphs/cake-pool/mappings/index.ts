@@ -1,11 +1,8 @@
 /* eslint-disable prefer-const */
-import { BigInt, ethereum, log } from "@graphprotocol/graph-ts";
-import { User, CakePool } from "../generated/schema";
+import { BigInt, log } from "@graphprotocol/graph-ts";
+import { CakePool } from "../generated/schema";
 import { Deposit, Lock, NewMaxLockDuration, Unlock } from "../generated/CakePool/CakePool";
-import { getOrCreateBlockInfo, getOrCreateUser, ZERO_BI } from "./utils";
-
-//600 block it's around 30 min
-let BLOCK_ITERATION_STEP_BI = BigInt.fromI32(600);
+import { getOrCreateUser, ZERO_BI } from "./utils";
 
 export function startCountdown(event: NewMaxLockDuration): void {
   let cakePool = CakePool.load("1");
@@ -26,10 +23,10 @@ export function handleDeposit(event: Deposit): void {
   let cakePool = CakePool.load("1");
   if (cakePool !== null) {
     let user = getOrCreateUser(event.params.sender.toHex());
-    log.info("Deposit. Duration - {}. Lock amount - {}", [
-      event.params.duration.toString(),
-      event.params.amount.toString(),
-    ]);
+    // log.info("Deposit. Duration - {}. Lock amount - {}", [
+    //   event.params.duration.toString(),
+    //   event.params.amount.toString(),
+    // ]);
 
     if (event.params.duration.gt(ZERO_BI)) {
       if (user.lockEndTime < event.block.timestamp) {
@@ -55,17 +52,16 @@ export function handleLock(event: Lock): void {
   let cakePool = CakePool.load("1");
   if (cakePool !== null) {
     let user = getOrCreateUser(event.params.sender.toHex());
-    log.info("Lock. Duration - {}. Lock amount - {}", [
-      event.params.lockedDuration.toString(),
-      event.params.lockedAmount.toString(),
-    ]);
+    // log.info("Lock. Duration - {}. Lock amount - {}", [
+    //   event.params.lockedDuration.toString(),
+    //   event.params.lockedAmount.toString(),
+    // ]);
 
     cakePool.totalLocked = cakePool.totalLocked.minus(user.totalLocked).plus(event.params.lockedAmount);
     cakePool.save();
 
     user.totalLocked = event.params.lockedAmount;
     user.duration = event.params.lockedDuration;
-    user.unlockedByUser = false;
     user.locked = true;
     user.save();
   }
@@ -75,54 +71,16 @@ export function handleUnlock(event: Unlock): void {
   let cakePool = CakePool.load("1");
   if (cakePool !== null) {
     let user = getOrCreateUser(event.params.sender.toHex());
-    log.info("Unlock. Amount - {}", [event.params.amount.toString()]);
+    // log.info("Unlock. Amount - {}", [event.params.amount.toString()]);
 
-    user.locked = false;
-    user.unlockedByUser = true;
+    cakePool.totalLocked = cakePool.totalLocked.minus(event.params.amount);
+    cakePool.save();
+
+    user.totalLocked = user.totalLocked.minus(event.params.amount);
     user.lockStartTime = ZERO_BI;
     user.lockEndTime = ZERO_BI;
+    user.locked = false;
 
     user.save();
   }
-}
-
-export function handleBlock(event: ethereum.Block): void {
-  log.info("HandleBlock. Timestamp - {}", [event.timestamp.toString()]);
-
-  let blockInfo = getOrCreateBlockInfo();
-  if (event.number.minus(blockInfo.lastBlockNumber).gt(BLOCK_ITERATION_STEP_BI)) {
-    blockInfo.lastBlockNumber = event.number;
-    blockInfo.save();
-
-    let cakePool = CakePool.load("1");
-    if (cakePool !== null) {
-      let users = cakePool.usersWithLockedCake;
-      if (users.length !== 0) {
-        let userCount = users.length;
-        log.info("HandleBlock. Users found. Length - {}", [userCount.toString()]);
-        for (let i = 0; i < userCount; i++) {
-          let user = User.load(users[i]);
-          if (user !== null) {
-            if (user.lockEndTime.notEqual(ZERO_BI) && user.lockEndTime < event.timestamp) {
-              cakePool.totalLocked = cakePool.totalLocked.minus(user.totalLocked);
-
-              user.locked = false;
-              user.unlockedByUser = false;
-              cakePool.usersWithLockedCake = cakePool.usersWithLockedCake.splice(i, 1);
-              user.totalLocked = ZERO_BI;
-              user.lockStartTime = ZERO_BI;
-              user.lockEndTime = ZERO_BI;
-              user.save();
-            }
-          } else {
-            log.error("HandleBlock. User not found: {}", [users[i]]);
-          }
-        }
-      } else {
-        log.error("HandleBlock. No users found.", []);
-      }
-      cakePool.save();
-    }
-  }
-  log.info("HandleBlock. End. Timestamp - {}", [event.timestamp.toString()]);
 }

@@ -31,10 +31,3 @@ type CakePool @entity {
     totalLocked: BigInt!
     usersWithLockedCake: [String!]!
 }
-
-type BlockInfo @entity {
-    "ID (hash)"
-    id: ID!
-    "Last run blockNumber"
-    lastBlockNumber: BigInt!
-}
