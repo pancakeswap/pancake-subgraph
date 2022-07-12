@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 import { PairHourData } from "../generated/schema";
-import { BigInt, BigDecimal, ethereum } from "@graphprotocol/graph-ts";
+import { BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { Pair, Bundle, Token, PancakeFactory, PancakeDayData, PairDayData, TokenDayData } from "../generated/schema";
 import { ONE_BI, ZERO_BD, ZERO_BI, FACTORY_ADDRESS } from "./utils";
 
@@ -20,8 +20,6 @@ export function updatePancakeDayData(event: ethereum.Event): PancakeDayData {
     pancakeDayData.totalVolumeBNB = ZERO_BD;
     pancakeDayData.dailyVolumeUntracked = ZERO_BD;
   }
-  pancakeDayData.totalLiquidityUSD = pancake.totalLiquidityUSD;
-  pancakeDayData.totalLiquidityBNB = pancake.totalLiquidityBNB;
   pancakeDayData.totalTransactions = pancake.totalTransactions;
   pancakeDayData.save();
 
@@ -99,12 +97,8 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
     tokenDayData.dailyVolumeBNB = ZERO_BD;
     tokenDayData.dailyVolumeUSD = ZERO_BD;
     tokenDayData.dailyTxns = ZERO_BI;
-    tokenDayData.totalLiquidityUSD = ZERO_BD;
   }
   tokenDayData.priceUSD = token.derivedBNB.times(bundle.bnbPrice);
-  tokenDayData.totalLiquidityToken = token.totalLiquidity;
-  tokenDayData.totalLiquidityBNB = token.totalLiquidity.times(token.derivedBNB as BigDecimal);
-  tokenDayData.totalLiquidityUSD = tokenDayData.totalLiquidityBNB.times(bundle.bnbPrice);
   tokenDayData.dailyTxns = tokenDayData.dailyTxns.plus(ONE_BI);
   tokenDayData.save();
 

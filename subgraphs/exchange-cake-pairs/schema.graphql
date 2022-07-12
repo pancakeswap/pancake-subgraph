@@ -13,10 +13,6 @@ type PancakeFactory @entity {
 
   # untracked values - less confident USD scores
   untrackedVolumeUSD: BigDecimal!
-
-  # total liquidity
-  totalLiquidityUSD: BigDecimal!
-  totalLiquidityBNB: BigDecimal!
 }
 
 type Bundle @entity {
@@ -43,9 +39,6 @@ type Token @entity {
 
   # transactions across all pairs
   totalTransactions: BigInt!
-
-  # liquidity across all pairs
-  totalLiquidity: BigDecimal!
 
   # derived prices
   derivedBNB: BigDecimal
@@ -91,93 +84,6 @@ type Pair @entity {
 
   # derived fields
   pairHourData: [PairHourData!]! @derivedFrom(field: "pair")
-  mints: [Mint!]! @derivedFrom(field: "pair")
-  burns: [Burn!]! @derivedFrom(field: "pair")
-  swaps: [Swap!]! @derivedFrom(field: "pair")
-}
-
-type Transaction @entity {
-  id: ID!
-
-  block: BigInt!
-  timestamp: BigInt!
-  # This is not the reverse of Mint.transaction; it is only used to
-  # track incomplete mints (similar for burns and swaps)
-  mints: [Mint]!
-  burns: [Burn]!
-  swaps: [Swap]!
-}
-
-type Mint @entity {
-  # transaction hash + "-" + index in mints Transaction array
-  id: ID!
-  transaction: Transaction!
-  timestamp: BigInt! # need this to pull recent txns for specific token or pair
-  pair: Pair!
-
-  # populated from the primary Transfer event
-  to: Bytes!
-  liquidity: BigDecimal!
-
-  # populated from the Mint event
-  sender: Bytes
-  amount0: BigDecimal
-  amount1: BigDecimal
-  logIndex: BigInt
-  # derived amount based on available prices of tokens
-  amountUSD: BigDecimal
-
-  # optional fee fields, if a Transfer event is fired in _mintFee
-  feeTo: Bytes
-  feeLiquidity: BigDecimal
-}
-
-type Burn @entity {
-  # transaction hash + "-" + index in mints Transaction array
-  id: ID!
-  transaction: Transaction!
-  timestamp: BigInt! # need this to pull recent txns for specific token or pair
-  pair: Pair!
-
-  # populated from the primary Transfer event
-  liquidity: BigDecimal!
-
-  # populated from the Burn event
-  sender: Bytes
-  amount0: BigDecimal
-  amount1: BigDecimal
-  to: Bytes
-  logIndex: BigInt
-  # derived amount based on available prices of tokens
-  amountUSD: BigDecimal
-
-  # mark uncomplete in BNB case
-  needsComplete: Boolean!
-
-  # optional fee fields, if a Transfer event is fired in _mintFee
-  feeTo: Bytes
-  feeLiquidity: BigDecimal
-}
-
-type Swap @entity {
-  # transaction hash + "-" + index in swaps Transaction array
-  id: ID!
-  transaction: Transaction!
-  timestamp: BigInt! # need this to pull recent txns for specific token or pair
-  pair: Pair!
-
-  # populated from the Swap event
-  sender: Bytes!
-  from: Bytes! # the EOA that initiated the txn
-  amount0In: BigDecimal!
-  amount1In: BigDecimal!
-  amount0Out: BigDecimal!
-  amount1Out: BigDecimal!
-  to: Bytes!
-  logIndex: BigInt
-
-  # derived info
-  amountUSD: BigDecimal!
 }
 
 type PancakeDayData @entity {
@@ -190,9 +96,7 @@ type PancakeDayData @entity {
   dailyVolumeUntracked: BigDecimal!
 
   totalVolumeBNB: BigDecimal!
-  totalLiquidityBNB: BigDecimal!
   totalVolumeUSD: BigDecimal! # Accumulate at each trade, not just calculated off whatever totalVolume is. making it more accurate as it is a live conversion
-  totalLiquidityUSD: BigDecimal!
 
   totalTransactions: BigInt!
 }
@@ -256,11 +160,6 @@ type TokenDayData @entity {
   dailyVolumeBNB: BigDecimal!
   dailyVolumeUSD: BigDecimal!
   dailyTxns: BigInt!
-
-  # liquidity stats
-  totalLiquidityToken: BigDecimal!
-  totalLiquidityBNB: BigDecimal!
-  totalLiquidityUSD: BigDecimal!
 
   # price stats
   priceUSD: BigDecimal!

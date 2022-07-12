@@ -27,10 +27,8 @@ export function handlePairCreated(event: PairCreated): void {
     factory.totalPairs = ZERO_BI;
     factory.totalTransactions = ZERO_BI;
     factory.totalVolumeBNB = ZERO_BD;
-    factory.totalLiquidityBNB = ZERO_BD;
     factory.totalVolumeUSD = ZERO_BD;
     factory.untrackedVolumeUSD = ZERO_BD;
-    factory.totalLiquidityUSD = ZERO_BD;
 
     let bundle = new Bundle("1");
     bundle.bnbPrice = ZERO_BD;
@@ -54,7 +52,6 @@ export function handlePairCreated(event: PairCreated): void {
     token0.tradeVolume = ZERO_BD;
     token0.tradeVolumeUSD = ZERO_BD;
     token0.untrackedVolumeUSD = ZERO_BD;
-    token0.totalLiquidity = ZERO_BD;
     token0.totalTransactions = ZERO_BI;
     token0.save();
   }
@@ -74,7 +71,6 @@ export function handlePairCreated(event: PairCreated): void {
     token1.tradeVolume = ZERO_BD;
     token1.tradeVolumeUSD = ZERO_BD;
     token1.untrackedVolumeUSD = ZERO_BD;
-    token1.totalLiquidity = ZERO_BD;
     token1.totalTransactions = ZERO_BI;
     token1.save();
   }
