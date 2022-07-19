@@ -8,9 +8,9 @@ dataSources:
     name: Pottery
     network: bsc
     source:
-      address: '0xCf06eD0Ff78e930eDe6ef9E1B937524d33121815'
+      address: '0xc31316734460851D05c612a9CC2Bb2a3ee47ee53'
       abi: PotteryDraw
-      startBlock: 19507426
+      startBlock: 19914968
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

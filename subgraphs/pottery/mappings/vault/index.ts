@@ -89,6 +89,7 @@ export function handleTransfer(event: Transfer): void {
 export function handleLock(event: Lock): void {
   let potteryVault = getOrCreatePotteryVault(vaultAddress);
   potteryVault.status = "LOCK";
+  potteryVault.lockDate = event.block.timestamp;
 
   potteryVault.save();
 }

@@ -27,6 +27,8 @@ type PotteryVault @entity {
 
     status: PotteryVaultStatus!
 
+    lockDate: BigInt
+
     users: [UserPotteryVault!] @derivedFrom(field: "vault")
 }
 
