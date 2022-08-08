@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 import { DataSourceContext, log } from "@graphprotocol/graph-ts";
-import { CloseDraw, CreatePottery, StartDraw } from "../generated/Pottery/PotteryDraw";
+import { CloseDraw, CreatePottery, StartDraw, RedeemPrize } from "../generated/Pottery/PotteryDraw";
 import { PotteryVault } from "../generated/templates";
 import { getOrCreatePottery, getOrCreatePotteryVault, getOrCreatePotteryVaultRound } from "./utils";
 
@@ -63,5 +63,19 @@ export function handleStartDraw(event: StartDraw): void {
   potteryVaultRound.prizePot = event.params.totalPrize;
   potteryVaultRound.drawDate = event.params.timestamp;
   potteryVaultRound.txid = event.transaction.hash.toHex();
+  potteryVaultRound.save();
+}
+
+export function handleRedeemPrize(event: RedeemPrize): void {
+  log.info("PotteryDraw. RedeemPrize. Vault {}, RedeemPrize {}, ActualPrize {}", [
+    event.params.vault.toHex(),
+    event.params.redeemPrize.toString(),
+    event.params.actualPrize.toString(),
+  ]);
+
+  let potteryVault = getOrCreatePotteryVault(event.params.vault.toHex());
+
+  let potteryVaultRound = getOrCreatePotteryVaultRound(potteryVault.id, potteryVault.lastRoundId);
+  potteryVaultRound.prizePot = event.params.actualPrize;
   potteryVaultRound.save();
 }

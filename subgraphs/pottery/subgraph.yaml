@@ -8,9 +8,9 @@ dataSources:
     name: Pottery
     network: bsc
     source:
-      address: '0xc31316734460851D05c612a9CC2Bb2a3ee47ee53'
+      address: '0x01871991587d5671f3A2d4E2BcDC22F4E026396e'
       abi: PotteryDraw
-      startBlock: 19914968
+      startBlock: 20054712
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -28,6 +28,8 @@ dataSources:
           handler: handleCreatePottery
         - event: StartDraw(indexed uint256,indexed address,indexed uint256,uint256,uint256,address)
           handler: handleStartDraw
+        - event: RedeemPrize(indexed address,uint256,uint256)
+          handler: handleRedeemPrize
 templates:
   - name: PotteryVault
     kind: ethereum/contract

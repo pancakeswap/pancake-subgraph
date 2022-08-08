@@ -8,9 +8,9 @@ export let ADDRESS_ZERO = Address.fromString("0x00000000000000000000000000000000
 
 export function getOrCreatePottery(): Pottery {
   //Pottery address as id
-  let entity = Pottery.load("0xc31316734460851D05c612a9CC2Bb2a3ee47ee53");
+  let entity = Pottery.load("0x01871991587d5671f3A2d4E2BcDC22F4E026396e");
   if (entity === null) {
-    entity = new Pottery("0xc31316734460851D05c612a9CC2Bb2a3ee47ee53");
+    entity = new Pottery("0x01871991587d5671f3A2d4E2BcDC22F4E026396e");
     entity.lastVaultAddress = "";
     entity.save();
   }
