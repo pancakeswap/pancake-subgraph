@@ -1,12 +1,12 @@
 /* eslint-disable prefer-const */
-import { BigInt, BigDecimal, Address } from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { ERC20 } from "../../generated/Factory/ERC20";
 import { ERC20NameBytes } from "../../generated/Factory/ERC20NameBytes";
 import { ERC20SymbolBytes } from "../../generated/Factory/ERC20SymbolBytes";
 import { Factory as FactoryContract } from "../../generated/templates/Pair/Factory";
 
 export let ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
-export let FACTORY_ADDRESS = "0xca143ce32fe78f1f7019d7d551a6402fc5350c73";
+export let FACTORY_ADDRESS = "0xd93801d7d3a368d94a3a32e97a20f7ac1948a5db";
 
 export let ZERO_BI = BigInt.fromI32(0);
 export let ONE_BI = BigInt.fromI32(1);

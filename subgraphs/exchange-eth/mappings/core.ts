@@ -1,19 +1,19 @@
 /* eslint-disable prefer-const */
-import { BigInt, BigDecimal, store } from "@graphprotocol/graph-ts";
+import { BigDecimal, BigInt, store } from "@graphprotocol/graph-ts";
 import {
-  Pair,
-  Token,
-  PancakeFactory,
-  Transaction,
-  Mint as MintEvent,
-  Burn as BurnEvent,
-  Swap as SwapEvent,
   Bundle,
+  Burn as BurnEvent,
+  Mint as MintEvent,
+  Pair,
+  PancakeFactory,
+  Swap as SwapEvent,
+  Token,
+  Transaction,
 } from "../generated/schema";
-import { Mint, Burn, Swap, Transfer, Sync } from "../generated/templates/Pair/Pair";
-import { updatePairDayData, updateTokenDayData, updatePancakeDayData, updatePairHourData } from "./dayUpdates";
-import { getETHPriceInUSD, findBnbPerToken, getTrackedVolumeUSD, getTrackedLiquidityUSD } from "./pricing";
-import { convertTokenToDecimal, ADDRESS_ZERO, FACTORY_ADDRESS, ONE_BI, ZERO_BD, BI_18 } from "./utils";
+import { Burn, Mint, Swap, Sync, Transfer } from "../generated/templates/Pair/Pair";
+import { updatePairDayData, updatePairHourData, updatePancakeDayData, updateTokenDayData } from "./dayUpdates";
+import { findEthPerToken, getETHPriceInUSD, getTrackedLiquidityUSD, getTrackedVolumeUSD } from "./pricing";
+import { ADDRESS_ZERO, BI_18, convertTokenToDecimal, FACTORY_ADDRESS, ONE_BI, ZERO_BD } from "./utils";
 
 function isCompleteMint(mintId: string): boolean {
   return MintEvent.load(mintId).sender !== null; // sufficient checks
@@ -186,12 +186,12 @@ export function handleSync(event: Sync): void {
   bundle.ethPrice = getETHPriceInUSD();
   bundle.save();
 
-  let t0DerivedETH = findBnbPerToken(token0 as Token);
+  let t0DerivedETH = findEthPerToken(token0 as Token);
   token0.derivedETH = t0DerivedETH;
   token0.derivedUSD = t0DerivedETH.times(bundle.ethPrice);
   token0.save();
 
-  let t1DerivedETH = findBnbPerToken(token1 as Token);
+  let t1DerivedETH = findEthPerToken(token1 as Token);
   token1.derivedETH = t1DerivedETH;
   token1.derivedUSD = t1DerivedETH.times(bundle.ethPrice);
   token1.save();

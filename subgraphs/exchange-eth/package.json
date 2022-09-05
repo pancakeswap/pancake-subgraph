@@ -6,7 +6,7 @@
   "author": "PancakeSwap",
   "license": "GPL-3.0-or-later",
   "scripts": {
-    "auth": "graph auth --product hosted-service 36b9d28b36fa46468a6c8c9fff2364b5",
+    "auth": "graph auth --product hosted-service SUBGRAPH_ACCESS_TOKEN",
     "codegen": "graph codegen subgraph.yaml",
     "build": "graph build subgraph.yaml",
     "deploy": "graph deploy --product hosted-service chef-huan/exhange-eth"
