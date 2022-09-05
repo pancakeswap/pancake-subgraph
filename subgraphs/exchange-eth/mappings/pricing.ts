@@ -3,26 +3,26 @@ import { Address, BigDecimal } from "@graphprotocol/graph-ts/index";
 import { Bundle, Pair, Token } from "../generated/schema";
 import { ADDRESS_ZERO, factoryContract, ONE_BD, ZERO_BD } from "./utils";
 
-let WBNB_ADDRESS = "0x418d75f65a02b3d53b2418fb8e1fe493759c7605";
-let WETH_USDT_PAIR = "0xeC41CD52bda42621c2d4C8412636e72946405074";
-let WETH_USDC_PAIR = "0x088Ecd1172838D4EB1A5CeC90e7A3640de8e384e";
+let WETH_ADDRESS = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";
+let WETH_USDT_PAIR = "0xec41cd52bda42621c2d4c8412636e72946405074"; // created block #15364048
+let WETH_USDC_PAIR = "0x088ecd1172838d4eb1a5cec90e7a3640de8e384e"; // created block #15273582
 
 export function getETHPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
   let usdtPair = Pair.load(WETH_USDT_PAIR); // usdt is token1
-  let usdcPair = Pair.load(WETH_USDC_PAIR); // usdc is token1
+  let usdcPair = Pair.load(WETH_USDC_PAIR); // usdc is token0
 
   if (usdcPair !== null && usdtPair !== null) {
-    let totalLiquidityBNB = usdcPair.reserve0.plus(usdtPair.reserve0);
+    let totalLiquidityBNB = usdcPair.reserve1.plus(usdtPair.reserve0);
     if (totalLiquidityBNB.notEqual(ZERO_BD)) {
-      let busdWeight = usdcPair.reserve0.div(totalLiquidityBNB);
+      let busdWeight = usdcPair.reserve1.div(totalLiquidityBNB);
       let usdtWeight = usdtPair.reserve0.div(totalLiquidityBNB);
-      return usdcPair.token1Price.times(busdWeight).plus(usdtPair.token1Price.times(usdtWeight));
+      return usdcPair.token0Price.times(busdWeight).plus(usdtPair.token1Price.times(usdtWeight));
     } else {
       return ZERO_BD;
     }
   } else if (usdcPair !== null) {
-    return usdcPair.token1Price;
+    return usdcPair.token0Price;
   } else if (usdtPair !== null) {
     return usdtPair.token1Price;
   } else {
@@ -50,8 +50,8 @@ let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString("5");
  * Search through graph to find derived BNB per token.
  * @todo update to be derived BNB (add stablecoin estimates)
  **/
-export function findBnbPerToken(token: Token): BigDecimal {
-  if (token.id == WBNB_ADDRESS) {
+export function findEthPerToken(token: Token): BigDecimal {
+  if (token.id == WETH_ADDRESS) {
     return ONE_BD;
   }
   // loop through whitelist and check if paired with any
