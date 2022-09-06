@@ -114,6 +114,8 @@ type Mint @entity {
   transaction: Transaction!
   timestamp: BigInt! # need this to pull recent txns for specific token or pair
   pair: Pair!
+  token0: Token!
+  token1: Token!
 
   # populated from the primary Transfer event
   to: Bytes!
@@ -138,6 +140,8 @@ type Burn @entity {
   transaction: Transaction!
   timestamp: BigInt! # need this to pull recent txns for specific token or pair
   pair: Pair!
+  token0: Token!
+  token1: Token!
 
   # populated from the primary Transfer event
   liquidity: BigDecimal!
@@ -165,6 +169,8 @@ type Swap @entity {
   transaction: Transaction!
   timestamp: BigInt! # need this to pull recent txns for specific token or pair
   pair: Pair!
+  token0: Token!
+  token1: Token!
 
   # populated from the Swap event
   sender: Bytes!

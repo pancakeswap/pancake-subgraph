@@ -1,15 +1,15 @@
 /* eslint-disable prefer-const */
-import { PancakeFactory, Pair, Token, Bundle } from "../generated/schema";
+import { Bundle, Pair, PancakeFactory, Token } from "../generated/schema";
 import { Pair as PairTemplate } from "../generated/templates";
 import { PairCreated } from "../generated/Factory/Factory";
 import {
   FACTORY_ADDRESS,
+  fetchTokenDecimals,
+  fetchTokenName,
+  fetchTokenSymbol,
+  ONE_BI,
   ZERO_BD,
   ZERO_BI,
-  ONE_BI,
-  fetchTokenSymbol,
-  fetchTokenName,
-  fetchTokenDecimals,
 } from "./utils";
 
 export function handlePairCreated(event: PairCreated): void {

@@ -1,8 +1,16 @@
 /* eslint-disable prefer-const */
-import { PairHourData } from "../generated/schema";
-import { BigInt, BigDecimal, ethereum } from "@graphprotocol/graph-ts";
-import { Pair, Bundle, Token, PancakeFactory, PancakeDayData, PairDayData, TokenDayData } from "../generated/schema";
-import { ONE_BI, ZERO_BD, ZERO_BI, FACTORY_ADDRESS } from "./utils";
+import {
+  Bundle,
+  Pair,
+  PairDayData,
+  PairHourData,
+  PancakeDayData,
+  PancakeFactory,
+  Token,
+  TokenDayData,
+} from "../generated/schema";
+import { BigDecimal, BigInt, ethereum } from "@graphprotocol/graph-ts";
+import { FACTORY_ADDRESS, ONE_BI, ZERO_BD, ZERO_BI } from "./utils";
 
 export function updatePancakeDayData(event: ethereum.Event): PancakeDayData {
   let pancake = PancakeFactory.load(FACTORY_ADDRESS);
