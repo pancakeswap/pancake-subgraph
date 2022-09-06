@@ -56,6 +56,8 @@ export function handleTransfer(event: Transfer): void {
       );
       mint.transaction = transaction.id;
       mint.pair = pair.id;
+      mint.token0 = pair.token0;
+      mint.token1 = pair.token1;
       mint.to = event.params.to;
       mint.liquidity = value;
       mint.timestamp = transaction.timestamp;
@@ -78,6 +80,8 @@ export function handleTransfer(event: Transfer): void {
     );
     burn.transaction = transaction.id;
     burn.pair = pair.id;
+    burn.token0 = pair.token0;
+    burn.token1 = pair.token1;
     burn.liquidity = value;
     burn.timestamp = transaction.timestamp;
     burn.to = event.params.to;
@@ -112,6 +116,8 @@ export function handleTransfer(event: Transfer): void {
         burn.transaction = transaction.id;
         burn.needsComplete = false;
         burn.pair = pair.id;
+        burn.token0 = pair.token0;
+        burn.token1 = pair.token1;
         burn.liquidity = value;
         burn.transaction = transaction.id;
         burn.timestamp = transaction.timestamp;
@@ -121,6 +127,8 @@ export function handleTransfer(event: Transfer): void {
       burn.transaction = transaction.id;
       burn.needsComplete = false;
       burn.pair = pair.id;
+      burn.token0 = pair.token0;
+      burn.token1 = pair.token1;
       burn.liquidity = value;
       burn.transaction = transaction.id;
       burn.timestamp = transaction.timestamp;
@@ -426,6 +434,8 @@ export function handleSwap(event: Swap): void {
   // update swap event
   swap.transaction = transaction.id;
   swap.pair = pair.id;
+  swap.token0 = pair.token0;
+  swap.token1 = pair.token1;
   swap.timestamp = transaction.timestamp;
   swap.transaction = transaction.id;
   swap.sender = event.params.sender;
