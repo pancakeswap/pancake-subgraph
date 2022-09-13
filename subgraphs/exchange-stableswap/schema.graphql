@@ -1,0 +1,36 @@
+type Factory @entity {
+  id: ID!
+
+  "Total of pairs"
+  totalPairs: BigInt!
+
+  "Total of transactions"
+  totalTransactions: BigInt!
+
+  # total volume
+  totalVolumeUSD: BigDecimal!
+  totalVolumeBNB: BigDecimal!
+
+  # untracked values - less confident USD scores
+  untrackedVolumeUSD: BigDecimal!
+
+  # total liquidity
+  totalLiquidityUSD: BigDecimal!
+  totalLiquidityBNB: BigDecimal!
+}
+
+type Pair @entity {
+  id: ID!
+
+  tokenA: String!
+  tokenB: String!
+
+  virtualPrice: BigInt
+}
+
+type Bundle @entity {
+  id: ID!
+
+  "BNB price, in USD"
+  bnbPrice: BigDecimal!
+}
