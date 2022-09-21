@@ -1,13 +1,14 @@
 /* eslint-disable prefer-const */
-import { log, Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
+import { Address, log } from "@graphprotocol/graph-ts";
 import { Pair } from "../generated/schema";
 import {
-  StableSwapPair,
   AddLiquidity,
   RemoveLiquidity,
   RemoveLiquidityOne,
+  StableSwapPair,
   TokenExchange,
 } from "../generated/templates/StableSwapPair/StableSwapPair";
+import { BIG_DECIMAL_ZERO } from "./utils";
 
 const updateVirtualPrice = (address: Address): void => {
   let pair = Pair.load(address.toHex());
@@ -16,8 +17,14 @@ const updateVirtualPrice = (address: Address): void => {
     return;
   }
   let stableSwapPair = StableSwapPair.bind(address);
-  let vp = stableSwapPair.get_virtual_price();
-  pair.virtualPrice = BigInt.fromI32(vp as i32);
+  let virtualPriceResult = stableSwapPair.try_get_virtual_price();
+  let vPrice = BIG_DECIMAL_ZERO;
+  if (virtualPriceResult.reverted) {
+    log.warning("Unable to fetch virtual price for pair {}", [pair.id]);
+  } else {
+    vPrice = virtualPriceResult.value.toBigDecimal();
+  }
+  pair.virtualPrice = vPrice;
   pair.save();
 };
 
