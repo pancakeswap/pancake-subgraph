@@ -9,6 +9,6 @@
     "auth": "graph auth --product hosted-service SUBGRAPH_ACCESS_TOKEN",
     "codegen": "graph codegen subgraph.yaml",
     "build": "graph build subgraph.yaml",
-    "deploy": "graph deploy --product hosted-service chef-huan/exhange-eth"
+    "deploy": "graph deploy --product hosted-service pancakeswap/exhange-eth"
   }
 }

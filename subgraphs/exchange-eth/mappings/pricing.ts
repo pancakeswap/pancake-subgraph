@@ -4,27 +4,27 @@ import { Bundle, Pair, Token } from "../generated/schema";
 import { ADDRESS_ZERO, factoryContract, ONE_BD, ZERO_BD } from "./utils";
 
 let WETH_ADDRESS = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";
-let WETH_USDT_PAIR = "0xec41cd52bda42621c2d4c8412636e72946405074"; // created block #15364048
-let WETH_USDC_PAIR = "0x088ecd1172838d4eb1a5cec90e7a3640de8e384e"; // created block #15273582
+let WETH_USDT_PAIR = "0x17c1ae82d99379240059940093762c5e4539aba5";
+let WETH_USDC_PAIR = "0x2e8135be71230c6b1b4045696d41c09db0414226";
 
 export function getETHPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
-  let usdtPair = Pair.load(WETH_USDT_PAIR); // usdt is token1
   let usdcPair = Pair.load(WETH_USDC_PAIR); // usdc is token0
+  let usdtPair = Pair.load(WETH_USDT_PAIR); // usdt is token1
 
   if (usdcPair !== null && usdtPair !== null) {
-    let totalLiquidityBNB = usdcPair.reserve1.plus(usdtPair.reserve0);
+    let totalLiquidityBNB = usdtPair.reserve0.plus(usdcPair.reserve1);
     if (totalLiquidityBNB.notEqual(ZERO_BD)) {
-      let busdWeight = usdcPair.reserve1.div(totalLiquidityBNB);
       let usdtWeight = usdtPair.reserve0.div(totalLiquidityBNB);
-      return usdcPair.token0Price.times(busdWeight).plus(usdtPair.token1Price.times(usdtWeight));
+      let usdcWeight = usdcPair.reserve1.div(totalLiquidityBNB);
+      return usdtPair.token1Price.times(usdtWeight).plus(usdcPair.token0Price.times(usdcWeight));
     } else {
       return ZERO_BD;
     }
-  } else if (usdcPair !== null) {
-    return usdcPair.token0Price;
   } else if (usdtPair !== null) {
     return usdtPair.token1Price;
+  } else if (usdcPair !== null) {
+    return usdcPair.token0Price;
   } else {
     return ZERO_BD;
   }
