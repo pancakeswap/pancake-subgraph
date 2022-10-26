@@ -1,0 +1,95 @@
+enum PotteryVaultStatus {
+    BEFORE_LOCK
+    LOCK
+    UNLOCK
+}
+
+"""
+PancakeSwap Pottery Vault
+"""
+type Pottery @entity {
+    id: ID!
+
+    lastVaultAddress: String!
+}
+
+"""
+PancakeSwap Pottery Vault
+"""
+type PotteryVault @entity {
+    id: ID!
+
+    lastRoundId: BigInt!
+
+    totalPlayers: BigInt!
+
+    txid: String!
+
+    status: PotteryVaultStatus!
+
+    lockDate: BigInt
+
+    users: [UserPotteryVault!] @derivedFrom(field: "vault")
+}
+
+"""
+PancakeSwap Pottery Round
+"""
+type PotteryVaultRound @entity {
+    id: ID!
+
+    roundId: BigInt
+
+    drawDate: BigInt!
+
+    prizePot: BigInt!
+
+    txid: String!
+
+    winners: [String!]
+
+    vault: PotteryVault!
+}
+
+"""
+Many to many User PotteryVault
+"""
+type UserPotteryVault @entity {
+    #Set to user.id.concat(potteryVault.id)
+    id: ID!
+
+    user: User!
+
+    vault: PotteryVault!
+}
+
+"""
+User
+"""
+type User @entity {
+    id: ID!
+
+    #Total shares possible to withdraw
+    totalShares: BigInt!
+
+    withdrawAbles: [Withdrawal!]! @derivedFrom(field: "user")
+
+    vaults: [UserPotteryVault!] @derivedFrom(field: "user")
+}
+
+"""
+Withdrawal
+"""
+type Withdrawal @entity {
+    id: ID!
+
+    #Shares possible to withdraw
+    shares: BigInt!
+
+    #Date of last deposit
+    depositDate: BigInt!
+
+    user: User
+
+    vault: PotteryVault
+}
