@@ -1,0 +1,166 @@
+type PancakeFactory @entity {
+  id: ID!
+
+  "Total of pairs"
+  totalPairs: BigInt!
+
+  "Total of transactions"
+  totalTransactions: BigInt!
+
+  # total volume
+  totalVolumeUSD: BigDecimal!
+  totalVolumeBNB: BigDecimal!
+
+  # untracked values - less confident USD scores
+  untrackedVolumeUSD: BigDecimal!
+}
+
+type Bundle @entity {
+  id: ID!
+
+  "BNB price, in USD"
+  bnbPrice: BigDecimal!
+}
+
+type Token @entity {
+  id: ID!
+
+  "Name"
+  name: String!
+  "Symbol"
+  symbol: String!
+  "Decimals"
+  decimals: BigInt!
+
+  # token specific volume
+  tradeVolume: BigDecimal!
+  tradeVolumeUSD: BigDecimal!
+  untrackedVolumeUSD: BigDecimal!
+
+  # transactions across all pairs
+  totalTransactions: BigInt!
+
+  # derived prices
+  derivedBNB: BigDecimal
+  derivedUSD: BigDecimal
+
+  # derived fields
+  tokenDayData: [TokenDayData!]! @derivedFrom(field: "token")
+  pairDayDataBase: [PairDayData!]! @derivedFrom(field: "token0")
+  pairDayDataQuote: [PairDayData!]! @derivedFrom(field: "token1")
+  pairBase: [Pair!]! @derivedFrom(field: "token0")
+  pairQuote: [Pair!]! @derivedFrom(field: "token1")
+}
+
+type Pair @entity {
+  id: ID!
+
+  name: String!
+
+  # mirrored from the smart contract
+  token0: Token!
+  token1: Token!
+  reserve0: BigDecimal!
+  reserve1: BigDecimal!
+  totalSupply: BigDecimal!
+
+  # derived liquidity
+  reserveBNB: BigDecimal!
+  reserveUSD: BigDecimal!
+  trackedReserveBNB: BigDecimal! # used for separating per pair reserves and global
+  # Price in terms of the asset pair
+  token0Price: BigDecimal!
+  token1Price: BigDecimal!
+
+  # lifetime volume stats
+  volumeToken0: BigDecimal!
+  volumeToken1: BigDecimal!
+  volumeUSD: BigDecimal!
+  untrackedVolumeUSD: BigDecimal!
+  totalTransactions: BigInt!
+
+  block: BigInt!
+  timestamp: BigInt!
+
+  # derived fields
+  pairHourData: [PairHourData!]! @derivedFrom(field: "pair")
+}
+
+type PancakeDayData @entity {
+  id: ID! # timestamp rounded to current day by dividing by 86400
+
+  date: Int!
+
+  dailyVolumeBNB: BigDecimal!
+  dailyVolumeUSD: BigDecimal!
+  dailyVolumeUntracked: BigDecimal!
+
+  totalVolumeBNB: BigDecimal!
+  totalVolumeUSD: BigDecimal! # Accumulate at each trade, not just calculated off whatever totalVolume is. making it more accurate as it is a live conversion
+
+  totalTransactions: BigInt!
+}
+
+type PairHourData @entity {
+  id: ID!
+
+  hourStartUnix: Int! # unix timestamp for start of hour
+  pair: Pair!
+
+  # reserves
+  reserve0: BigDecimal!
+  reserve1: BigDecimal!
+
+  # total supply for LP historical returns
+  totalSupply: BigDecimal!
+
+  # derived liquidity
+  reserveUSD: BigDecimal!
+
+  # volume stats
+  hourlyVolumeToken0: BigDecimal!
+  hourlyVolumeToken1: BigDecimal!
+  hourlyVolumeUSD: BigDecimal!
+  hourlyTxns: BigInt!
+}
+
+type PairDayData @entity {
+  id: ID!
+
+  date: Int!
+  pairAddress: Bytes!
+  token0: Token!
+  token1: Token!
+
+  # reserves
+  reserve0: BigDecimal!
+  reserve1: BigDecimal!
+
+  # total supply for LP historical returns
+  totalSupply: BigDecimal!
+
+  # derived liquidity
+  reserveUSD: BigDecimal!
+
+  # volume stats
+  dailyVolumeToken0: BigDecimal!
+  dailyVolumeToken1: BigDecimal!
+  dailyVolumeUSD: BigDecimal!
+  dailyTxns: BigInt!
+}
+
+type TokenDayData @entity {
+  id: ID!
+
+  date: Int!
+  token: Token!
+
+  # volume stats
+  dailyVolumeToken: BigDecimal!
+  dailyVolumeBNB: BigDecimal!
+  dailyVolumeUSD: BigDecimal!
+  dailyTxns: BigInt!
+
+  # price stats
+  priceUSD: BigDecimal!
+}
