@@ -14,7 +14,6 @@ export function startCountdown(event: NewMaxLockDuration): void {
     cakePool.blockNumber = event.block.number;
     cakePool.totalLocked = ZERO_BI;
     cakePool.maxLockDuration = event.params.maxLockDuration;
-    cakePool.usersWithLockedCake = [];
     cakePool.save();
   }
 }
@@ -23,10 +22,6 @@ export function handleDeposit(event: Deposit): void {
   let cakePool = CakePool.load("1");
   if (cakePool !== null) {
     let user = getOrCreateUser(event.params.sender.toHex());
-    // log.info("Deposit. Duration - {}. Lock amount - {}", [
-    //   event.params.duration.toString(),
-    //   event.params.amount.toString(),
-    // ]);
 
     if (event.params.duration.gt(ZERO_BI)) {
       if (user.lockEndTime < event.block.timestamp) {
@@ -35,7 +30,7 @@ export function handleDeposit(event: Deposit): void {
       } else {
         user.lockEndTime = user.lockEndTime.plus(event.params.duration);
       }
-      cakePool.usersWithLockedCake = cakePool.usersWithLockedCake.concat([event.params.sender.toHex()]);
+      user.pool = cakePool.id;
     } else {
       if (user.totalLocked.gt(ZERO_BI)) {
         user.totalLocked = user.totalLocked.plus(event.params.amount);

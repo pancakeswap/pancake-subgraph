@@ -16,6 +16,7 @@ type User @entity {
     locked: Boolean
     "Is actual unlocked"
     unlockedByUser: Boolean
+    pool: CakePool
 }
 
 type CakePool @entity {
@@ -29,5 +30,5 @@ type CakePool @entity {
     maxLockDuration: BigInt!
     "Total locked"
     totalLocked: BigInt!
-    usersWithLockedCake: [String!]!
+    usersWithLockedCake: [User!]! @derivedFrom(field: "pool")
 }
