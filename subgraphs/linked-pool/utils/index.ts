@@ -2,6 +2,7 @@
 import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { ERC20 } from "../generated/PancakeSwapMMPool/ERC20";
 import { Token } from "../generated/schema";
+import { ERC20SymbolBytes } from "../generated/PancakeSwapMMPool/ERC20SymbolBytes";
 
 export let ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
 
@@ -14,6 +15,29 @@ export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
     bd = bd.times(BigDecimal.fromString("10"));
   }
   return bd;
+}
+
+export function isNullBnbValue(value: string): boolean {
+  return value == "0x0000000000000000000000000000000000000000000000000000000000000001";
+}
+
+export function fetchTokenSymbol(tokenAddress: Address): string {
+  let contract = ERC20.bind(tokenAddress);
+  let contractSymbolBytes = ERC20SymbolBytes.bind(tokenAddress);
+
+  let symbolValue = "unknown";
+  let symbolResult = contract.try_symbol();
+  if (symbolResult.reverted) {
+    let symbolResultBytes = contractSymbolBytes.try_symbol();
+    if (!symbolResultBytes.reverted) {
+      if (!isNullBnbValue(symbolResultBytes.value.toHex())) {
+        symbolValue = symbolResultBytes.value.toString();
+      }
+    }
+  } else {
+    symbolValue = symbolResult.value;
+  }
+  return symbolValue;
 }
 
 export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: BigInt): BigDecimal {
@@ -38,6 +62,7 @@ export function getOrCreateToken(tokenAddress: Address): Token {
   if (token === null) {
     token = new Token(tokenAddress.toHex());
     token.decimals = fetchTokenDecimals(tokenAddress);
+    token.symbol = fetchTokenSymbol(tokenAddress);
     token.save();
   }
 

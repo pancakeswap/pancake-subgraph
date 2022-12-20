@@ -21,4 +21,6 @@ type Token @entity {
 
     "Decimals"
     decimals: BigInt!
+    "Symbol"
+    symbol: String!
 }
