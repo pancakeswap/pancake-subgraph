@@ -8,7 +8,7 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 
 1. **[Blocks](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/blocks)**: Tracks all blocks on Binance Smart Chain.
 
-2. **[Exchange](https://pancakeswap.medium.com/pancakeswap-info-relaunch-in-partnership-with-150-000-bounty-winner-streamingfast-f7892559d388)**: Tracks all PancakeSwap Exchange data with price, volume, liquidity, ...
+2. **[Exchange](https://nodereal.io/meganode/api-marketplace/pancakeswap-graphql)**: Tracks all PancakeSwap Exchange data with price, volume, liquidity, ...
 
 3. **[Farm Auctions](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/farm-auctions)**: Tracks all PancakeSwap Farm Auctions with auctions and bids.
 
