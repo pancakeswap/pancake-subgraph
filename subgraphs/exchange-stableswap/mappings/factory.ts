@@ -32,6 +32,8 @@ export function handlePairCreated(event: NewStableSwapPair): void {
     pair.reserveUSD = BIG_DECIMAL_ZERO;
     pair.untrackedVolumeUSD = BIG_DECIMAL_ZERO;
     pair.totalSupply = BIG_DECIMAL_ZERO;
+    pair.adminFee = BIG_DECIMAL_ZERO;
+    pair.adminFeeWithDraw = BIG_DECIMAL_ZERO;
 
     pair.virtualPrice = BIG_DECIMAL_ZERO;
     pair.block = event.block.number;
@@ -45,9 +47,8 @@ export function handlePairCreated(event: NewStableSwapPair): void {
   factory.totalPairs = factory.totalPairs.plus(BIG_INT_ONE);
   factory.save();
 
-  StableSwapPair.create(event.params.swapContract);
-
   let context = new DataSourceContext();
   context.setString("pairAddress", event.params.swapContract.toHex());
+  StableSwapPair.createWithContext(event.params.swapContract, context);
   ERC20.createWithContext(StableSwapPairContract.bind(event.params.swapContract).token(), context);
 }

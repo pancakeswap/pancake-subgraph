@@ -1,18 +1,22 @@
 /* eslint-disable prefer-const */
+import { Address, BigInt, dataSource } from "@graphprotocol/graph-ts";
 import { log } from "@graphprotocol/graph-ts/index";
-import { BIG_INT_ZERO } from "./utils";
+import { Pair } from "../generated/schema";
 import {
   AddLiquidity,
   RemoveLiquidity,
   RemoveLiquidityOne,
+  StableSwapPair,
   TokenExchange,
 } from "../generated/templates/StableSwapPair/StableSwapPair";
-import { Pair } from "../generated/schema";
-import { BigInt } from "@graphprotocol/graph-ts";
-import { sync } from "./services/sync";
-import { swap, SwapParams } from "./services/swap";
 import { burn } from "./services/burn";
 import { mint } from "./services/mint";
+import { swap, SwapParams } from "./services/swap";
+import { sync } from "./services/sync";
+import { BIG_INT_ZERO } from "./utils";
+
+let context = dataSource.context();
+let pairAddress = context.getString("pairAddress");
 
 export function handleTokenExchange(event: TokenExchange): void {
   log.debug("swap for v2 pool: {} at {}", [event.address.toHexString(), event.transaction.hash.toHexString()]);
@@ -87,3 +91,25 @@ export function handleAddLiquidity(event: AddLiquidity): void {
   let tokenAmounts: Array<BigInt> = event.params.token_amounts;
   mint(event, tokenAmounts[0], tokenAmounts[1], event.params.provider);
 }
+
+export function handleBlock(): void {
+  //0xD09971D8ed6C6a5e57581e90d593ee5B94e348D4 // admin account
+  let stableSwapContract = StableSwapPair.bind(Address.fromString(pairAddress));
+  let pair = Pair.load(pairAddress);
+  if (!pair) {
+    return;
+  }
+  const fee0 = stableSwapContract.try_admin_balances(BIG_INT_ZERO);
+  const fee1 = stableSwapContract.try_admin_balances(BIG_INT_ZERO);
+  let adminFee = BIG_INT_ZERO;
+  if (!fee0.reverted) {
+    adminFee = adminFee.plus(fee0.value);
+  }
+  if (!fee1.reverted) {
+    adminFee = adminFee.plus(fee1.value);
+  }
+  pair.adminFee = adminFee;
+  pair.save();
+}
+
+export function handleAdminWithdraw(): void {}
