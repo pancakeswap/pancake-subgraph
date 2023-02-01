@@ -1,0 +1,14 @@
+{
+  "name": "exchange-eth",
+  "description": "PancakeSwap Subgraph",
+  "version": "1.0.0",
+  "repository": "git@github.com:pancakeswap/pancake-subgraph.git",
+  "author": "PancakeSwap",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "auth": "graph auth --product hosted-service SUBGRAPH_ACCESS_TOKEN",
+    "codegen": "graph codegen subgraph.yaml",
+    "build": "graph build subgraph.yaml",
+    "deploy": "graph deploy --product hosted-service pancakeswap/exhange-eth"
+  }
+}
