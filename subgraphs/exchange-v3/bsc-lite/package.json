@@ -1,6 +1,6 @@
 {
   "name": "exchange-v3-lite",
-  "description": "PancakeSwap Subgraph for Exchange V3",
+  "description": "PancakeSwap Subgraph for Exchange V3 lite version",
   "version": "1.0.0",
   "repository": "git@github.com:pancakeswap/pancake-subgraph.git",
   "author": "PancakeSwap",
@@ -9,6 +9,6 @@
     "auth": "graph auth --product hosted-service SUBGRAPH_KEY",
     "codegen": "graph codegen subgraph.yaml",
     "build": "graph build subgraph.yaml",
-    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/exchange-v3 subgraph.yaml"
+    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/exchange-v3-lite subgraph.yaml"
   }
 }
