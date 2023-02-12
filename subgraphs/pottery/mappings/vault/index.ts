@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 
 import { dataSource, store, log } from "@graphprotocol/graph-ts";
-import { Deposit, Transfer, Lock, Unlock } from "../../generated/templates/PotteryVault/PancakeSwapPotteryVault";
+import { Deposit, Transfer, Lock } from "../../generated/templates/PotteryVault/PancakeSwapPotteryVault";
 import {
   ZERO_BI,
   ONE_BI,
@@ -94,7 +94,7 @@ export function handleLock(event: Lock): void {
   potteryVault.save();
 }
 
-export function handleUnlock(event: Unlock): void {
+export function handleUnlock(): void {
   let potteryVault = getOrCreatePotteryVault(vaultAddress);
   potteryVault.status = "UNLOCK";
 
