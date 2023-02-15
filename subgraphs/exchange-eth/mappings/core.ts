@@ -12,7 +12,13 @@ import {
 } from "../generated/schema";
 import { Burn, Mint, Swap, Sync, Transfer } from "../generated/templates/Pair/Pair";
 import { updatePairDayData, updatePairHourData, updatePancakeDayData, updateTokenDayData } from "./dayUpdates";
-import { findEthPerToken, getETHPriceInUSD, getTrackedLiquidityUSD, getTrackedVolumeUSD } from "./pricing";
+import {
+  findEthPerToken,
+  getETHPriceInUSD,
+  getTrackedFeeVolumeUSD,
+  getTrackedLiquidityUSD,
+  getTrackedVolumeUSD,
+} from "./pricing";
 import { ADDRESS_ZERO, BI_18, convertTokenToDecimal, FACTORY_ADDRESS, ONE_BI, ZERO_BD } from "./utils";
 
 function isCompleteMint(mintId: string): boolean {
@@ -361,15 +367,36 @@ export function handleSwap(event: Swap): void {
   // BNB/USD prices
   let bundle = Bundle.load("1");
 
-  // get total amounts of derived USD and ETH for tracking
-  let derivedAmountBNB = token1.derivedETH
-    .times(amount1Total)
-    .plus(token0.derivedETH.times(amount0Total))
-    .div(BigDecimal.fromString("2"));
-  let derivedAmountUSD = derivedAmountBNB.times(bundle.ethPrice);
+  let derivedToken0AmountBNB = token0.derivedBNB.times(amount0Total);
+  let derivedToken1AmountBNB = token1.derivedBNB.times(amount1Total);
+
+  // get total amounts of derived USD and BNB for tracking
+  let derivedAmountBNB = derivedToken1AmountBNB.plus(derivedToken0AmountBNB).div(BigDecimal.fromString("2"));
+  let derivedAmountUSD = derivedAmountBNB.times(bundle.bnbPrice);
+
+  // get swap fee amount of derived USD and BNB for tracking
+  let derivedFeeAmountBNB: BigDecimal;
+  if (
+    derivedToken0AmountBNB.equals(BigDecimal.fromString("0")) ||
+    derivedToken1AmountBNB.equals(BigDecimal.fromString("0"))
+  ) {
+    derivedFeeAmountBNB = ZERO_BD;
+  } else if (derivedToken0AmountBNB.ge(derivedToken1AmountBNB)) {
+    derivedFeeAmountBNB = derivedToken0AmountBNB.minus(derivedToken1AmountBNB);
+  } else {
+    derivedFeeAmountBNB = derivedToken1AmountBNB.minus(derivedToken0AmountBNB);
+  }
+  let derivedFeeAmountUSD = derivedFeeAmountBNB.times(bundle.bnbPrice);
 
   // only accounts for volume through white listed tokens
   let trackedAmountUSD = getTrackedVolumeUSD(
+    bundle as Bundle,
+    amount0Total,
+    token0 as Token,
+    amount1Total,
+    token1 as Token
+  );
+  let trackedFeeAmountUSD = getTrackedFeeVolumeUSD(
     bundle as Bundle,
     amount0Total,
     token0 as Token,
@@ -448,6 +475,7 @@ export function handleSwap(event: Swap): void {
   swap.logIndex = event.logIndex;
   // use the tracked amount if we have it
   swap.amountUSD = trackedAmountUSD === ZERO_BD ? derivedAmountUSD : trackedAmountUSD;
+  swap.amountFeeUSD = trackedFeeAmountUSD === ZERO_BD ? derivedFeeAmountUSD : trackedFeeAmountUSD;
   swap.save();
 
   // update the transaction
