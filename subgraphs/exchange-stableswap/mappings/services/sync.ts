@@ -11,7 +11,7 @@ export function sync(pairAddress: Address): void {
   let pairContract = StableSwapPair.bind(pairAddress);
   let token0 = Token.load(pair.token0);
   let token1 = Token.load(pair.token1);
-  let factory = getOrCreateFactory();
+  let factory = getOrCreateFactory(pair.factory);
 
   let reserve0 = getReserve(pairContract, "0");
   let reserve1 = getReserve(pairContract, "1");

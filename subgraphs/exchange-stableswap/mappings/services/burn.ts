@@ -15,7 +15,7 @@ export function burn(event: ethereum.Event, tokenAmount0: BigInt, tokenAmount1: 
   let burn = Burn.load(burns[burns.length - 1]);
 
   let pair = Pair.load(event.address.toHex());
-  let factory = getOrCreateFactory();
+  let factory = getOrCreateFactory(pair.factory);
 
   //update token info
   let token0 = Token.load(pair.token0);
@@ -55,7 +55,7 @@ export function burn(event: ethereum.Event, tokenAmount0: BigInt, tokenAmount1: 
 
   updatePairDayData(event);
   updatePairHourData(event);
-  updatePancakeDayData(event);
+  updatePancakeDayData(event, pair.factory);
   updateTokenDayData(token0 as Token, event);
   updateTokenDayData(token1 as Token, event);
 }

@@ -7,14 +7,14 @@ import {
   fetchTokenName,
   fetchTokenSymbol,
   STABLESWAP_FACTORY_ADDRESS,
-  STABLESWAP_FACTORY_ADDRESS_2,
 } from "./index";
 import { Bundle, Factory, Token } from "../../generated/schema";
 
-export function getOrCreateFactory(): Factory {
-  let factory = Factory.load(STABLESWAP_FACTORY_ADDRESS_2);
+// fallback as default all factory
+export function getOrCreateFactory(factoryAddress: string | null): Factory {
+  let factory = Factory.load(factoryAddress || STABLESWAP_FACTORY_ADDRESS);
   if (factory === null) {
-    factory = new Factory(STABLESWAP_FACTORY_ADDRESS_2);
+    factory = new Factory(factoryAddress || STABLESWAP_FACTORY_ADDRESS);
     factory.totalPairs = BIG_INT_ZERO;
     factory.totalLiquidityBNB = BIG_DECIMAL_ZERO;
     factory.totalLiquidityUSD = BIG_DECIMAL_ZERO;

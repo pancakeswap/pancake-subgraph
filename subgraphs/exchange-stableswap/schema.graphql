@@ -25,13 +25,17 @@ type Pair @entity {
   id: ID!
   name: String!
 
+  factory: Factory
+
   token0: Token!
   token1: Token!
+  token2: Token
 
   virtualPrice: BigDecimal!
 
   reserve0: BigDecimal!
   reserve1: BigDecimal!
+  reserve2: BigDecimal
   totalSupply: BigDecimal!
 
   # derived liquidity
@@ -41,6 +45,7 @@ type Pair @entity {
   # Price in terms of the asset pair
   token0Price: BigDecimal!
   token1Price: BigDecimal!
+  token2Price: BigDecimal
 
   # lifetime volume stats
   volumeToken0: BigDecimal!
@@ -127,6 +132,7 @@ type Mint @entity {
   sender: Bytes
   amount0: BigDecimal
   amount1: BigDecimal
+  amount3: BigDecimal
   logIndex: BigInt
   # derived amount based on available prices of tokens
   amountUSD: BigDecimal
@@ -150,6 +156,7 @@ type Burn @entity {
   sender: Bytes
   amount0: BigDecimal
   amount1: BigDecimal
+  amount3: BigDecimal
   to: Bytes
   logIndex: BigInt
   # derived amount based on available prices of tokens

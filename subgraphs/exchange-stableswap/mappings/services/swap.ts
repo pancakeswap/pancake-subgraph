@@ -81,7 +81,7 @@ export function swap(event: ethereum.Event, params: SwapParams): void {
   pair.save();
 
   // update global values, only used tracked amounts for volume
-  let factory = getOrCreateFactory();
+  let factory = getOrCreateFactory(pair.factory);
   factory.totalVolumeUSD = factory.totalVolumeUSD.plus(trackedAmountUSD);
   factory.totalVolumeBNB = factory.totalVolumeBNB.plus(trackedAmountBNB);
   factory.untrackedVolumeUSD = factory.untrackedVolumeUSD.plus(derivedAmountUSD);
@@ -133,7 +133,7 @@ export function swap(event: ethereum.Event, params: SwapParams): void {
   // update day entities
   let pairDayData = updatePairDayData(event);
   let pairHourData = updatePairHourData(event);
-  let pancakeDayData = updatePancakeDayData(event);
+  let pancakeDayData = updatePancakeDayData(event, factory.id);
   let token0DayData = updateTokenDayData(token0 as Token, event);
   let token1DayData = updateTokenDayData(token1 as Token, event);
 

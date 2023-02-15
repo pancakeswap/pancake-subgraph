@@ -5,7 +5,7 @@ schema:
   file: ./schema.graphql
 graft:
   base: QmeDXgvaLdeC1hTm7izxnZ943nS7oo9DTxZDzhr92Mrh1E
-  block: 25535650 # for previous exiting factory
+  block: 25656575 # for previous exiting factory
 dataSources:
   - kind: ethereum/contract
     name: StableSwapFactory
@@ -13,7 +13,7 @@ dataSources:
     source:
       address: '0x25a55f9f2279A54951133D503490342b50E5cd15'
       abi: StableSwapFactory
-      startBlock: 25535650
+      startBlock: 25656575
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -69,10 +69,76 @@ templates:
           handler: handleAddLiquidity
         - event: RemoveLiquidity(indexed address,uint256[2],uint256[2],uint256)
           handler: handleRemoveLiquidity
-        - event: RemoveLiquidityOne(indexed address,uint256,uint256)
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256)
           handler: handleRemoveLiquidityOne
         - event: TokenExchange(indexed address,uint256,uint256,uint256,uint256)
           handler: handleTokenExchange
+  - kind: ethereum/contract
+    name: StableSwapPairV2
+    network: bsc
+    source:
+      abi: StableSwapPairV2
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/stableSwapPairV3.ts
+      entities:
+        - Pair
+        - Mint
+        - Burn
+        - Transaction
+      abis:
+        - name: StableSwapFactory
+          file: ./abis/StableSwapFactory.json
+        - name: StableSwapPairV2
+          file: ./abis/StableSwapPairV2.json
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: Pair
+          file: ./abis/Pair.json
+      eventHandlers:
+        - event: AddLiquidity(indexed address,uint256[2],uint256[2],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[2],uint256[2],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: TokenExchange(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleTokenExchange
+  - kind: ethereum/contract
+    name: StableSwap3PairV2
+    network: bsc
+    source:
+      abi: StableSwap3PairV2
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/stableSwapPairV3.ts
+      entities:
+        - Pair
+        - Mint
+        - Burn
+        - Transaction
+      abis:
+        - name: StableSwapFactory
+          file: ./abis/StableSwapFactory.json
+        - name: StableSwap3PairV2
+          file: ./abis/StableSwap3PairV2.json
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: Pair
+          file: ./abis/Pair.json
+      eventHandlers:
+        - event: AddLiquidity(indexed address,uint256[3],uint256[3],uint256,uint256)
+          handler: handleTriAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[3],uint256[3],uint256)
+          handler: handleTriRemoveLiquidity
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256)
+          handler: handleTriRemoveLiquidityOne
+        - event: TokenExchange(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleTriTokenExchange
   - kind: ethereum/contract
     name: ERC20
     network: bsc

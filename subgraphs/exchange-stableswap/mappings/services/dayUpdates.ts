@@ -4,8 +4,8 @@ import { BigDecimal, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { BIG_DECIMAL_ZERO, BIG_INT_ONE, BIG_INT_ZERO } from "../utils";
 import { getOrCreateFactory } from "../utils/data";
 
-export function updatePancakeDayData(event: ethereum.Event): PancakeDayData {
-  let factory = getOrCreateFactory();
+export function updatePancakeDayData(event: ethereum.Event, factoryAddress: string): PancakeDayData {
+  let factory = getOrCreateFactory(factoryAddress);
   let timestamp = event.block.timestamp.toI32();
   let dayID = timestamp / 86400;
   let dayStartTimestamp = dayID * 86400;
