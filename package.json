@@ -10,8 +10,8 @@
     "subgraphs/**/*"
   ],
   "scripts": {
-    "codegen": "lerna run codegen",
-    "build": "lerna run build",
+    "codegen": "turbo run codegen",
+    "build": "turbo run build",
     "format:check": "prettier --check '*/**/*.{js,ts}'",
     "format:write": "prettier --write '*/**/*.{js,ts}'",
     "lint": "eslint '*/**/*.{js,ts}'",
@@ -27,8 +27,8 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^7.0.0",
-    "lerna": "^4.0.0",
     "prettier": "^2.4.0",
+    "turbo": "^1.7.4",
     "typescript": "^4.3.5"
   }
 }

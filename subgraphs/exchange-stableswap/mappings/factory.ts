@@ -24,6 +24,7 @@ export function handlePairCreated(event: NewStableSwapPair): void {
     pair.volumeToken0 = BIG_DECIMAL_ZERO;
     pair.volumeToken1 = BIG_DECIMAL_ZERO;
     pair.volumeUSD = BIG_DECIMAL_ZERO;
+    pair.volumeOutUSD = BIG_DECIMAL_ZERO;
     pair.totalTransactions = BIG_INT_ZERO;
     pair.reserve0 = BIG_DECIMAL_ZERO;
     pair.reserve1 = BIG_DECIMAL_ZERO;

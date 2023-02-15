@@ -68,6 +68,9 @@ export function swap(event: ethereum.Event, params: SwapParams): void {
     token1 as Token
   );
 
+  let price0 = token0.derivedBNB.times(bundle.bnbPrice);
+  let price1 = token1.derivedBNB.times(bundle.bnbPrice);
+
   let trackedAmountBNB: BigDecimal;
   if (bundle.bnbPrice.equals(BIG_DECIMAL_ZERO)) {
     trackedAmountBNB = BIG_DECIMAL_ZERO;
@@ -91,6 +94,7 @@ export function swap(event: ethereum.Event, params: SwapParams): void {
 
   // update pair volume data, use tracked amount if we have it as its probably more accurate
   pair.volumeUSD = pair.volumeUSD.plus(trackedAmountUSD);
+  pair.volumeOutUSD = pair.volumeOutUSD.plus(amount0Out.times(price0)).plus(amount1Out.times(price1));
   pair.volumeToken0 = pair.volumeToken0.plus(amount0Total);
   pair.volumeToken1 = pair.volumeToken1.plus(amount1Total);
   pair.untrackedVolumeUSD = pair.untrackedVolumeUSD.plus(derivedAmountUSD);
