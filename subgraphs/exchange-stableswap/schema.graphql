@@ -232,6 +232,10 @@ type PairDayData @entity {
   dailyVolumeToken1: BigDecimal!
   dailyVolumeUSD: BigDecimal!
   dailyTxns: BigInt!
+
+  token0Price: BigDecimal
+  token1Price: BigDecimal
+  token2Price: BigDecimal
 }
 
 type PairHourData @entity {
@@ -255,6 +259,10 @@ type PairHourData @entity {
   hourlyVolumeToken1: BigDecimal!
   hourlyVolumeUSD: BigDecimal!
   hourlyTxns: BigInt!
+
+  token0Price: BigDecimal
+  token1Price: BigDecimal
+  token2Price: BigDecimal
 }
 
 type TokenDayData @entity {
