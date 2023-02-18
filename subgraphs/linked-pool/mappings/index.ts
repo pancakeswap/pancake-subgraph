@@ -28,6 +28,8 @@ export function handleSwap(event: SwapEven): void {
     swap.baseTokenAmount = convertTokenToDecimal(event.params.baseTokenAmount, baseToken.decimals);
     swap.quoteTokenAmount = convertTokenToDecimal(event.params.quoteTokenAmount, quoteToken.decimals);
     swap.timestamp = event.block.timestamp;
+    swap.tx = event.transaction.hash;
+    swap.block = event.block.number;
     swap.save();
   }
 }

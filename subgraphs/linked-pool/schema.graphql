@@ -11,6 +11,8 @@ type Swap @entity {
     mm: String!
     user: String!
     nonce: BigInt!
+    tx: Bytes!
+    block: BigInt!
     timestamp: BigInt!
 }
 
