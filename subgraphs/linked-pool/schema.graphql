@@ -3,9 +3,9 @@ type Swap @entity {
     id: ID!
 
     baseToken: String!
-    baseTokenAmount: BigDecimal!
+    baseTokenAmount: BigInt!
     quoteToken: String!
-    quoteTokenAmount: BigDecimal!
+    quoteTokenAmount: BigInt!
 
     mmTreasury: String!
     mm: String!
