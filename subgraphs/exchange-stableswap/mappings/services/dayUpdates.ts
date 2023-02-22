@@ -4,8 +4,8 @@ import { BigDecimal, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { BIG_DECIMAL_ZERO, BIG_INT_ONE, BIG_INT_ZERO } from "../utils";
 import { getOrCreateFactory } from "../utils/data";
 
-export function updatePancakeDayData(event: ethereum.Event): PancakeDayData {
-  let factory = getOrCreateFactory();
+export function updatePancakeDayData(event: ethereum.Event, factoryAddress: string): PancakeDayData {
+  let factory = getOrCreateFactory(factoryAddress);
   let timestamp = event.block.timestamp.toI32();
   let dayID = timestamp / 86400;
   let dayStartTimestamp = dayID * 86400;
@@ -52,6 +52,9 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
   pairDayData.reserve1 = pair.reserve1;
   pairDayData.reserveUSD = pair.reserveUSD;
   pairDayData.dailyTxns = pairDayData.dailyTxns.plus(BIG_INT_ONE);
+  pairDayData.token0Price = pair.token0Price;
+  pairDayData.token1Price = pair.token1Price;
+  pairDayData.token2Price = pair.token2Price;
   pairDayData.save();
 
   return pairDayData as PairDayData;
@@ -77,6 +80,9 @@ export function updatePairHourData(event: ethereum.Event): PairHourData {
   pairHourData.reserve0 = pair.reserve0;
   pairHourData.reserve1 = pair.reserve1;
   pairHourData.reserveUSD = pair.reserveUSD;
+  pairHourData.token0Price = pair.token0Price;
+  pairHourData.token1Price = pair.token1Price;
+  pairHourData.token2Price = pair.token2Price;
   pairHourData.hourlyTxns = pairHourData.hourlyTxns.plus(BIG_INT_ONE);
   pairHourData.save();
 

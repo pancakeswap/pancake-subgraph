@@ -11,7 +11,7 @@ export function sync(pairAddress: Address): void {
   let pairContract = StableSwapPair.bind(pairAddress);
   let token0 = Token.load(pair.token0);
   let token1 = Token.load(pair.token1);
-  let factory = getOrCreateFactory();
+  let factory = getOrCreateFactory(pair.factory);
 
   let reserve0 = getReserve(pairContract, "0");
   let reserve1 = getReserve(pairContract, "1");
@@ -27,8 +27,8 @@ export function sync(pairAddress: Address): void {
   pair.reserve1 = convertTokenToDecimal(reserve1, token1.decimals);
 
   //TODO fix price
-  pair.token0Price = getPriceFromPCS(Address.fromString(pair.token0));
-  pair.token1Price = getPriceFromPCS(Address.fromString(pair.token1));
+  pair.token0Price = getPriceFromPCS(Address.fromString(pair.token0), pair);
+  pair.token1Price = getPriceFromPCS(Address.fromString(pair.token1), pair);
   // if (pair.reserve1.notEqual(BIG_DECIMAL_ZERO)) pair.token0Price = pair.reserve0.div(pair.reserve1);
   // else pair.token0Price = BIG_DECIMAL_ZERO;
   // if (pair.reserve0.notEqual(BIG_DECIMAL_ZERO)) pair.token1Price = pair.reserve1.div(pair.reserve0);

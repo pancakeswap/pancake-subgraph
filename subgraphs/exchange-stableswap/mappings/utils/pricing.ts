@@ -13,21 +13,56 @@ import {
   PCS_FACTORY_ADDRESS,
   pcsFactoryContract,
   stableSwapFactoryContract,
+  exponentToBigDecimal,
 } from "./index";
 import { Pair as PairContract } from "../../generated/StableSwapFactory/Pair";
+import { StableSwapPair as StableSwapPairContract } from "../../generated/StableSwapFactory/StableSwapPair";
 import { BigInt, log } from "@graphprotocol/graph-ts";
+import { getOrCreateToken } from "./data";
 
 let BUSD_WBNB_PAIR = "0x58f876857a02d6762e0101bb5c46a8c1ed44dc16";
 let USDT_WBNB_PAIR = "0x16b9a82891338f9ba80e2d6970fdda79d1eb0dae";
+let USDT_ADDRESS = "0x55d398326f99059ff775485246999027b3197955";
 
-export function getPriceFromPCS(token: Address): BigDecimal {
+function getByDy(pair_: Pair | null, token: Address): BigDecimal {
+  if (!pair_) return BIG_DECIMAL_ZERO;
+
+  let targetTokenAddress = token.toHexString();
+  let usdtIndex =
+    pair_.token0 == USDT_ADDRESS ? 0 : pair_.token1 == USDT_ADDRESS ? 1 : pair_.token2 === USDT_ADDRESS ? 2 : -1;
+  let targetTokenIndex =
+    pair_.token0 == targetTokenAddress
+      ? 0
+      : pair_.token1 == targetTokenAddress
+      ? 1
+      : pair_.token2 === targetTokenAddress
+      ? 2
+      : -1;
+  if (usdtIndex > -1 && targetTokenIndex > -1) {
+    let targetToken = getOrCreateToken(token);
+    let pair = StableSwapPairContract.bind(Address.fromString(pair_.id));
+    let dy = pair.try_get_dy(
+      BigInt.fromI32(usdtIndex),
+      BigInt.fromI32(targetTokenIndex),
+
+      BigInt.fromI32(1).times(BigInt.fromString("1000000000000000000"))
+    );
+    if (!dy.reverted) {
+      return dy.value.divDecimal(exponentToBigDecimal(targetToken.decimals));
+    }
+  }
+
+  return BIG_DECIMAL_ZERO;
+}
+
+export function getPriceFromPCS(token: Address, pair_: Pair | null): BigDecimal {
   if (token.equals(Address.fromString(BUSD_ADDRESS))) {
     return BIG_DECIMAL_ONE;
   }
   let address = pcsFactoryContract.getPair(token, BUSD_ADDR);
   if (address.toHex() == ADDRESS_ZERO) {
     log.debug("No pair found for {} on {}", [token.toHexString(), PCS_FACTORY_ADDRESS]);
-    return BIG_DECIMAL_ZERO;
+    return getByDy(pair_, token);
   }
   let pair = PairContract.bind(address);
   let reserves = pair.getReserves();
@@ -36,7 +71,7 @@ export function getPriceFromPCS(token: Address): BigDecimal {
   // number of calls. so we only filter for a common lower denom for dust.
   if (reserves.value1.lt(BigInt.fromI32(100000000)) || reserves.value0.lt(BigInt.fromI32(100000000))) {
     log.debug("Low reserves found for {} on {}", [token.toHexString(), PCS_FACTORY_ADDRESS]);
-    return BIG_DECIMAL_ZERO;
+    return getByDy(pair_, token);
   }
   let price = pair.token0().equals(BUSD_ADDR)
     ? reserves.value0.toBigDecimal().times(BIG_DECIMAL_1E18).div(reserves.value1.toBigDecimal())
