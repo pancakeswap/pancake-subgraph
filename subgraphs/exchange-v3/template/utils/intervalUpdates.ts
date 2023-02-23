@@ -12,7 +12,7 @@ import {
   PoolHourData,
   TickDayData,
   Tick,
-} from "./../generated/schema";
+} from "../generated/schema";
 import { FACTORY_ADDRESS } from "./constants";
 import { ethereum } from "@graphprotocol/graph-ts";
 
