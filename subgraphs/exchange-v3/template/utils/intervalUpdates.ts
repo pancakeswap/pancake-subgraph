@@ -1,7 +1,7 @@
 import { ZERO_BD, ZERO_BI, ONE_BI } from "./constants";
 /* eslint-disable prefer-const */
 import {
-  UniswapDayData,
+  PancakeDayData,
   Factory,
   Pool,
   PoolDayData,
@@ -20,24 +20,24 @@ import { ethereum } from "@graphprotocol/graph-ts";
  * Tracks global aggregate data over daily windows
  * @param event
  */
-export function updateUniswapDayData(event: ethereum.Event): UniswapDayData {
-  let uniswap = Factory.load(FACTORY_ADDRESS);
+export function updatePancakeDayData(event: ethereum.Event): PancakeDayData {
+  let pancake = Factory.load(FACTORY_ADDRESS);
   let timestamp = event.block.timestamp.toI32();
   let dayID = timestamp / 86400; // rounded
   let dayStartTimestamp = dayID * 86400;
-  let uniswapDayData = UniswapDayData.load(dayID.toString());
-  if (uniswapDayData === null) {
-    uniswapDayData = new UniswapDayData(dayID.toString());
-    uniswapDayData.date = dayStartTimestamp;
-    uniswapDayData.volumeETH = ZERO_BD;
-    uniswapDayData.volumeUSD = ZERO_BD;
-    uniswapDayData.volumeUSDUntracked = ZERO_BD;
-    uniswapDayData.feesUSD = ZERO_BD;
+  let pancakeDayData = PancakeDayData.load(dayID.toString());
+  if (pancakeDayData === null) {
+    pancakeDayData = new PancakeDayData(dayID.toString());
+    pancakeDayData.date = dayStartTimestamp;
+    pancakeDayData.volumeETH = ZERO_BD;
+    pancakeDayData.volumeUSD = ZERO_BD;
+    pancakeDayData.volumeUSDUntracked = ZERO_BD;
+    pancakeDayData.feesUSD = ZERO_BD;
   }
-  uniswapDayData.tvlUSD = uniswap.totalValueLockedUSD;
-  uniswapDayData.txCount = uniswap.txCount;
-  uniswapDayData.save();
-  return uniswapDayData as UniswapDayData;
+  pancakeDayData.tvlUSD = pancake.totalValueLockedUSD;
+  pancakeDayData.txCount = pancake.txCount;
+  pancakeDayData.save();
+  return pancakeDayData as PancakeDayData;
 }
 
 export function updatePoolDayData(event: ethereum.Event): PoolDayData {

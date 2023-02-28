@@ -18,7 +18,7 @@ import {
   updateTickDayData,
   updateTokenDayData,
   updateTokenHourData,
-  updateUniswapDayData,
+  updatePancakeDayData,
 } from "../utils/intervalUpdates";
 import { createTick, feeTierToTickSpacing } from "../utils/tick";
 
@@ -148,7 +148,7 @@ export function handleMint(event: MintEvent): void {
   // TODO: Update Tick's volume, fees, and liquidity provider count. Computing these on the tick
   // level requires reimplementing some of the swapping code from v3-core.
 
-  updateUniswapDayData(event);
+  updatePancakeDayData(event);
   updatePoolDayData(event);
   updatePoolHourData(event);
   updateTokenDayData(token0 as Token, event);
@@ -250,7 +250,7 @@ export function handleBurn(event: BurnEvent): void {
   upperTick.liquidityGross = upperTick.liquidityGross.minus(amount);
   upperTick.liquidityNet = upperTick.liquidityNet.plus(amount);
 
-  updateUniswapDayData(event);
+  updatePancakeDayData(event);
   updatePoolDayData(event);
   updatePoolHourData(event);
   updateTokenDayData(token0 as Token, event);
@@ -406,7 +406,7 @@ export function handleSwap(event: SwapEvent): void {
   pool.feeGrowthGlobal1X128 = feeGrowthGlobal1X128 as BigInt;
 
   // interval data
-  let uniswapDayData = updateUniswapDayData(event);
+  let pancakeDayData = updatePancakeDayData(event);
   let poolDayData = updatePoolDayData(event);
   let poolHourData = updatePoolHourData(event);
   let token0DayData = updateTokenDayData(token0 as Token, event);
@@ -415,9 +415,9 @@ export function handleSwap(event: SwapEvent): void {
   let token1HourData = updateTokenHourData(token1 as Token, event);
 
   // update volume metrics
-  uniswapDayData.volumeETH = uniswapDayData.volumeETH.plus(amountTotalETHTracked);
-  uniswapDayData.volumeUSD = uniswapDayData.volumeUSD.plus(amountTotalUSDTracked);
-  uniswapDayData.feesUSD = uniswapDayData.feesUSD.plus(feesUSD);
+  pancakeDayData.volumeETH = pancakeDayData.volumeETH.plus(amountTotalETHTracked);
+  pancakeDayData.volumeUSD = pancakeDayData.volumeUSD.plus(amountTotalUSDTracked);
+  pancakeDayData.feesUSD = pancakeDayData.feesUSD.plus(feesUSD);
 
   poolDayData.volumeUSD = poolDayData.volumeUSD.plus(amountTotalUSDTracked);
   poolDayData.volumeToken0 = poolDayData.volumeToken0.plus(amount0Abs);
@@ -452,7 +452,7 @@ export function handleSwap(event: SwapEvent): void {
   swap.save();
   token0DayData.save();
   token1DayData.save();
-  uniswapDayData.save();
+  pancakeDayData.save();
   poolDayData.save();
   token0HourData.save();
   token1HourData.save();

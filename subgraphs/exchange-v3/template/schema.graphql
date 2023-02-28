@@ -431,17 +431,17 @@ type Flash @entity {
   logIndex: BigInt
 }
 
-# Data accumulated and condensed into day stats for all of Uniswap
-type UniswapDayData @entity {
+# Data accumulated and condensed into day stats for all of PancakeSwap
+type PancakeDayData @entity {
   # timestamp rounded to current day by dividing by 86400
   id: ID!
   # timestamp rounded to current day by dividing by 86400
   date: Int!
-  # total daily volume in Uniswap derived in terms of ETH
+  # total daily volume in Pancake derived in terms of ETH
   volumeETH: BigDecimal!
-  # total daily volume in Uniswap derived in terms of USD
+  # total daily volume in Pancake derived in terms of USD
   volumeUSD: BigDecimal!
-  # total daily volume in Uniswap derived in terms of USD untracked
+  # total daily volume in Pancake derived in terms of USD untracked
   volumeUSDUntracked: BigDecimal!
   # fees in USD
   feesUSD: BigDecimal!
