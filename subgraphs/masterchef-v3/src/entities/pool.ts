@@ -1,20 +1,19 @@
-import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { Pool, Token } from "../../generated/schema";
-import { V3Pool } from "../../generated/MasterChefV3/V3Pool";
+import { BigInt, ethereum } from "@graphprotocol/graph-ts";
+import { Pool } from "../../generated/schema";
 import { ADDRESS_ZERO, BI_ZERO } from "../utils";
 import { getOrCreateMasterChef } from "./master-chef";
-import { getOrCreateToken } from "./token";
+// import { getOrCreateToken } from "./token";
 
-export function fetchPoolToken0(v3PoolAddress: Address): Token {
-  const poolContract = V3Pool.bind(v3PoolAddress);
-  const token0 = poolContract.token0();
-  return getOrCreateToken(token0);
-}
-export function fetchPoolToken1(v3PoolAddress: Address): Token {
-  const poolContract = V3Pool.bind(v3PoolAddress);
-  const token1 = poolContract.token1();
-  return getOrCreateToken(token1);
-}
+// export function fetchPoolToken0(v3PoolAddress: Address): Token {
+//   const poolContract = V3Pool.bind(v3PoolAddress);
+//   const token0 = poolContract.token0();
+//   return getOrCreateToken(token0);
+// }
+// export function fetchPoolToken1(v3PoolAddress: Address): Token {
+//   const poolContract = V3Pool.bind(v3PoolAddress);
+//   const token1 = poolContract.token1();
+//   return getOrCreateToken(token1);
+// }
 
 export function getOrCreatePool(pid: BigInt, block: ethereum.Block): Pool {
   const masterChef = getOrCreateMasterChef(block);

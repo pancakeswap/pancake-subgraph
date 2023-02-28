@@ -21,7 +21,7 @@ dataSources:
         - Pool
         - User
         - UserPosition
-        - Token
+        # - Token
       abis:
         - name: MasterChefV3
           file: ./abis/MasterChefV3.json
