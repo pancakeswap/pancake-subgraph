@@ -1,3 +1,6 @@
+/**
+ * @type import('./config').NetworkConfig
+ */
 module.exports = {
   network: "goerli",
   wNativeAddress: "0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6",
@@ -9,5 +12,9 @@ module.exports = {
     whitelistAddresses: ["0xb8da084d035c9c38518d86a9d079ba6a0aec4327", "0xd134b434682df091e398a844dc3c613fe728ce2d"],
     nonfungiblePositionManagerAddress: "0x09c65bc891bf39daf771e85f2203b898402ff3cf",
     nonfungiblePositionManagerStartBlock: 8535119,
+  },
+  masterChefV3: {
+    masterChefAddress: "0x085e5E3a68e4E912E0bb3f5A242B808AB97EF5Cd",
+    startBlock: 8535307,
   },
 };
