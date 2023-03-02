@@ -34,11 +34,11 @@ export function handleTokenExchange(event: TokenExchange): void {
   }
 
   if (boughtId == 0) {
-    amount0Out = event.params.tokens_sold;
+    amount0Out = event.params.tokens_bought;
     amount1Out = BIG_INT_ZERO;
   } else {
     amount0Out = BIG_INT_ZERO;
-    amount1Out = event.params.tokens_sold;
+    amount1Out = event.params.tokens_bought;
   }
 
   let params = {
