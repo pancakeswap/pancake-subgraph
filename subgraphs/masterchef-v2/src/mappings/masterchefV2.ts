@@ -96,6 +96,10 @@ export function handleDeposit(event: Deposit): void {
   user.amount = user.amount.plus(event.params.amount);
   pool.totalBoostedShare = pool.totalBoostedShare.plus(event.params.amount.times(multiplier).div(BOOST_PRECISION));
 
+  if (user.amount.equals(event.params.amount)) {
+    pool.userCount = pool.userCount.plus(BI_ONE);
+  }
+
   user.rewardDebt = user.amount
     .times(multiplier)
     .div(BOOST_PRECISION)
