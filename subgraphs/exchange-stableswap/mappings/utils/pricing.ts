@@ -14,6 +14,7 @@ import {
   pcsFactoryContract,
   stableSwapFactoryContract,
   exponentToBigDecimal,
+  WBNB_ADDR,
 } from "./index";
 import { Pair as PairContract } from "../../generated/StableSwapFactory/Pair";
 import { StableSwapPair as StableSwapPairContract } from "../../generated/StableSwapFactory/StableSwapPair";
@@ -135,8 +136,9 @@ export function getBnbPriceInUSD(): BigDecimal {
   }
 }
 
-// token where amounts should contribute to tracked volume and liquidity. Stablecoins only, other case update findBnbPerToken
+// token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
+  "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", // WBNB
   "0xe9e7cea3dedca5984780bafc599bd69add087d56", // BUSD
   "0x55d398326f99059ff775485246999027b3197955", // USDT
   "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", // USDC
@@ -152,6 +154,9 @@ let WHITELIST: string[] = [
 export function findBnbPerToken(token: Token): BigDecimal {
   if (Address.fromString(token.id).equals(BUSD_ADDR)) {
     return getBusdPerBnb();
+  }
+  if (Address.fromString(token.id).equals(WBNB_ADDR)) {
+    return BIG_DECIMAL_ONE;
   }
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {

@@ -11,8 +11,10 @@ export let STABLESWAP_FACTORY_ADDRESS = "0x36bbb126e75351c0dfb651e39b38fe0bc436f
 export let STABLESWAP_FACTORY_ADDRESS_2 = "0x25a55f9f2279A54951133D503490342b50E5cd15";
 export let PCS_FACTORY_ADDRESS = "0xca143ce32fe78f1f7019d7d551a6402fc5350c73";
 export let BUSD_ADDRESS = "0xe9e7cea3dedca5984780bafc599bd69add087d56";
+export let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
 
 export let BUSD_ADDR = Address.fromString(BUSD_ADDRESS);
+export let WBNB_ADDR = Address.fromString(WBNB_ADDRESS);
 
 export let BIG_INT_ZERO = BigInt.fromI32(0);
 export let BIG_INT_ONE = BigInt.fromI32(1);
