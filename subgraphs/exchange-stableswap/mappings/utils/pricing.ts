@@ -3,82 +3,49 @@ import { Address, BigDecimal } from "@graphprotocol/graph-ts/index";
 import { Bundle, Pair, Token } from "../../generated/schema";
 import {
   ADDRESS_ZERO,
-  BIG_DECIMAL_1E18,
   BIG_DECIMAL_ONE,
   BIG_DECIMAL_ZERO,
   BIG_INT_18,
   BUSD_ADDR,
-  BUSD_ADDRESS,
   convertTokenToDecimal,
-  PCS_FACTORY_ADDRESS,
-  pcsFactoryContract,
   stableSwapFactoryContract,
   exponentToBigDecimal,
   WBNB_ADDR,
 } from "./index";
 import { Pair as PairContract } from "../../generated/StableSwapFactory/Pair";
 import { StableSwapPair as StableSwapPairContract } from "../../generated/StableSwapFactory/StableSwapPair";
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 import { getOrCreateToken } from "./data";
 
 let BUSD_WBNB_PAIR = "0x58f876857a02d6762e0101bb5c46a8c1ed44dc16";
 let USDT_WBNB_PAIR = "0x16b9a82891338f9ba80e2d6970fdda79d1eb0dae";
-let USDT_ADDRESS = "0x55d398326f99059ff775485246999027b3197955";
+// let USDT_ADDRESS = "0x55d398326f99059ff775485246999027b3197955";
 
 function getByDy(pair_: Pair | null, token: Address): BigDecimal {
   if (!pair_) return BIG_DECIMAL_ZERO;
-
   let targetTokenAddress = token.toHexString();
-  let usdtIndex =
-    pair_.token0 == USDT_ADDRESS ? 0 : pair_.token1 == USDT_ADDRESS ? 1 : pair_.token2 === USDT_ADDRESS ? 2 : -1;
-  let targetTokenIndex =
-    pair_.token0 == targetTokenAddress
-      ? 0
-      : pair_.token1 == targetTokenAddress
-      ? 1
-      : pair_.token2 === targetTokenAddress
-      ? 2
-      : -1;
-  if (usdtIndex > -1 && targetTokenIndex > -1) {
-    let targetToken = getOrCreateToken(token);
-    let pair = StableSwapPairContract.bind(Address.fromString(pair_.id));
-    let dy = pair.try_get_dy(
-      BigInt.fromI32(usdtIndex),
-      BigInt.fromI32(targetTokenIndex),
+  let targetToken = getOrCreateToken(token);
+  let targetTokenIndex = pair_.token0 == targetTokenAddress ? 0 : pair_.token1 == targetTokenAddress ? 1 : 2;
+  let baseTokenIndex = targetTokenIndex == 0 ? 1 : 0;
+  let baseToken =
+    baseTokenIndex == 0
+      ? getOrCreateToken(Address.fromString(pair_.token0))
+      : getOrCreateToken(Address.fromString(pair_.token1));
+  let pair = StableSwapPairContract.bind(Address.fromString(pair_.id));
+  let dy = pair.try_get_dy(
+    BigInt.fromI32(baseTokenIndex),
+    BigInt.fromI32(targetTokenIndex),
+    BigInt.fromI32(1).times(BigInt.fromString(exponentToBigDecimal(baseToken.decimals).toString()))
+  );
 
-      BigInt.fromI32(1).times(BigInt.fromString("1000000000000000000"))
-    );
-    if (!dy.reverted) {
-      return dy.value.divDecimal(exponentToBigDecimal(targetToken.decimals));
-    }
+  if (!dy.reverted) {
+    return dy.value.divDecimal(exponentToBigDecimal(targetToken.decimals));
   }
-
   return BIG_DECIMAL_ZERO;
 }
 
 export function getPriceFromPCS(token: Address, pair_: Pair | null): BigDecimal {
-  if (token.equals(Address.fromString(BUSD_ADDRESS))) {
-    return BIG_DECIMAL_ONE;
-  }
-  let address = pcsFactoryContract.getPair(token, BUSD_ADDR);
-  if (address.toHex() == ADDRESS_ZERO) {
-    log.debug("No pair found for {} on {}", [token.toHexString(), PCS_FACTORY_ADDRESS]);
-    return getByDy(pair_, token);
-  }
-  let pair = PairContract.bind(address);
-  let reserves = pair.getReserves();
-  // if reserves are below a certain threshold we consider them invalid
-  // ideally we'd account for different decimals, but this would increase
-  // number of calls. so we only filter for a common lower denom for dust.
-  if (reserves.value1.lt(BigInt.fromI32(100000000)) || reserves.value0.lt(BigInt.fromI32(100000000))) {
-    log.debug("Low reserves found for {} on {}", [token.toHexString(), PCS_FACTORY_ADDRESS]);
-    return getByDy(pair_, token);
-  }
-  let price = pair.token0().equals(BUSD_ADDR)
-    ? reserves.value0.toBigDecimal().times(BIG_DECIMAL_1E18).div(reserves.value1.toBigDecimal())
-    : reserves.value1.toBigDecimal().times(BIG_DECIMAL_1E18).div(reserves.value0.toBigDecimal());
-
-  return price.div(BIG_DECIMAL_1E18);
+  return getByDy(pair_, token);
 }
 
 export function getBusdPerBnb(): BigDecimal {
