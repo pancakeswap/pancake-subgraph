@@ -11,7 +11,8 @@ const USDC_WETH_03_POOL = "0x3709035aeaf6258d432ec1c50d2ef1e0bf90a439";
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s
 // TODO: v3 update
-export let WHITELIST_TOKENS: string[] = "0x828e3fc56dd48e072e3b6f3c4fd4ddb4733c2c5e,0xc1ed9955c11585f47d0d6bfbc29034349a746a81".split(",");
+export let WHITELIST_TOKENS: string[] =
+  "0x828e3fc56dd48e072e3b6f3c4fd4ddb4733c2c5e,0xc1ed9955c11585f47d0d6bfbc29034349a746a81".split(",");
 
 // TODO: v3 update
 let STABLE_COINS: string[] = "0x828e3fc56dd48e072e3b6f3c4fd4ddb4733c2c5e".split(",");
