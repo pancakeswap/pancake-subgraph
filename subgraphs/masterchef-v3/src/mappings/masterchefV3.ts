@@ -2,7 +2,6 @@
 import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
   AddPool,
-  Burn,
   Deposit,
   Harvest,
   NewLMPool,
@@ -139,20 +138,20 @@ export function handleUpdateLiquidity(event: UpdateLiquidity): void {
   pool.save();
 }
 
-export function handleBurn(event: Burn): void {
-  log.info("[MasterChefV3] Log Burn {} {} {}", [
-    event.params.sender.toHex(),
-    event.params.pid.toString(),
-    event.params.tokenId.toString(),
-  ]);
+// export function handleBurn(event: Burn): void {
+//   log.info("[MasterChefV3] Log Burn {} {} {}", [
+//     event.params.sender.toHex(),
+//     event.params.pid.toString(),
+//     event.params.tokenId.toString(),
+//   ]);
 
-  const masterChef = getOrCreateMasterChef(event.block);
-  const pool = getOrCreatePool(event.params.pid, event.block);
-  const userPosition = getOrCreateUserPosition(event.params.tokenId, pool, event.block);
+//   const masterChef = getOrCreateMasterChef(event.block);
+//   const pool = getOrCreatePool(event.params.pid, event.block);
+//   const userPosition = getOrCreateUserPosition(event.params.tokenId, pool, event.block);
 
-  userPosition.isStaked = false;
-  userPosition.save();
-}
+//   userPosition.isStaked = false;
+//   userPosition.save();
+// }
 
 export function handleHarvest(event: Harvest): void {
   log.info("[MasterChefV3] Log Harvest {} {} {}", [
@@ -182,7 +181,7 @@ export function handleNewUpkeepPeriod(event: NewUpkeepPeriod): void {
     event.params.cakePerSecond.toString(),
     event.params.startTime.toString(),
     event.params.endTime.toString(),
-    event.params.periodIndex.toString(),
+    event.params.periodNumber.toString(),
   ]);
 
   const masterChef = getOrCreateMasterChef(event.block);

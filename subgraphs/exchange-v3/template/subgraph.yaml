@@ -8,11 +8,11 @@ features:
 dataSources:
   - kind: ethereum/contract
     name: Factory
-    network: goerli
+    network: chapel
     source:
-      address: "0x6e906fc1d75c9559e4e8b0f1fa002c4a9724988f"
+      address: "0x6c816814d8c03f6b4e55c7965d9814b151336775"
       abi: Factory
-      startBlock: 8534961
+      startBlock: 27842013
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -37,11 +37,11 @@ dataSources:
           handler: handlePoolCreated
   - kind: ethereum/contract
     name: NonfungiblePositionManager
-    network: goerli
+    network: chapel
     source:
-      address: "0x09c65bc891bf39daf771e85f2203b898402ff3cf"
+      address: "0x7ac1781fbc0221eda1ba4d63f44f6851784de9dd"
       abi: NonfungiblePositionManager
-      startBlock: 8535119
+      startBlock: 27842064
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -71,7 +71,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pool
-    network: goerli
+    network: chapel
     source:
       abi: Pool
     mapping:
@@ -92,7 +92,7 @@ templates:
       eventHandlers:
         - event: Initialize(uint160,int24)
           handler: handleInitialize
-        - event: Swap(indexed address,indexed address,int256,int256,uint160,uint128,int24)
+        - event: Swap(indexed address,indexed address,int256,int256,uint160,uint128,int24,uint256,uint256)
           handler: handleSwap
         - event: Mint(address,indexed address,indexed int24,indexed int24,uint128,uint256,uint256)
           handler: handleMint

@@ -256,30 +256,43 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint8",
+        "internalType": "uint32",
         "name": "feeProtocol0Old",
-        "type": "uint8"
+        "type": "uint32"
       },
       {
         "indexed": false,
-        "internalType": "uint8",
+        "internalType": "uint32",
         "name": "feeProtocol1Old",
-        "type": "uint8"
+        "type": "uint32"
       },
       {
         "indexed": false,
-        "internalType": "uint8",
+        "internalType": "uint32",
         "name": "feeProtocol0New",
-        "type": "uint8"
+        "type": "uint32"
       },
       {
         "indexed": false,
-        "internalType": "uint8",
+        "internalType": "uint32",
         "name": "feeProtocol1New",
-        "type": "uint8"
+        "type": "uint32"
       }
     ],
     "name": "SetFeeProtocol",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      }
+    ],
+    "name": "SetLmPoolEvent",
     "type": "event"
   },
   {
@@ -326,6 +339,18 @@
         "internalType": "int24",
         "name": "tick",
         "type": "int24"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fee0X128",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fee1X128",
+        "type": "uint256"
       }
     ],
     "name": "Swap",
@@ -564,6 +589,19 @@
   },
   {
     "inputs": [],
+    "name": "lmPool",
+    "outputs": [
+      {
+        "internalType": "contract IPancakeV3LmPool",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "maxLiquidityPerTick",
     "outputs": [
       {
@@ -623,7 +661,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "index",
+        "name": "",
         "type": "uint256"
       }
     ],
@@ -681,7 +719,7 @@
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "key",
+        "name": "",
         "type": "bytes32"
       }
     ],
@@ -689,7 +727,7 @@
     "outputs": [
       {
         "internalType": "uint128",
-        "name": "_liquidity",
+        "name": "liquidity",
         "type": "uint128"
       },
       {
@@ -737,17 +775,30 @@
   {
     "inputs": [
       {
-        "internalType": "uint8",
+        "internalType": "uint32",
         "name": "feeProtocol0",
-        "type": "uint8"
+        "type": "uint32"
       },
       {
-        "internalType": "uint8",
+        "internalType": "uint32",
         "name": "feeProtocol1",
-        "type": "uint8"
+        "type": "uint32"
       }
     ],
     "name": "setFeeProtocol",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IPancakeV3LmPool",
+        "name": "_lmPool",
+        "type": "address"
+      }
+    ],
+    "name": "setLmPool",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -782,9 +833,9 @@
         "type": "uint16"
       },
       {
-        "internalType": "uint8",
+        "internalType": "uint32",
         "name": "feeProtocol",
-        "type": "uint8"
+        "type": "uint32"
       },
       {
         "internalType": "bool",
@@ -877,7 +928,7 @@
     "inputs": [
       {
         "internalType": "int16",
-        "name": "wordPosition",
+        "name": "",
         "type": "int16"
       }
     ],
@@ -909,7 +960,7 @@
     "inputs": [
       {
         "internalType": "int24",
-        "name": "tick",
+        "name": "",
         "type": "int24"
       }
     ],
