@@ -24,7 +24,7 @@ export function getOrCreatePool(pid: BigInt, block: ethereum.Block): Pool {
     pool = new Pool(pid.toString());
     pool.masterChef = masterChef.id;
     pool.v3Pool = ADDRESS_ZERO;
-    pool.lmPool = ADDRESS_ZERO;
+    // pool.lmPool = ADDRESS_ZERO;
     pool.allocPoint = BI_ZERO;
     pool.allocPoint = BI_ZERO;
     pool.userCount = BI_ZERO;

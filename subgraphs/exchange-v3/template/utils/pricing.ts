@@ -6,7 +6,7 @@ import { exponentToBigDecimal, safeDiv } from "./index";
 
 // TODO: v3 update
 const WETH_ADDRESS = "0xae13d989dac2f0debff460ac112a837c89baa7cd";
-const USDC_WETH_03_POOL = "0x3709035aeaf6258d432ec1c50d2ef1e0bf90a439";
+const USDC_WETH_03_POOL = "0xe0b701d9a80d582539f6fa2d29ceef86f79c8109";
 
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s

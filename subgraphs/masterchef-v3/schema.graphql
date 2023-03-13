@@ -23,7 +23,7 @@ type Pool @entity {
   id: ID!
   masterChef: MasterChef!
   v3Pool: Bytes!
-  lmPool: Bytes!
+  # lmPool: Bytes!
 
   # token0: Token!
   # token1: Token!

@@ -4,7 +4,6 @@ import {
   AddPool,
   Deposit,
   Harvest,
-  NewLMPool,
   NewPeriodDuration,
   NewUpkeepPeriod,
   SetPool,
@@ -21,14 +20,14 @@ export function handleAddPool(event: AddPool): void {
   log.info("[MasterChefV3] Add Pool {} {} {} {}", [
     event.params.pid.toString(),
     event.params.allocPoint.toString(),
-    event.params.lmPool.toHex(),
+    // event.params.lmPool.toHex(),
     event.params.v3Pool.toHex(),
   ]);
 
   const masterChef = getOrCreateMasterChef(event.block);
   const pool = getOrCreatePool(event.params.pid, event.block);
 
-  pool.lmPool = event.params.lmPool;
+  // pool.lmPool = event.params.lmPool;
   pool.allocPoint = event.params.allocPoint;
   pool.v3Pool = event.params.v3Pool;
 
@@ -59,14 +58,14 @@ export function handleSetPool(event: SetPool): void {
   pool.save();
 }
 
-export function handleNewLMPool(event: NewLMPool): void {
-  log.info("[MasterChefV3] New LM Pool {} {}", [event.params.pid.toString(), event.params.LMPool.toHex()]);
+// export function handleNewLMPool(event: NewLMPool): void {
+//   log.info("[MasterChefV3] New LM Pool {} {}", [event.params.pid.toString(), event.params.LMPool.toHex()]);
 
-  const pool = getOrCreatePool(event.params.pid, event.block);
+//   const pool = getOrCreatePool(event.params.pid, event.block);
 
-  pool.lmPool = event.params.LMPool;
-  pool.save();
-}
+//   pool.lmPool = event.params.LMPool;
+//   pool.save();
+// }
 
 export function handleDeposit(event: Deposit): void {
   log.info("[MasterChefV3] Log Deposit {} {} {} {}", [

@@ -2,11 +2,6 @@
   {
     "inputs": [
       {
-        "internalType": "contract IMasterChefV2",
-        "name": "_MASTER_CHEF_v2",
-        "type": "address"
-      },
-      {
         "internalType": "contract IERC20",
         "name": "_CAKE",
         "type": "address"
@@ -15,11 +10,6 @@
         "internalType": "contract INonfungiblePositionManager",
         "name": "_nonfungiblePositionManager",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_MASTER_CHEF_V2_PID",
-        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
@@ -88,6 +78,11 @@
   },
   {
     "inputs": [],
+    "name": "WrongReceiver",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ZeroAddress",
     "type": "error"
   },
@@ -108,7 +103,7 @@
       },
       {
         "indexed": true,
-        "internalType": "contract IUniswapV3Pool",
+        "internalType": "contract IPancakeV3Pool",
         "name": "v3Pool",
         "type": "address"
       },
@@ -212,25 +207,6 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "pid",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "LMPool",
-        "type": "address"
-      }
-    ],
-    "name": "NewLMPool",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": false,
         "internalType": "address",
         "name": "deployer",
@@ -264,6 +240,19 @@
       }
     ],
     "name": "NewPeriodDuration",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      }
+    ],
+    "name": "NewReceiver",
     "type": "event"
   },
   {
@@ -320,6 +309,19 @@
       }
     ],
     "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "emergency",
+        "type": "bool"
+      }
+    ],
+    "name": "SetEmergency",
     "type": "event"
   },
   {
@@ -513,32 +515,6 @@
   },
   {
     "inputs": [],
-    "name": "MASTER_CHEF_V2",
-    "outputs": [
-      {
-        "internalType": "contract IMasterChefV2",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "MASTER_CHEF_V2_PID",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "MAX_BOOST_PRECISION",
     "outputs": [
       {
@@ -610,7 +586,7 @@
         "type": "uint256"
       },
       {
-        "internalType": "contract IUniswapV3Pool",
+        "internalType": "contract IPancakeV3Pool",
         "name": "_v3Pool",
         "type": "address"
       },
@@ -654,7 +630,7 @@
     ],
     "name": "burn",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -700,7 +676,7 @@
         "type": "uint256"
       }
     ],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -751,7 +727,20 @@
         "type": "uint256"
       }
     ],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "emergency",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -786,7 +775,7 @@
         "type": "uint256"
       }
     ],
-    "name": "getLatestPeriodInfo",
+    "name": "getLatestPeriodInfoByPid",
     "outputs": [
       {
         "internalType": "uint256",
@@ -878,33 +867,7 @@
         "type": "uint256"
       }
     ],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "_dummyToken",
-        "type": "address"
-      }
-    ],
-    "name": "init",
-    "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "lastHarvestBlock",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1086,7 +1049,7 @@
         "type": "uint256"
       },
       {
-        "internalType": "contract IUniswapV3Pool",
+        "internalType": "contract IPancakeV3Pool",
         "name": "v3Pool",
         "type": "address"
       },
@@ -1134,6 +1097,19 @@
   },
   {
     "inputs": [],
+    "name": "receiver",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -1158,6 +1134,19 @@
       }
     ],
     "name": "set",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_emergency",
+        "type": "bool"
+      }
+    ],
+    "name": "setEmergency",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1197,6 +1186,19 @@
       }
     ],
     "name": "setPeriodDuration",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_receiver",
+        "type": "address"
+      }
+    ],
+    "name": "setReceiver",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1249,19 +1251,6 @@
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "undistributedCake",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1323,6 +1312,11 @@
   },
   {
     "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      },
       {
         "internalType": "bool",
         "name": "_withUpdate",
