@@ -1,18 +1,12 @@
 /* eslint-disable prefer-const */
-import { log } from "@graphprotocol/graph-ts/index";
-import { BIG_INT_ZERO } from "./utils";
+import { log } from "@graphprotocol/graph-ts";
+import { BIG_INT_ONE, BIG_INT_ZERO } from "./utils";
 import {
   AddLiquidity,
   RemoveLiquidity,
   RemoveLiquidityOne,
   TokenExchange,
 } from "../generated/templates/StableSwapPairV2/StableSwapPairV2";
-// import {
-//   AddLiquidity as AddLiquidity3,
-//   RemoveLiquidity as RemoveLiquidity3,
-//   RemoveLiquidityOne as RemoveLiquidityOne3,
-//   TokenExchange as TokenExchange3,
-// } from "../generated/templates/StableSwap3PairV2/StableSwap3PairV2";
 import { Pair } from "../generated/schema";
 import { BigInt } from "@graphprotocol/graph-ts";
 import { sync } from "./services/sync";
@@ -74,13 +68,14 @@ export function handleRemoveLiquidityOne(event: RemoveLiquidityOne): void {
   if (!pair) {
     return;
   }
-  // let tokenAmounts = new Array<BigInt>();
-  // for (let i = 0; i < pair.coins.length; i++) {
-  //   tokenAmounts.push(i == event.params.coin_index.toI32() ? event.params.coin_amount : BIG_INT_ZERO);
-  // }
-  // log.info("Removed liquidity for pool: {} at {}", [event.address.toHexString(), event.transaction.hash.toHexString()]);
-  // sync(event.address);
-  // burn(event, tokenAmounts[0], tokenAmounts[1]);
+
+  log.info("Removed liquidity for pool: {} at {}", [event.address.toHexString(), event.transaction.hash.toHexString()]);
+  sync(event.address);
+  if (event.params.index.equals(BIG_INT_ZERO)) {
+    burn(event, event.params.coin_amount, BIG_INT_ZERO, null);
+  } else if (event.params.index.equals(BIG_INT_ONE)) {
+    burn(event, BIG_INT_ZERO, event.params.coin_amount, null);
+  }
 }
 
 export function handleAddLiquidity(event: AddLiquidity): void {
