@@ -12,9 +12,10 @@ import { Bundle, Factory, Token } from "../../generated/schema";
 
 // fallback as default all factory
 export function getOrCreateFactory(factoryAddress: string | null): Factory {
-  let factory = Factory.load(factoryAddress || STABLESWAP_FACTORY_ADDRESS);
+  let id = Address.fromString(factoryAddress || STABLESWAP_FACTORY_ADDRESS).toHex();
+  let factory = Factory.load(id);
   if (factory === null) {
-    factory = new Factory(factoryAddress || STABLESWAP_FACTORY_ADDRESS);
+    factory = new Factory(id);
     factory.totalPairs = BIG_INT_ZERO;
     factory.totalLiquidityBNB = BIG_DECIMAL_ZERO;
     factory.totalLiquidityUSD = BIG_DECIMAL_ZERO;
