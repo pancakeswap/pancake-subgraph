@@ -30,8 +30,8 @@ export function updatePancakeDayData(event: ethereum.Event): PancakeDayData {
     totalTransactions = totalTransactions.plus(factory.totalTransactions);
   }
 
-  pancakeDayData.totalLiquidityUSD = totalLiquidityBNB;
-  pancakeDayData.totalLiquidityBNB = totalLiquidityUSD;
+  pancakeDayData.totalLiquidityUSD = totalLiquidityUSD;
+  pancakeDayData.totalLiquidityBNB = totalLiquidityBNB;
   pancakeDayData.totalTransactions = totalTransactions;
   pancakeDayData.save();
 
