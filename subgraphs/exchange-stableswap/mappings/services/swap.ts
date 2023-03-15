@@ -133,7 +133,7 @@ export function swap(event: ethereum.Event, params: SwapParams): void {
   // update day entities
   let pairDayData = updatePairDayData(event);
   let pairHourData = updatePairHourData(event);
-  let pancakeDayData = updatePancakeDayData(event, factory.id);
+  let pancakeDayData = updatePancakeDayData(event);
   let token0DayData = updateTokenDayData(token0 as Token, event);
   let token1DayData = updateTokenDayData(token1 as Token, event);
 

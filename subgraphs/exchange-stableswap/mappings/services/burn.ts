@@ -55,7 +55,7 @@ export function burn(event: ethereum.Event, tokenAmount0: BigInt, tokenAmount1: 
 
   updatePairDayData(event);
   updatePairHourData(event);
-  updatePancakeDayData(event, pair.factory);
+  updatePancakeDayData(event);
   updateTokenDayData(token0 as Token, event);
   updateTokenDayData(token1 as Token, event);
 }

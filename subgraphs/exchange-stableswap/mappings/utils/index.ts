@@ -13,6 +13,9 @@ export let PCS_FACTORY_ADDRESS = "0xca143ce32fe78f1f7019d7d551a6402fc5350c73";
 export let BUSD_ADDRESS = "0xe9e7cea3dedca5984780bafc599bd69add087d56";
 export let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
 
+//When new factory was deployed, and SC address into list
+export let FACTORIES: string[] = [STABLESWAP_FACTORY_ADDRESS, STABLESWAP_FACTORY_ADDRESS_2];
+
 export let BUSD_ADDR = Address.fromString(BUSD_ADDRESS);
 export let WBNB_ADDR = Address.fromString(WBNB_ADDRESS);
 

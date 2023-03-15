@@ -1,11 +1,10 @@
 /* eslint-disable prefer-const */
 import { Bundle, Pair, PairDayData, PairHourData, PancakeDayData, Token, TokenDayData } from "../../generated/schema";
 import { BigDecimal, BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { BIG_DECIMAL_ZERO, BIG_INT_ONE, BIG_INT_ZERO } from "../utils";
+import { BIG_DECIMAL_ZERO, BIG_INT_ONE, BIG_INT_ZERO, FACTORIES } from "../utils";
 import { getOrCreateFactory } from "../utils/data";
 
-export function updatePancakeDayData(event: ethereum.Event, factoryAddress: string): PancakeDayData {
-  let factory = getOrCreateFactory(factoryAddress);
+export function updatePancakeDayData(event: ethereum.Event): PancakeDayData {
   let timestamp = event.block.timestamp.toI32();
   let dayID = timestamp / 86400;
   let dayStartTimestamp = dayID * 86400;
@@ -20,9 +19,20 @@ export function updatePancakeDayData(event: ethereum.Event, factoryAddress: stri
     pancakeDayData.totalVolumeBNB = BIG_DECIMAL_ZERO;
     pancakeDayData.dailyVolumeUntracked = BIG_DECIMAL_ZERO;
   }
-  pancakeDayData.totalLiquidityUSD = factory.totalLiquidityUSD;
-  pancakeDayData.totalLiquidityBNB = factory.totalLiquidityBNB;
-  pancakeDayData.totalTransactions = factory.totalTransactions;
+
+  let totalLiquidityBNB = BIG_DECIMAL_ZERO;
+  let totalLiquidityUSD = BIG_DECIMAL_ZERO;
+  let totalTransactions = BIG_INT_ZERO;
+  for (let i = 0; i < FACTORIES.length; i++) {
+    let factory = getOrCreateFactory(FACTORIES[i]);
+    totalLiquidityBNB = totalLiquidityBNB.plus(factory.totalLiquidityBNB);
+    totalLiquidityUSD = totalLiquidityUSD.plus(factory.totalLiquidityUSD);
+    totalTransactions = totalTransactions.plus(factory.totalTransactions);
+  }
+
+  pancakeDayData.totalLiquidityUSD = totalLiquidityBNB;
+  pancakeDayData.totalLiquidityBNB = totalLiquidityUSD;
+  pancakeDayData.totalTransactions = totalTransactions;
   pancakeDayData.save();
 
   return pancakeDayData as PancakeDayData;
