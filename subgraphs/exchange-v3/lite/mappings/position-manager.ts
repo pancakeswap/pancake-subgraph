@@ -6,7 +6,7 @@ import {
   NonfungiblePositionManager,
   Transfer,
 } from "../generated/NonfungiblePositionManager/NonfungiblePositionManager";
-import { Bundle, Position, PositionSnapshot, Token } from "../generated/schema";
+import { Position, PositionSnapshot, Token } from "../generated/schema";
 import { ADDRESS_ZERO, factoryContract, ZERO_BD, ZERO_BI } from "../utils/constants";
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { convertTokenToDecimal, loadTransaction } from "../utils";
@@ -80,20 +80,10 @@ function savePositionSnapshot(position: Position, event: ethereum.Event): void {
 }
 
 export function handleIncreaseLiquidity(event: IncreaseLiquidity): void {
-  // temp fix
-  if (event.block.number.equals(BigInt.fromI32(14317993))) {
-    return;
-  }
-
   let position = getPosition(event, event.params.tokenId);
 
   // position was not able to be fetched
   if (position == null) {
-    return;
-  }
-
-  // temp fix
-  if (Address.fromString(position.pool).equals(Address.fromHexString("0x8fe8d9bb8eeba3ed688069c3d6b556c9ca258248"))) {
     return;
   }
 
@@ -115,20 +105,10 @@ export function handleIncreaseLiquidity(event: IncreaseLiquidity): void {
 }
 
 export function handleDecreaseLiquidity(event: DecreaseLiquidity): void {
-  // temp fix
-  if (event.block.number == BigInt.fromI32(14317993)) {
-    return;
-  }
-
   let position = getPosition(event, event.params.tokenId);
 
   // position was not able to be fetched
   if (position == null) {
-    return;
-  }
-
-  // temp fix
-  if (Address.fromString(position.pool).equals(Address.fromHexString("0x8fe8d9bb8eeba3ed688069c3d6b556c9ca258248"))) {
     return;
   }
 

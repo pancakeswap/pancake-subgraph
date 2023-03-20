@@ -42,7 +42,7 @@ export function createTick(tickId: string, tickIdx: i32, poolId: string, event: 
 
 export function feeTierToTickSpacing(feeTier: BigInt): BigInt {
   if (feeTier.equals(BigInt.fromI32(10000))) {
-    return BigInt.fromI32(100);
+    return BigInt.fromI32(200);
   }
   if (feeTier.equals(BigInt.fromI32(2500))) {
     return BigInt.fromI32(50);

@@ -272,10 +272,10 @@ export function handleSwap(event: SwapEvent): void {
   let factory = Factory.load(FACTORY_ADDRESS);
   let pool = Pool.load(event.address.toHexString());
 
-  // hot fix for bad pricing
-  if (pool.id == "0x9663f2ca0454accad3e094448ea6f77443880454") {
-    return;
-  }
+  // // hot fix for bad pricing
+  // if (pool.id == "0x9663f2ca0454accad3e094448ea6f77443880454") {
+  //   return;
+  // }
 
   let token0 = Token.load(pool.token0);
   let token1 = Token.load(pool.token1);
@@ -394,6 +394,7 @@ export function handleSwap(event: SwapEvent): void {
   swap.amount0 = amount0;
   swap.amount1 = amount1;
   swap.amountUSD = amountTotalUSDTracked;
+  swap.amountFeeUSD = amountTotalUSDTracked;
   swap.tick = BigInt.fromI32(event.params.tick as i32);
   swap.sqrtPriceX96 = event.params.sqrtPriceX96;
   swap.logIndex = event.logIndex;
