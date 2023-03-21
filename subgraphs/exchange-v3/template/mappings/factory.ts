@@ -19,6 +19,8 @@ export function handlePoolCreated(event: PoolCreated): void {
     factory.untrackedVolumeUSD = ZERO_BD;
     factory.totalFeesUSD = ZERO_BD;
     factory.totalFeesETH = ZERO_BD;
+    factory.totalProtocolFeesUSD = ZERO_BD;
+    factory.totalProtocolFeesETH = ZERO_BD;
     factory.totalValueLockedETH = ZERO_BD;
     factory.totalValueLockedUSD = ZERO_BD;
     factory.totalValueLockedUSDUntracked = ZERO_BD;
@@ -57,6 +59,7 @@ export function handlePoolCreated(event: PoolCreated): void {
     token0.volume = ZERO_BD;
     token0.volumeUSD = ZERO_BD;
     token0.feesUSD = ZERO_BD;
+    token0.protocolFeesUSD = ZERO_BD;
     token0.untrackedVolumeUSD = ZERO_BD;
     token0.totalValueLocked = ZERO_BD;
     token0.totalValueLockedUSD = ZERO_BD;
@@ -83,6 +86,7 @@ export function handlePoolCreated(event: PoolCreated): void {
     token1.volumeUSD = ZERO_BD;
     token1.untrackedVolumeUSD = ZERO_BD;
     token1.feesUSD = ZERO_BD;
+    token1.protocolFeesUSD = ZERO_BD;
     token1.totalValueLocked = ZERO_BD;
     token1.totalValueLockedUSD = ZERO_BD;
     token1.totalValueLockedUSDUntracked = ZERO_BD;
@@ -126,6 +130,7 @@ export function handlePoolCreated(event: PoolCreated): void {
   pool.volumeToken1 = ZERO_BD;
   pool.volumeUSD = ZERO_BD;
   pool.feesUSD = ZERO_BD;
+  pool.protocolFeesUSD = ZERO_BD;
   pool.untrackedVolumeUSD = ZERO_BD;
 
   pool.collectedFeesToken0 = ZERO_BD;

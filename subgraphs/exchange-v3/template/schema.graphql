@@ -11,8 +11,12 @@ type Factory @entity {
   totalVolumeETH: BigDecimal!
   # total swap fees all time in USD
   totalFeesUSD: BigDecimal!
-  # total swap fees all time in USD
+  # total swap fees all time in ETH
   totalFeesETH: BigDecimal!
+  # total swap protocol fees all time in USD
+  totalProtocolFeesUSD: BigDecimal!
+  # total swap fees all time in ETH
+  totalProtocolFeesETH: BigDecimal!
   # all volume even through less reliable USD values
   untrackedVolumeUSD: BigDecimal!
   # TVL derived in USD
@@ -54,6 +58,8 @@ type Token @entity {
   untrackedVolumeUSD: BigDecimal!
   # fees in USD
   feesUSD: BigDecimal!
+  # protocol fees in USD
+  protocolFeesUSD: BigDecimal!
   # transactions across all pools that include this token
   txCount: BigInt!
   # number of pools containing this token
@@ -111,6 +117,8 @@ type Pool @entity {
   untrackedVolumeUSD: BigDecimal!
   # fees in USD
   feesUSD: BigDecimal!
+  # protocol fees in USD
+  protocolFeesUSD: BigDecimal!
   # all time number of transactions
   txCount: BigInt!
   # all time fees collected token0
@@ -371,6 +379,8 @@ type Swap @entity {
   amount1: BigDecimal!
   # derived info
   amountUSD: BigDecimal!
+  # derived protocol fee info
+  amountFeeUSD: BigDecimal!
   # The sqrt(price) of the pool after the swap, as a Q64.96
   sqrtPriceX96: BigInt!
   # the tick after the swap
@@ -445,6 +455,8 @@ type PancakeDayData @entity {
   volumeUSDUntracked: BigDecimal!
   # fees in USD
   feesUSD: BigDecimal!
+  # protocol fees in USD
+  protocolFeesUSD: BigDecimal!
   # number of daily transactions
   txCount: BigInt!
   # tvl in terms of USD
@@ -483,6 +495,8 @@ type PoolDayData @entity {
   volumeUSD: BigDecimal!
   # fees in USD
   feesUSD: BigDecimal!
+  # protocol fees in USD
+  protocolFeesUSD: BigDecimal!
   # numebr of transactions during period
   txCount: BigInt!
   # opening price of token0
@@ -527,6 +541,8 @@ type PoolHourData @entity {
   volumeUSD: BigDecimal!
   # fees in USD
   feesUSD: BigDecimal!
+  # protocol fees in USD
+  protocolFeesUSD: BigDecimal!
   # numebr of transactions during period
   txCount: BigInt!
   # opening price of token0
@@ -611,6 +627,8 @@ type TokenDayData @entity {
   priceUSD: BigDecimal!
   # fees in USD
   feesUSD: BigDecimal!
+  # protocol fees in USD
+  protocolFeesUSD: BigDecimal!
   # opening price USD
   open: BigDecimal!
   # high price USD
@@ -642,6 +660,8 @@ type TokenHourData @entity {
   priceUSD: BigDecimal!
   # fees in USD
   feesUSD: BigDecimal!
+  # protocol fees in USD
+  protocolFeesUSD: BigDecimal!
   # opening price USD
   open: BigDecimal!
   # high price USD

@@ -33,6 +33,7 @@ export function updatePancakeDayData(event: ethereum.Event): PancakeDayData {
     pancakeDayData.volumeUSD = ZERO_BD;
     pancakeDayData.volumeUSDUntracked = ZERO_BD;
     pancakeDayData.feesUSD = ZERO_BD;
+    pancakeDayData.protocolFeesUSD = ZERO_BD;
   }
   pancakeDayData.tvlUSD = pancake.totalValueLockedUSD;
   pancakeDayData.txCount = pancake.txCount;
@@ -56,6 +57,7 @@ export function updatePoolDayData(event: ethereum.Event): PoolDayData {
     poolDayData.volumeToken1 = ZERO_BD;
     poolDayData.volumeUSD = ZERO_BD;
     poolDayData.feesUSD = ZERO_BD;
+    poolDayData.protocolFeesUSD = ZERO_BD;
     poolDayData.txCount = ZERO_BI;
     poolDayData.feeGrowthGlobal0X128 = ZERO_BI;
     poolDayData.feeGrowthGlobal1X128 = ZERO_BI;
@@ -103,6 +105,7 @@ export function updatePoolHourData(event: ethereum.Event): PoolHourData {
     poolHourData.volumeUSD = ZERO_BD;
     poolHourData.txCount = ZERO_BI;
     poolHourData.feesUSD = ZERO_BD;
+    poolHourData.protocolFeesUSD = ZERO_BD;
     poolHourData.feeGrowthGlobal0X128 = ZERO_BI;
     poolHourData.feeGrowthGlobal1X128 = ZERO_BI;
     poolHourData.open = pool.token0Price;
@@ -150,6 +153,7 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
     tokenDayData.volume = ZERO_BD;
     tokenDayData.volumeUSD = ZERO_BD;
     tokenDayData.feesUSD = ZERO_BD;
+    tokenDayData.protocolFeesUSD = ZERO_BD;
     tokenDayData.untrackedVolumeUSD = ZERO_BD;
     tokenDayData.open = tokenPrice;
     tokenDayData.high = tokenPrice;
@@ -191,6 +195,7 @@ export function updateTokenHourData(token: Token, event: ethereum.Event): TokenH
     tokenHourData.volumeUSD = ZERO_BD;
     tokenHourData.untrackedVolumeUSD = ZERO_BD;
     tokenHourData.feesUSD = ZERO_BD;
+    tokenHourData.protocolFeesUSD = ZERO_BD;
     tokenHourData.open = tokenPrice;
     tokenHourData.high = tokenPrice;
     tokenHourData.low = tokenPrice;

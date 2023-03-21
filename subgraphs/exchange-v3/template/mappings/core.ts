@@ -285,6 +285,8 @@ export function handleSwap(event: SwapEvent): void {
   // amounts - 0/1 are token deltas: can be positive or negative
   let amount0 = convertTokenToDecimal(event.params.amount0, token0.decimals);
   let amount1 = convertTokenToDecimal(event.params.amount1, token1.decimals);
+  let protocolFeeAmount0 = convertTokenToDecimal(event.params.protocolFeesToken0, token0.decimals);
+  let protocolFeeAmount1 = convertTokenToDecimal(event.params.protocolFeesToken1, token1.decimals);
 
   // need absolute amounts for volume
   let amount0Abs = amount0;
@@ -305,11 +307,18 @@ export function handleSwap(event: SwapEvent): void {
   let amountTotalUSDTracked = getTrackedAmountUSD(amount0Abs, token0 as Token, amount1Abs, token1 as Token).div(
     BigDecimal.fromString("2")
   );
+  let amountTotalProtocolFeesUSDTracked = getTrackedAmountUSD(
+    protocolFeeAmount0,
+    token0 as Token,
+    protocolFeeAmount1,
+    token1 as Token
+  );
   let amountTotalETHTracked = safeDiv(amountTotalUSDTracked, bundle.ethPriceUSD);
   let amountTotalUSDUntracked = amount0USD.plus(amount1USD).div(BigDecimal.fromString("2"));
 
   let feesETH = amountTotalETHTracked.times(pool.feeTier.toBigDecimal()).div(BigDecimal.fromString("1000000"));
   let feesUSD = amountTotalUSDTracked.times(pool.feeTier.toBigDecimal()).div(BigDecimal.fromString("1000000"));
+  let feesProtocolETH = safeDiv(amountTotalProtocolFeesUSDTracked, bundle.ethPriceUSD);
 
   // global updates
   factory.txCount = factory.txCount.plus(ONE_BI);
@@ -318,6 +327,8 @@ export function handleSwap(event: SwapEvent): void {
   factory.untrackedVolumeUSD = factory.untrackedVolumeUSD.plus(amountTotalUSDUntracked);
   factory.totalFeesETH = factory.totalFeesETH.plus(feesETH);
   factory.totalFeesUSD = factory.totalFeesUSD.plus(feesUSD);
+  factory.totalProtocolFeesETH = factory.totalProtocolFeesETH.plus(feesProtocolETH);
+  factory.totalProtocolFeesUSD = factory.totalProtocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
 
   // reset aggregate tvl before individual pool tvl updates
   let currentPoolTvlETH = pool.totalValueLockedETH;
@@ -329,6 +340,7 @@ export function handleSwap(event: SwapEvent): void {
   pool.volumeUSD = pool.volumeUSD.plus(amountTotalUSDTracked);
   pool.untrackedVolumeUSD = pool.untrackedVolumeUSD.plus(amountTotalUSDUntracked);
   pool.feesUSD = pool.feesUSD.plus(feesUSD);
+  pool.protocolFeesUSD = pool.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
   pool.txCount = pool.txCount.plus(ONE_BI);
 
   // Update the pool with the new active liquidity, price, and tick.
@@ -344,6 +356,7 @@ export function handleSwap(event: SwapEvent): void {
   token0.volumeUSD = token0.volumeUSD.plus(amountTotalUSDTracked);
   token0.untrackedVolumeUSD = token0.untrackedVolumeUSD.plus(amountTotalUSDUntracked);
   token0.feesUSD = token0.feesUSD.plus(feesUSD);
+  token0.protocolFeesUSD = token0.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
   token0.txCount = token0.txCount.plus(ONE_BI);
 
   // update token1 data
@@ -352,6 +365,7 @@ export function handleSwap(event: SwapEvent): void {
   token1.volumeUSD = token1.volumeUSD.plus(amountTotalUSDTracked);
   token1.untrackedVolumeUSD = token1.untrackedVolumeUSD.plus(amountTotalUSDUntracked);
   token1.feesUSD = token1.feesUSD.plus(feesUSD);
+  token1.protocolFeesUSD = token1.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
   token1.txCount = token1.txCount.plus(ONE_BI);
 
   // updated pool ratess
@@ -394,7 +408,7 @@ export function handleSwap(event: SwapEvent): void {
   swap.amount0 = amount0;
   swap.amount1 = amount1;
   swap.amountUSD = amountTotalUSDTracked;
-  swap.amountFeeUSD = amountTotalUSDTracked;
+  swap.amountFeeUSD = amountTotalProtocolFeesUSDTracked;
   swap.tick = BigInt.fromI32(event.params.tick as i32);
   swap.sqrtPriceX96 = event.params.sqrtPriceX96;
   swap.logIndex = event.logIndex;
@@ -419,36 +433,43 @@ export function handleSwap(event: SwapEvent): void {
   pancakeDayData.volumeETH = pancakeDayData.volumeETH.plus(amountTotalETHTracked);
   pancakeDayData.volumeUSD = pancakeDayData.volumeUSD.plus(amountTotalUSDTracked);
   pancakeDayData.feesUSD = pancakeDayData.feesUSD.plus(feesUSD);
+  pancakeDayData.protocolFeesUSD = pancakeDayData.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
 
   poolDayData.volumeUSD = poolDayData.volumeUSD.plus(amountTotalUSDTracked);
   poolDayData.volumeToken0 = poolDayData.volumeToken0.plus(amount0Abs);
   poolDayData.volumeToken1 = poolDayData.volumeToken1.plus(amount1Abs);
   poolDayData.feesUSD = poolDayData.feesUSD.plus(feesUSD);
+  poolDayData.protocolFeesUSD = poolDayData.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
 
   poolHourData.volumeUSD = poolHourData.volumeUSD.plus(amountTotalUSDTracked);
   poolHourData.volumeToken0 = poolHourData.volumeToken0.plus(amount0Abs);
   poolHourData.volumeToken1 = poolHourData.volumeToken1.plus(amount1Abs);
   poolHourData.feesUSD = poolHourData.feesUSD.plus(feesUSD);
+  poolHourData.protocolFeesUSD = poolHourData.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
 
   token0DayData.volume = token0DayData.volume.plus(amount0Abs);
   token0DayData.volumeUSD = token0DayData.volumeUSD.plus(amountTotalUSDTracked);
   token0DayData.untrackedVolumeUSD = token0DayData.untrackedVolumeUSD.plus(amountTotalUSDTracked);
   token0DayData.feesUSD = token0DayData.feesUSD.plus(feesUSD);
+  token0DayData.protocolFeesUSD = token0DayData.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
 
   token0HourData.volume = token0HourData.volume.plus(amount0Abs);
   token0HourData.volumeUSD = token0HourData.volumeUSD.plus(amountTotalUSDTracked);
   token0HourData.untrackedVolumeUSD = token0HourData.untrackedVolumeUSD.plus(amountTotalUSDTracked);
   token0HourData.feesUSD = token0HourData.feesUSD.plus(feesUSD);
+  token0HourData.protocolFeesUSD = token0HourData.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
 
   token1DayData.volume = token1DayData.volume.plus(amount1Abs);
   token1DayData.volumeUSD = token1DayData.volumeUSD.plus(amountTotalUSDTracked);
   token1DayData.untrackedVolumeUSD = token1DayData.untrackedVolumeUSD.plus(amountTotalUSDTracked);
   token1DayData.feesUSD = token1DayData.feesUSD.plus(feesUSD);
+  token1DayData.protocolFeesUSD = token1DayData.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
 
   token1HourData.volume = token1HourData.volume.plus(amount1Abs);
   token1HourData.volumeUSD = token1HourData.volumeUSD.plus(amountTotalUSDTracked);
   token1HourData.untrackedVolumeUSD = token1HourData.untrackedVolumeUSD.plus(amountTotalUSDTracked);
   token1HourData.feesUSD = token1HourData.feesUSD.plus(feesUSD);
+  token1HourData.protocolFeesUSD = token1HourData.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
 
   swap.save();
   token0DayData.save();
