@@ -1,0 +1,101 @@
+enum Position {
+    Bull
+    Bear
+    House
+}
+
+type Market @entity {
+    id: ID!
+
+    epoch: Round
+    paused: Boolean!
+
+    totalUsers: BigInt!
+    totalBets: BigInt!
+    totalBetsBull: BigInt!
+    totalBetsBear: BigInt!
+    totalBNB: BigDecimal!
+    totalBNBBull: BigDecimal!
+    totalBNBBear: BigDecimal!
+    totalBNBTreasury: BigDecimal!
+
+    rewardRate: BigInt!
+    treasuryRate: BigInt!
+}
+
+type Round @entity {
+    id: ID!
+
+    epoch: BigInt!
+    position: Position
+    failed: Boolean
+
+    previous: Round
+
+    # Start
+    startAt: BigInt!
+    startBlock: BigInt!
+    startHash: Bytes!
+
+    # Lock
+    lockAt: BigInt
+    lockBlock: BigInt
+    lockHash: Bytes
+    lockPrice: BigDecimal
+
+    # End
+    endAt: BigInt
+    endBlock: BigInt
+    endHash: Bytes
+    closePrice: BigDecimal # endPrice
+
+    # Bets
+    totalBets: BigInt!
+    totalAmount: BigDecimal!
+    totalAmountTreasury: BigDecimal
+    bullBets: BigInt!
+    bullAmount: BigDecimal!
+    bearBets: BigInt!
+    bearAmount: BigDecimal!
+    bets: [Bet!]! @derivedFrom(field: "round")
+}
+
+type User @entity {
+    id: ID!
+
+    # Address
+    address: Bytes!
+
+    createdAt: BigInt!
+    updatedAt: BigInt!
+
+    # Block
+    block: BigInt!
+
+    # Bets
+    totalBets: BigInt!
+    totalBNB: BigDecimal!
+    bets: [Bet!]! @derivedFrom(field: "user")
+}
+
+type Bet @entity {
+    id: ID!
+
+    # epoch
+    round: Round!
+
+    user: User!
+    hash: Bytes!
+
+    amount: BigDecimal!
+    position: Position!
+    claimed: Boolean!
+    claimedAmount: BigDecimal
+    claimedHash: Bytes
+
+    createdAt: BigInt!
+    updatedAt: BigInt!
+
+    # Block
+    block: BigInt!
+}

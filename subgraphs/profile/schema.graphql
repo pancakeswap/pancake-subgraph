@@ -1,0 +1,66 @@
+type Team @entity {
+    id: ID!
+
+    name: String!
+    isJoinable: Boolean!
+
+    # Block number when the team was created.
+    block: BigInt!
+    timestamp: BigInt!
+
+    # Users
+    totalUsers: BigInt!
+    users: [User!]! @derivedFrom(field: "team")
+
+    # Points with campaignId
+    totalPoints: BigInt!
+    points: [Point!]! @derivedFrom(field: "team")
+}
+
+type User @entity {
+    id: ID! # address
+
+    internalId: BigInt! # auto increment
+
+    isActive: Boolean!
+
+    createdAt: BigInt!
+    updatedAt: BigInt!
+
+    # Block number when the user was created.
+    block: BigInt!
+
+    # Team
+    team: Team!
+
+    # Points with campaignId
+    totalPoints: BigInt!
+    points: [Point!]! @derivedFrom(field: "user")
+
+    nftAddress: Bytes
+    tokenId: BigInt
+}
+
+type Point @entity {
+    id: ID! # address/teamId + campaignId
+
+    # Use optionnal dependecy to avoid having to `.concat` each point(s).
+    team: Team
+    user: User
+
+    points: BigInt!
+    campaignId: BigInt!
+
+    # Transaction
+    hash: Bytes!
+
+    # Block number when the point was triggered.
+    block: BigInt!
+    timestamp: BigInt!
+}
+
+type IdIncrement @entity {
+    id: ID! # address
+
+    autoIncrement: BigInt! # auto increment
+}

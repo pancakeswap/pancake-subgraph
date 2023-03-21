@@ -1,0 +1,48 @@
+specVersion: 0.0.2
+description: NFT market for ERC721 tokens on Binance Smart Chain
+repository: https://github.com/pancakeswap
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: ERC721NFTMarketV1
+    network: bsc
+    source:
+      address: "0x17539cCa21C7933Df5c980172d22659B8C345C5A"
+      abi: ERC721NFTMarketV1
+      startBlock: 11352302
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/index.ts
+      entities:
+        - Collection
+        - NFT
+        - User
+        - AskOrder
+        - Transaction
+      abis:
+        - name: ERC721NFTMarketV1
+          file: ./abis/ERC721NFTMarketV1.json
+        - name: IERC721
+          file: ./abis/IERC721.json
+        - name: PancakeBunnies
+          file: ./abis/PancakeBunnies.json
+      eventHandlers:
+        - event: AskCancel(indexed address,indexed address,indexed uint256)
+          handler: handleAskCancel
+        - event: AskNew(indexed address,indexed address,indexed uint256,uint256)
+          handler: handleAskNew
+        - event: AskUpdate(indexed address,indexed address,indexed uint256,uint256)
+          handler: handleAskUpdate
+        - event: CollectionClose(indexed address)
+          handler: handleCollectionClose
+        - event: CollectionNew(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleCollectionNew
+        - event: CollectionUpdate(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleCollectionUpdate
+        - event: RevenueClaim(indexed address,uint256)
+          handler: handleRevenueClaim
+        - event: Trade(indexed address,indexed uint256,indexed address,address,uint256,uint256,bool)
+          handler: handleTrade

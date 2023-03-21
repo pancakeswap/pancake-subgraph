@@ -1,0 +1,32 @@
+specVersion: 0.0.2
+description: Binance Smart Chain Blocks
+repository: https://github.com/pancakeswap
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: CakePool
+    network: bsc
+    source:
+      address: '0x45c54210128a065de780C4B0Df3d16664f7f859e'
+      abi: CakePool
+      startBlock: 17250470
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/index.ts
+      entities:
+        - User
+      abis:
+        - name: CakePool
+          file: ./abis/CakePool.json
+      eventHandlers:
+        - event: Deposit(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleDeposit
+        - event: Lock(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleLock
+        - event: Unlock(indexed address,uint256,uint256)
+          handler: handleUnlock
+        - event: NewMaxLockDuration(uint256)
+          handler: startCountdown

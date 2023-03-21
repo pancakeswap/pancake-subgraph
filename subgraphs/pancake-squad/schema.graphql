@@ -1,0 +1,129 @@
+# Schema
+type _Schema_
+  # Token
+  @fulltext(
+    name: "tokenSearch"
+    language: en
+    algorithm: rank
+    include: [{ entity: "Token", fields: [{ name: "id" }] }]
+  )
+  # Owner
+  @fulltext(
+    name: "ownerSearch"
+    language: en
+    algorithm: rank
+    include: [{ entity: "Owner", fields: [{ name: "id" }] }]
+  )
+
+"""
+Pancake Squad (contract)
+"""
+type Contract @entity {
+  "ID (address)"
+  id: ID!
+
+  "Name"
+  name: String!
+
+  "Symbol"
+  symbol: String!
+
+  "Total of Tokens"
+  totalTokens: BigInt!
+
+  "Total of Owners"
+  totalOwners: BigInt!
+
+  "Total of Transactions"
+  totalTransactions: BigInt!
+}
+
+"""
+Owners
+"""
+type Owner @entity {
+  "ID"
+  id: ID!
+
+  "List of Tokens"
+  tokens: [Token!]! @derivedFrom(field: "owner")
+  "Total of Tokens"
+  totalTokens: BigInt!
+  "Total of Tokens Minted"
+  totalTokensMinted: BigInt!
+
+  "List of Transactions (as Sender)"
+  fromTransactions: [Transaction!]! @derivedFrom(field: "from")
+  "List of Transactions (as Receiver)"
+  toTransactions: [Transaction!]! @derivedFrom(field: "to")
+  "Total of Transactions"
+  totalTransactions: BigInt!
+
+  "Block number"
+  block: BigInt!
+  "Created At"
+  createdAt: BigInt!
+  "Updated At"
+  updatedAt: BigInt!
+}
+
+"""
+Tokens
+"""
+type Token @entity {
+  "ID"
+  id: ID!
+
+  "Minter"
+  minter: Owner!
+
+  "Owner"
+  owner: Owner!
+
+  "Burned"
+  burned: Boolean!
+
+  "URI"
+  uri: String
+
+  "List of Transactions"
+  transactions: [Transaction!]! @derivedFrom(field: "token")
+  "Total of Transactions"
+  totalTransactions: BigInt!
+
+  "Block number"
+  block: BigInt!
+  "Created At"
+  createdAt: BigInt!
+  "Updated At"
+  updatedAt: BigInt!
+}
+
+"""
+Transactions
+"""
+type Transaction @entity {
+  "ID (hash)"
+  id: ID!
+
+  "Hash"
+  hash: Bytes!
+
+  "Sender"
+  from: Owner!
+  "Receiver"
+  to: Owner!
+
+  "Token"
+  token: Token!
+
+  "Gas Used"
+  gasUsed: BigInt!
+  "Gas Price (in wei)"
+  gasPrice: BigDecimal!
+
+  "Block number"
+  block: BigInt!
+  "Block timestamp"
+  timestamp: BigInt!
+}

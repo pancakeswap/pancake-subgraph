@@ -1,0 +1,68 @@
+enum Status {
+  Pending
+  Open
+  Close
+  Claimable
+}
+
+"""
+PancakeSwap Lottery
+"""
+type Lottery @entity {
+  "ID"
+  id: ID!
+
+  totalUsers: BigInt!
+  totalTickets: BigInt!
+
+  status: Status!
+
+  finalNumber: BigInt
+  winningTickets: BigInt
+  claimedTickets: BigInt
+
+  startTime: BigInt!
+  endTime: BigInt!
+
+  ticketPrice: BigDecimal!
+  firstTicket: BigInt!
+  lastTicket: BigInt
+
+  "Block number"
+  block: BigInt!
+  "Block timestamp"
+  timestamp: BigInt!
+}
+
+type User @entity {
+  "ID"
+  id: ID!
+
+  totalRounds: BigInt!
+
+  totalTickets: BigInt!
+  rounds: [Round!]! @derivedFrom(field: "user")
+
+  totalCake: BigDecimal!
+
+  "Block number"
+  block: BigInt!
+  "Block timestamp"
+  timestamp: BigInt!
+}
+
+type Round @entity {
+  "ID"
+  id: ID!
+
+  lottery: Lottery!
+  user: User!
+
+  claimed: Boolean
+  totalTickets: BigInt!
+
+  "Block number"
+  block: BigInt!
+  "Block timestamp"
+  timestamp: BigInt!
+}

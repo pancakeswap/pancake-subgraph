@@ -1,0 +1,94 @@
+specVersion: 0.0.2
+description: PancakeSwap is a decentralized protocol for automated token exchange on Binance Smart Chain.
+repository: https://github.com/pancakeswap
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: SmartChefFactory
+    network: bsc
+    source:
+      address: "0x927158Be21Fe3D4da7E96931bb27Fd5059A8CbC2"
+      abi: SmartChefFactory
+      startBlock: 7151302
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/factory.ts
+      entities:
+        - Factory
+        - SmartChef
+        - Token
+      abis:
+        - name: SmartChefFactory
+          file: ./abis/SmartChefFactory.json
+        - name: SmartChef
+          file: ./abis/SmartChef.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+      eventHandlers:
+        - event: NewSmartChefContract(indexed address)
+          handler: handleNewSmartChefContract
+  - kind: ethereum/contract
+    name: SmartChefFactoryV2
+    network: bsc
+    source:
+      address: "0xFfF5812C35eC100dF51D5C9842e8cC3fe60f9ad7"
+      abi: SmartChefFactory
+      startBlock: 14661669
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/factory.ts
+      entities:
+        - Factory
+        - SmartChef
+        - Token
+      abis:
+        - name: SmartChefFactory
+          file: ./abis/SmartChefFactory.json
+        - name: SmartChef
+          file: ./abis/SmartChef.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+      eventHandlers:
+        - event: NewSmartChefContract(indexed address)
+          handler: handleNewSmartChefContractV2
+templates:
+  - name: SmartChefInitializable
+    kind: ethereum/contract
+    network: bsc
+    source:
+      abi: SmartChef
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/index.ts
+      entities:
+        - SmartChef
+        - User
+      abis:
+        - name: SmartChef
+          file: ./abis/SmartChef.json
+      eventHandlers:
+        - event: Deposit(indexed address,uint256)
+          handler: handleDeposit
+        - event: EmergencyWithdraw(indexed address,uint256)
+          handler: handleEmergencyWithdraw
+        - event: Withdraw(indexed address,uint256)
+          handler: handleWithdraw
+        - event: NewStartAndEndBlocks(uint256,uint256)
+          handler: handleNewStartAndEndBlocks
+        - event: NewRewardPerBlock(uint256)
+          handler: handleNewRewardPerBlock

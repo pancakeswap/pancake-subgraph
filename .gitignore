@@ -116,3 +116,5 @@ dist
 # GraphQL directories
 build/
 generated/
+
+.turbo

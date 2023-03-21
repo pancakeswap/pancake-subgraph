@@ -1,0 +1,85 @@
+# Schema
+type _Schema_
+  # Token
+  @fulltext(
+    name: "tokenSearch",
+    language: en
+    algorithm: rank,
+    include: [
+      {
+        entity: "Token",
+        fields: [
+          { name: "id" },
+          { name: "name" },
+          { name: "symbol" },
+        ]
+      }
+    ]
+  )
+  # Pair
+  @fulltext(
+    name: "pairSearch",
+    language: en
+    algorithm: rank,
+    include: [
+      {
+        entity: "Pair",
+        fields: [
+          { name: "id" },
+          { name: "name" },
+        ]
+      }
+    ]
+  )
+
+"""
+PancakeSwap Factory
+"""
+type Factory @entity {
+  "ID (address)"
+  id: ID!
+
+  "Total of Pairs"
+  totalPairs: BigInt!
+
+  "Total of Tokens"
+  totalTokens: BigInt!
+}
+
+"""
+PancakeSwap Tokens
+"""
+type Token @entity {
+  "ID (address)"
+  id: ID!
+
+  "Name"
+  name: String!
+  "Symbol"
+  symbol: String!
+  "Decimals"
+  decimals: BigInt
+}
+
+"""
+PancakeSwap Pairs (Cake-LP)
+"""
+type Pair @entity {
+  "ID (address)"
+  id: ID!
+
+  "Token 0"
+  token0: Token!
+  "Token 1"
+  token1: Token!
+
+  "Token0 Symbol - Token1 Symbol"
+  name: String!
+
+  "Transaction Hash"
+  hash: Bytes!
+  "Block number"
+  block: BigInt!
+  "Block timestamp"
+  timestamp: BigInt!
+}

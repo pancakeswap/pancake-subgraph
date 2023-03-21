@@ -1,0 +1,54 @@
+type MasterChef @entity {
+  # Contract address
+  id: ID!
+
+  totalRegularAllocPoint: BigInt!
+  totalSpecialAllocPoint: BigInt!
+  cakeRateToBurn: BigInt!
+  cakeRateToRegularFarm: BigInt!
+  cakeRateToSpecialFarm: BigInt!
+
+  pools: [Pool!] @derivedFrom(field: "masterChef")
+  poolCount: BigInt!
+
+  timestamp: BigInt!
+  block: BigInt!
+}
+
+type Pool @entity {
+  # Index of pool in poolInfo on MasterChef contract
+  id: ID!
+  masterChef: MasterChef!
+  pair: Bytes!
+
+  allocPoint: BigInt!
+  lastRewardBlock: BigInt!
+  accCakePerShare: BigInt!
+  totalBoostedShare: BigInt!
+  isRegular: Boolean
+
+  slpBalance: BigInt!
+
+  users: [User!]! @derivedFrom(field: "pool")
+  # total user include deposit and withdraw all
+  totalUsersCount: BigInt!
+  userCount: BigInt!
+
+  timestamp: BigInt!
+  block: BigInt!
+}
+
+type User @entity {
+  # Pool id concatenated with user address
+  id: ID!
+
+  address: Bytes!
+  pool: Pool!
+  boostMultiplier: BigInt!
+
+  amount: BigInt!
+  rewardDebt: BigInt!
+
+  timestamp: BigInt!
+  block: BigInt!
+}

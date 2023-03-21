@@ -1,0 +1,212 @@
+enum OrderType {
+  New
+  Modify
+  Cancel
+}
+
+type Collection @entity {
+  "ID (address)"
+  id: ID!
+
+  "Name"
+  name: String!
+
+  "Symbol"
+  symbol: String!
+
+  "Is active"
+  active: Boolean!
+
+  "Total of Trades"
+  totalTrades: BigInt!
+
+  "Total volume of collection traded (in BNB)"
+  totalVolumeBNB: BigDecimal!
+
+  "Number tokens listed"
+  numberTokensListed: BigInt!
+
+  "List of NFTs"
+  nfts: [NFT!]! @derivedFrom(field: "collection")
+
+  "Creator address"
+  creatorAddress: Bytes!
+
+  "Trading fee"
+  tradingFee: BigDecimal!
+
+  "Creator fee"
+  creatorFee: BigDecimal!
+
+  "Whitelist checker"
+  whitelistChecker: Bytes!
+
+  "Day history"
+  dayData: [CollectionDayData!]! @derivedFrom(field: "collection")
+}
+
+type NFT @entity {
+  "CollectionAddress + tokenId"
+  id: ID!
+
+  "tokenId"
+  tokenId: BigInt!
+
+  "otherId"
+  otherId: BigInt
+
+  "Collection address"
+  collection: Collection!
+
+  "Metadata url"
+  metadataUrl: String
+
+  "Updated at"
+  updatedAt: BigInt!
+
+  "Current ask price"
+  currentAskPrice: BigDecimal!
+
+  "Current seller"
+  currentSeller: String!
+
+  "Latest traded price in BNB"
+  latestTradedPriceInBNB: BigDecimal!
+
+  "Total volume traded (in BNB)"
+  tradeVolumeBNB: BigDecimal!
+
+  "Number of unique trades"
+  totalTrades: BigInt!
+
+  "Transaction history"
+  transactionHistory: [Transaction!]! @derivedFrom(field: "nft")
+
+  "Ask history"
+  askHistory: [AskOrder!]! @derivedFrom(field: "nft")
+
+  "isTradable"
+  isTradable: Boolean!
+}
+
+type User @entity {
+  "User address"
+  id: ID!
+
+  "Number of tokens currently listed"
+  numberTokensListed: BigInt!
+
+  "Number of tokens purchased"
+  numberTokensPurchased: BigInt!
+
+  "Number of tokens sold"
+  numberTokensSold: BigInt!
+
+  "Volume of tokens purchased (in BNB)"
+  totalVolumeInBNBTokensPurchased: BigDecimal!
+
+  "Volume of tokens sold (in BNB)"
+  totalVolumeInBNBTokensSold: BigDecimal!
+
+  "Total fees collected (in BNB)" # For creator/treasury addresses
+  totalFeesCollectedInBNB: BigDecimal!
+
+  "Transactions buy"
+  buyTradeHistory: [Transaction!]! @derivedFrom(field: "buyer")
+
+  "Transactions sold"
+  sellTradeHistory: [Transaction!]! @derivedFrom(field: "seller")
+
+  "Ask order history"
+  askOrderHistory: [AskOrder!]! @derivedFrom(field: "seller")
+
+  "Average price of tokens purchased (in BNB)"
+  averageTokenPriceInBNBPurchased: BigDecimal!
+
+  "Average price of tokens sold (in BNB)"
+  averageTokenPriceInBNBSold: BigDecimal!
+}
+
+type AskOrder @entity {
+  id: ID!
+
+  "Block number"
+  block: BigInt!
+
+  "Timestamp"
+  timestamp: BigInt!
+
+  "Collection"
+  collection: Collection!
+
+  "NFT"
+  nft: NFT!
+
+  "Order type"
+  orderType: OrderType!
+
+  "Ask Price (in BNB)"
+  askPrice: BigDecimal!
+
+  "Seller"
+  seller: User!
+}
+
+type Transaction @entity {
+  id: ID!
+
+  block: BigInt!
+
+  "Timestamp"
+  timestamp: BigInt!
+
+  "Collection"
+  collection: Collection!
+
+  "NFT"
+  nft: NFT!
+
+  "Ask Price (in BNB)"
+  askPrice: BigDecimal!
+
+  "Net price to seller (in BNB)"
+  netPrice: BigDecimal!
+
+  "Buyer"
+  buyer: User!
+
+  "Seller"
+  seller: User!
+
+  "Whether the buyer used BNB"
+  withBNB: Boolean!
+}
+
+type CollectionDayData @entity {
+  id: ID!
+
+  "Start date (timestamp)"
+  date: Int!
+
+  "Collection"
+  collection: Collection!
+
+  "Daily volume (in BNB)"
+  dailyVolumeBNB: BigDecimal!
+
+  "Daily unique trades"
+  dailyTrades: BigInt!
+}
+
+type MarketPlaceDayData @entity {
+  id: ID!
+
+  "Start date (timestamp)"
+  date: Int!
+
+  "Daily volume (in BNB)"
+  dailyVolumeBNB: BigDecimal!
+
+  "Daily unique trades"
+  dailyTrades: BigInt!
+}

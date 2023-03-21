@@ -1,0 +1,29 @@
+specVersion: 0.0.2
+description: Pancake Squad NFT Collection
+repository: https://github.com/pancakeswap
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: ERC721
+    network: bsc
+    source:
+      address: '0x0a8901b0E25DEb55A87524f0cC164E9644020EBA'
+      abi: ERC721
+      startBlock: 11553810
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/index.ts
+      entities:
+        - Contract
+        - Owner
+        - Token
+        - Transaction
+      abis:
+        - name: ERC721
+          file: ./abis/ERC721.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer

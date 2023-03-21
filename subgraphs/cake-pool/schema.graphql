@@ -1,0 +1,33 @@
+"""
+Binance Smart Chain blocks
+"""
+type User @entity {
+    "ID (hash)"
+    id: ID!
+    "Total locked"
+    totalLocked: BigInt!
+    "Duration"
+    duration: BigInt!
+    "Start time of locking"
+    lockStartTime: BigInt!
+    "End time of locking"
+    lockEndTime: BigInt!
+    "Is locked"
+    locked: Boolean
+    "Is actual unlocked"
+    unlockedByUser: Boolean
+}
+
+type CakePool @entity {
+    "ID (hash)"
+    id: ID!
+    "Creation timestamp"
+    creationTimestamp: BigInt!
+    "Creation blockNumber"
+    blockNumber: BigInt!
+    "Max Lock Duration"
+    maxLockDuration: BigInt!
+    "Total locked"
+    totalLocked: BigInt!
+    usersWithLockedCake: [String!]!
+}
