@@ -4,13 +4,14 @@ import { Bundle, Pool, Token } from "../generated/schema";
 import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { exponentToBigDecimal, safeDiv } from "./index";
 
-// TODO: v3 update
+// prettier-ignore
 const WETH_ADDRESS = "{{ wNativeAddress }}";
+// prettier-ignore
 const USDC_WETH_03_POOL = "{{ v3.wNativeStablePoolAddress }}";
 
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s
-// TODO: v3 update
+// prettier-ignore
 export let WHITELIST_TOKENS: string[] = "{{ v3.whitelistAddresses }}".split(",");
 
 // TODO: v3 update

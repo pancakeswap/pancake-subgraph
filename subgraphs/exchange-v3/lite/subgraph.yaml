@@ -10,9 +10,9 @@ dataSources:
     name: Factory
     network: chapel
     source:
-      address: "0xb46d40a16e949270b44940b0482f1b0951a67046"
+      address: "0xbf12bb25090505045be1884538cbdfffa348d714"
       abi: Factory
-      startBlock: 27255654
+      startBlock: 28004940
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -39,9 +39,9 @@ dataSources:
     name: NonfungiblePositionManager
     network: chapel
     source:
-      address: "0x8f78becb5decc1c083bfc3b182ec09c844a68532"
+      address: "0x8a45515e2f31ad06ba3196155092a60fac6c2110"
       abi: NonfungiblePositionManager
-      startBlock: 27309054
+      startBlock: 28005251
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -92,7 +92,7 @@ templates:
       eventHandlers:
         - event: Initialize(uint160,int24)
           handler: handleInitialize
-        - event: Swap(indexed address,indexed address,int256,int256,uint160,uint128,int24)
+        - event: Swap(indexed address,indexed address,int256,int256,uint160,uint128,int24,uint128,uint128)
           handler: handleSwap
         - event: Mint(address,indexed address,indexed int24,indexed int24,uint128,uint256,uint256)
           handler: handleMint

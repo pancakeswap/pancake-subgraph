@@ -3,7 +3,7 @@ import { BigInt, BigDecimal, Address } from "@graphprotocol/graph-ts";
 import { Factory as FactoryContract } from "../generated/templates/Pool/Factory";
 
 export const ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
-// TODO: v3 update
+// prettier-ignore
 export const FACTORY_ADDRESS = "{{ v3.factoryAddress }}";
 
 export let ZERO_BI = BigInt.fromI32(0);

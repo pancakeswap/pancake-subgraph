@@ -4,17 +4,17 @@ import { Bundle, Pool, Token } from "../generated/schema";
 import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { exponentToBigDecimal, safeDiv } from "./index";
 
-// TODO: v3 update
+// prettier-ignore
 const WETH_ADDRESS = "0xae13d989dac2f0debff460ac112a837c89baa7cd";
+// prettier-ignore
 const USDC_WETH_03_POOL = "0xe0b701d9a80d582539f6fa2d29ceef86f79c8109";
 
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s
-// TODO: v3 update
-export let WHITELIST_TOKENS: string[] =
-  "0x828e3fc56dd48e072e3b6f3c4fd4ddb4733c2c5e,0xc1ed9955c11585f47d0d6bfbc29034349a746a81".split(",");
+// prettier-ignore
+export let WHITELIST_TOKENS: string[] = "0x828e3fc56dd48e072e3b6f3c4fd4ddb4733c2c5e,0xc1ed9955c11585f47d0d6bfbc29034349a746a81".split(",");
 
-// TODO: v3 update
+// prettier-ignore
 let STABLE_COINS: string[] = "0x828e3fc56dd48e072e3b6f3c4fd4ddb4733c2c5e".split(",");
 
 let MINIMUM_ETH_LOCKED = BigDecimal.fromString("60");
