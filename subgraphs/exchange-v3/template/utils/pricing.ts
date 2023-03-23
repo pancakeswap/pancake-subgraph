@@ -7,7 +7,7 @@ import { exponentToBigDecimal, safeDiv } from "./index";
 // prettier-ignore
 const WETH_ADDRESS = "0xae13d989dac2f0debff460ac112a837c89baa7cd";
 // prettier-ignore
-const USDC_WETH_03_POOL = "0xe0b701d9a80d582539f6fa2d29ceef86f79c8109";
+const USDC_WETH_03_POOL = "0x137957f79ca4d8c5eb11916da8e0f33e29470b48";
 
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s
@@ -15,7 +15,7 @@ const USDC_WETH_03_POOL = "0xe0b701d9a80d582539f6fa2d29ceef86f79c8109";
 export let WHITELIST_TOKENS: string[] = "0x828e3fc56dd48e072e3b6f3c4fd4ddb4733c2c5e,0xc1ed9955c11585f47d0d6bfbc29034349a746a81".split(",");
 
 // prettier-ignore
-let STABLE_COINS: string[] = "0x828e3fc56dd48e072e3b6f3c4fd4ddb4733c2c5e".split(",");
+let STABLE_COINS: string[] = "0x828e3fc56dd48e072e3b6f3c4fd4ddb4733c2c5e,0x0fb5d7c73fa349a90392f873a4fa1ecf6a3d0a96,0xab1a4d4f1d656d2450692d237fdd6c7f9146e814".split(",");
 
 let MINIMUM_ETH_LOCKED = BigDecimal.fromString("60");
 

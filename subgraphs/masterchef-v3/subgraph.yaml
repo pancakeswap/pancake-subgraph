@@ -8,9 +8,9 @@ dataSources:
     name: MasterChefV3
     network: chapel
     source:
-      address: "0x1b4379897415a74213285f1bfe9b7b069225fe29"
+      address: "0x2aadbf86ed7a9914bec5a01d50f44ca47ccf8c85"
       abi: MasterChefV3
-      startBlock: 28005534
+      startBlock: 28284507
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

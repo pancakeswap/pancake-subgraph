@@ -14,7 +14,7 @@ const USDC_WETH_03_POOL = "{{ v3.wNativeStablePoolAddress }}";
 // prettier-ignore
 export let WHITELIST_TOKENS: string[] = "{{ v3.whitelistAddresses }}".split(",");
 
-// TODO: v3 update
+// prettier-ignore
 let STABLE_COINS: string[] = "{{ v3.stableCoins }}".split(",");
 
 let MINIMUM_ETH_LOCKED = BigDecimal.fromString("60");

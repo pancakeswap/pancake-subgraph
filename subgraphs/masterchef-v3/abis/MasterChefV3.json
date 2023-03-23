@@ -805,7 +805,13 @@
       }
     ],
     "name": "harvest",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "reward",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -1318,6 +1324,11 @@
         "type": "uint256"
       },
       {
+        "internalType": "uint256",
+        "name": "_duration",
+        "type": "uint256"
+      },
+      {
         "internalType": "bool",
         "name": "_withUpdate",
         "type": "bool"
@@ -1420,7 +1431,13 @@
       }
     ],
     "name": "withdraw",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "reward",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   }

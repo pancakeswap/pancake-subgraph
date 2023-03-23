@@ -45,6 +45,7 @@ export function handlePoolCreated(event: PoolCreated): void {
 
     token0.decimals = decimals;
     token0.volume = ZERO_BD;
+    token0.totalValueLocked = ZERO_BD;
     token0.txCount = ZERO_BI;
     token0.poolCount = ZERO_BI;
     token0.whitelistPools = [];

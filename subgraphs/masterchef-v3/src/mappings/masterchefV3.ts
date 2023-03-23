@@ -20,7 +20,7 @@ export function handleAddPool(event: AddPool): void {
   log.info("[MasterChefV3] Add Pool {} {} {} {}", [
     event.params.pid.toString(),
     event.params.allocPoint.toString(),
-    // event.params.lmPool.toHex(),
+    event.params.lmPool.toHex(),
     event.params.v3Pool.toHex(),
   ]);
 
