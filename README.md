@@ -8,7 +8,7 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 
 1. **[Blocks](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/blocks)**: Tracks all blocks on Binance Smart Chain.
 
-2. **[Exchange](https://nodereal.io/meganode/api-marketplace/pancakeswap-graphql)**: Tracks all PancakeSwap Exchange data with price, volume, liquidity, ...
+2. **[Exchange V2](https://nodereal.io/meganode/api-marketplace/pancakeswap-graphql)**: Tracks all PancakeSwap V2 Exchange data with price, volume, liquidity, ...
 
 3. **[Farm Auctions](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/farm-auctions)**: Tracks all PancakeSwap Farm Auctions with auctions and bids.
 
@@ -33,6 +33,16 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 13. **[Trading Competition (v1)](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/trading-competition-v1)**: Tracks all metrics for the Easter Battle (April 07—14, 2021).
 
 14. **[MasterChef (v2)](https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v2)**: Tracks data for MasterChefV2.
+
+15. **MasterChef (v3)**: Tracks data for MasterChefV2.
+    - BNB https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-bnb
+    - BNB testnet https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-chapel
+    - ETH https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-eth
+
+16. **Exchange (v3)**: Tracks all PancakeSwap V3 Exchange data with price, volume, liquidity
+    - BNB https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-bnb
+    - BNB testnet https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-chapel
+    - ETH https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-eth
 
 
 ## Dependencies
