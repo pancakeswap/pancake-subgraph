@@ -72,10 +72,14 @@ type Token @entity {
   totalValueLockedUSDUntracked: BigDecimal!
   # derived price in ETH
   derivedETH: BigDecimal!
+  # derived price in USD
+  derivedUSD: BigDecimal!
   # pools token is in that are white listed for USD pricing
   whitelistPools: [Pool!]!
   # derived fields
   tokenDayData: [TokenDayData!]! @derivedFrom(field: "token")
+  # derived fields
+  tokenHourData: [TokenHourData!]! @derivedFrom(field: "token")
 }
 
 type Pool @entity {

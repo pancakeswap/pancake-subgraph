@@ -379,6 +379,8 @@ export function handleSwap(event: SwapEvent): void {
   bundle.save();
   token0.derivedETH = findEthPerToken(token0 as Token);
   token1.derivedETH = findEthPerToken(token1 as Token);
+  token0.derivedUSD = token0.derivedETH.times(bundle.ethPriceUSD);
+  token1.derivedUSD = token1.derivedETH.times(bundle.ethPriceUSD);
 
   /**
    * Things afffected by new USD rates
