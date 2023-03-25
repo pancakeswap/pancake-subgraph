@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { Bundle, Burn, Factory, Mint, Pool, Swap, Tick, Token } from "../generated/schema";
+import { Bundle, Burn, Factory, Mint, Pool, Swap, Tick, Token, Collect } from "../generated/schema";
 import { Pool as PoolABI } from "../generated/Factory/Pool";
 import { BigDecimal, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import {
@@ -8,10 +8,18 @@ import {
   Initialize,
   Mint as MintEvent,
   Swap as SwapEvent,
+  Collect as CollectEvent,
 } from "../generated/templates/Pool/Pool";
 import { convertTokenToDecimal, loadTransaction, safeDiv } from "../utils";
-import { FACTORY_ADDRESS, ONE_BI, ZERO_BD, ZERO_BI } from "../utils/constants";
-import { findEthPerToken, getEthPriceInUSD, getTrackedAmountUSD, sqrtPriceX96ToTokenPrices } from "../utils/pricing";
+import { FACTORY_ADDRESS, ONE_BI, TWO_BD, ZERO_BD, ZERO_BI } from "../utils/constants";
+import {
+  AmountType,
+  findEthPerToken,
+  getAdjustedAmounts,
+  getEthPriceInUSD,
+  getTrackedAmountUSD,
+  sqrtPriceX96ToTokenPrices,
+} from "../utils/pricing";
 import {
   updatePoolDayData,
   updatePoolHourData,
@@ -21,6 +29,7 @@ import {
   updatePancakeDayData,
 } from "../utils/intervalUpdates";
 import { createTick, feeTierToTickSpacing } from "../utils/tick";
+import { updateDerivedTVLAmounts } from "../utils/tvl";
 
 export function handleInitialize(event: Initialize): void {
   // update pool sqrt price and tick
@@ -63,23 +72,19 @@ export function handleMint(event: MintEvent): void {
     .times(token0.derivedETH.times(bundle.ethPriceUSD))
     .plus(amount1.times(token1.derivedETH.times(bundle.ethPriceUSD)));
 
-  // reset tvl aggregates until new amounts calculated
-  factory.totalValueLockedETH = factory.totalValueLockedETH.minus(pool.totalValueLockedETH);
-
-  // update globals
-  factory.txCount = factory.txCount.plus(ONE_BI);
-
-  // update token0 data
-  token0.txCount = token0.txCount.plus(ONE_BI);
+  // Update TVL values.
+  let oldPoolTVLETH = pool.totalValueLockedETH;
+  let oldPoolTVLETHUntracked = pool.totalValueLockedETHUntracked;
   token0.totalValueLocked = token0.totalValueLocked.plus(amount0);
-  token0.totalValueLockedUSD = token0.totalValueLocked.times(token0.derivedETH.times(bundle.ethPriceUSD));
-
-  // update token1 data
-  token1.txCount = token1.txCount.plus(ONE_BI);
   token1.totalValueLocked = token1.totalValueLocked.plus(amount1);
-  token1.totalValueLockedUSD = token1.totalValueLocked.times(token1.derivedETH.times(bundle.ethPriceUSD));
+  pool.totalValueLockedToken0 = pool.totalValueLockedToken0.plus(amount0);
+  pool.totalValueLockedToken1 = pool.totalValueLockedToken1.plus(amount1);
+  updateDerivedTVLAmounts(pool as Pool, factory as Factory, oldPoolTVLETH, oldPoolTVLETHUntracked);
 
-  // pool data
+  // update tx counts
+  factory.txCount = factory.txCount.plus(ONE_BI);
+  token0.txCount = token0.txCount.plus(ONE_BI);
+  token1.txCount = token1.txCount.plus(ONE_BI);
   pool.txCount = pool.txCount.plus(ONE_BI);
 
   // Pools liquidity tracks the currently active liquidity given pools current tick.
@@ -92,16 +97,7 @@ export function handleMint(event: MintEvent): void {
     pool.liquidity = pool.liquidity.plus(event.params.amount);
   }
 
-  pool.totalValueLockedToken0 = pool.totalValueLockedToken0.plus(amount0);
-  pool.totalValueLockedToken1 = pool.totalValueLockedToken1.plus(amount1);
-  pool.totalValueLockedETH = pool.totalValueLockedToken0
-    .times(token0.derivedETH)
-    .plus(pool.totalValueLockedToken1.times(token1.derivedETH));
-  pool.totalValueLockedUSD = pool.totalValueLockedETH.times(bundle.ethPriceUSD);
-
-  // reset aggregates with new amounts
-  factory.totalValueLockedETH = factory.totalValueLockedETH.plus(pool.totalValueLockedETH);
-  factory.totalValueLockedUSD = factory.totalValueLockedETH.times(bundle.ethPriceUSD);
+  pool.liquidityProviderCount = pool.liquidityProviderCount.plus(ONE_BI);
 
   let transaction = loadTransaction(event);
   let mint = new Mint(transaction.id.toString() + "#" + pool.txCount.toString());
@@ -182,24 +178,21 @@ export function handleBurn(event: BurnEvent): void {
     .times(token0.derivedETH.times(bundle.ethPriceUSD))
     .plus(amount1.times(token1.derivedETH.times(bundle.ethPriceUSD)));
 
-  // reset tvl aggregates until new amounts calculated
-  factory.totalValueLockedETH = factory.totalValueLockedETH.minus(pool.totalValueLockedETH);
-
-  // update globals
+  // tx update
   factory.txCount = factory.txCount.plus(ONE_BI);
-
-  // update token0 data
   token0.txCount = token0.txCount.plus(ONE_BI);
-  token0.totalValueLocked = token0.totalValueLocked.minus(amount0);
-  token0.totalValueLockedUSD = token0.totalValueLocked.times(token0.derivedETH.times(bundle.ethPriceUSD));
-
-  // update token1 data
   token1.txCount = token1.txCount.plus(ONE_BI);
-  token1.totalValueLocked = token1.totalValueLocked.minus(amount1);
-  token1.totalValueLockedUSD = token1.totalValueLocked.times(token1.derivedETH.times(bundle.ethPriceUSD));
-
-  // pool data
   pool.txCount = pool.txCount.plus(ONE_BI);
+
+  // Update TVL values.
+  let oldPoolTotalValueLockedETH = pool.totalValueLockedETH;
+  let oldPoolTVLETHUntracked = pool.totalValueLockedETHUntracked;
+  token0.totalValueLocked = token0.totalValueLocked.minus(amount0);
+  token1.totalValueLocked = token1.totalValueLocked.minus(amount1);
+  pool.totalValueLockedToken0 = pool.totalValueLockedToken0.minus(amount0);
+  pool.totalValueLockedToken1 = pool.totalValueLockedToken1.minus(amount1);
+  updateDerivedTVLAmounts(pool as Pool, factory as Factory, oldPoolTotalValueLockedETH, oldPoolTVLETHUntracked);
+
   // Pools liquidity tracks the currently active liquidity given pools current tick.
   // We only want to update it on burn if the position being burnt includes the current tick.
   if (
@@ -209,17 +202,6 @@ export function handleBurn(event: BurnEvent): void {
   ) {
     pool.liquidity = pool.liquidity.minus(event.params.amount);
   }
-
-  pool.totalValueLockedToken0 = pool.totalValueLockedToken0.minus(amount0);
-  pool.totalValueLockedToken1 = pool.totalValueLockedToken1.minus(amount1);
-  pool.totalValueLockedETH = pool.totalValueLockedToken0
-    .times(token0.derivedETH)
-    .plus(pool.totalValueLockedToken1.times(token1.derivedETH));
-  pool.totalValueLockedUSD = pool.totalValueLockedETH.times(bundle.ethPriceUSD);
-
-  // reset aggregates with new amounts
-  factory.totalValueLockedETH = factory.totalValueLockedETH.plus(pool.totalValueLockedETH);
-  factory.totalValueLockedUSD = factory.totalValueLockedETH.times(bundle.ethPriceUSD);
 
   // burn entity
   let transaction = loadTransaction(event);
@@ -298,74 +280,62 @@ export function handleSwap(event: SwapEvent): void {
     amount1Abs = amount1.times(BigDecimal.fromString("-1"));
   }
 
-  let amount0ETH = amount0Abs.times(token0.derivedETH);
-  let amount1ETH = amount1Abs.times(token1.derivedETH);
-  let amount0USD = amount0ETH.times(bundle.ethPriceUSD);
-  let amount1USD = amount1ETH.times(bundle.ethPriceUSD);
+  let volumeAmounts: AmountType = getAdjustedAmounts(amount0Abs, token0 as Token, amount1Abs, token1 as Token);
+  let volumeETH = volumeAmounts.eth.div(TWO_BD);
+  let volumeUSD = volumeAmounts.usd.div(TWO_BD);
+  let volumeUSDUntracked = volumeAmounts.usdUntracked.div(TWO_BD);
 
-  // get amount that should be tracked only - div 2 because cant count both input and output as volume
-  let amountTotalUSDTracked = getTrackedAmountUSD(amount0Abs, token0 as Token, amount1Abs, token1 as Token).div(
-    BigDecimal.fromString("2")
-  );
-  let amountTotalProtocolFeesUSDTracked = getTrackedAmountUSD(
+  let protocolFeeAmounts: AmountType = getAdjustedAmounts(
     protocolFeeAmount0,
     token0 as Token,
     protocolFeeAmount1,
     token1 as Token
   );
-  let amountTotalETHTracked = safeDiv(amountTotalUSDTracked, bundle.ethPriceUSD);
-  let amountTotalUSDUntracked = amount0USD.plus(amount1USD).div(BigDecimal.fromString("2"));
 
-  let feesETH = amountTotalETHTracked.times(pool.feeTier.toBigDecimal()).div(BigDecimal.fromString("1000000"));
-  let feesUSD = amountTotalUSDTracked.times(pool.feeTier.toBigDecimal()).div(BigDecimal.fromString("1000000"));
-  let feesProtocolETH = safeDiv(amountTotalProtocolFeesUSDTracked, bundle.ethPriceUSD);
+  let feesETH = volumeETH.times(pool.feeTier.toBigDecimal()).div(BigDecimal.fromString("1000000"));
+  let feesUSD = volumeUSD.times(pool.feeTier.toBigDecimal()).div(BigDecimal.fromString("1000000"));
+  let feesProtocolETH = protocolFeeAmounts.eth;
 
   // global updates
   factory.txCount = factory.txCount.plus(ONE_BI);
-  factory.totalVolumeETH = factory.totalVolumeETH.plus(amountTotalETHTracked);
-  factory.totalVolumeUSD = factory.totalVolumeUSD.plus(amountTotalUSDTracked);
-  factory.untrackedVolumeUSD = factory.untrackedVolumeUSD.plus(amountTotalUSDUntracked);
+  factory.totalVolumeETH = factory.totalVolumeETH.plus(volumeETH);
+  factory.totalVolumeUSD = factory.totalVolumeUSD.plus(volumeUSD);
+  factory.untrackedVolumeUSD = factory.untrackedVolumeUSD.plus(volumeUSDUntracked);
   factory.totalFeesETH = factory.totalFeesETH.plus(feesETH);
   factory.totalFeesUSD = factory.totalFeesUSD.plus(feesUSD);
   factory.totalProtocolFeesETH = factory.totalProtocolFeesETH.plus(feesProtocolETH);
-  factory.totalProtocolFeesUSD = factory.totalProtocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
-
-  // reset aggregate tvl before individual pool tvl updates
-  let currentPoolTvlETH = pool.totalValueLockedETH;
-  factory.totalValueLockedETH = factory.totalValueLockedETH.minus(currentPoolTvlETH);
+  factory.totalProtocolFeesUSD = factory.totalProtocolFeesUSD.plus(protocolFeeAmounts.usd);
 
   // pool volume
   pool.volumeToken0 = pool.volumeToken0.plus(amount0Abs);
   pool.volumeToken1 = pool.volumeToken1.plus(amount1Abs);
-  pool.volumeUSD = pool.volumeUSD.plus(amountTotalUSDTracked);
-  pool.untrackedVolumeUSD = pool.untrackedVolumeUSD.plus(amountTotalUSDUntracked);
+  pool.volumeUSD = pool.volumeUSD.plus(volumeUSD);
+  pool.untrackedVolumeUSD = pool.untrackedVolumeUSD.plus(volumeUSDUntracked);
   pool.feesUSD = pool.feesUSD.plus(feesUSD);
-  pool.protocolFeesUSD = pool.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
+  pool.protocolFeesUSD = pool.protocolFeesUSD.plus(protocolFeeAmounts.usd);
   pool.txCount = pool.txCount.plus(ONE_BI);
 
   // Update the pool with the new active liquidity, price, and tick.
   pool.liquidity = event.params.liquidity;
   pool.tick = BigInt.fromI32(event.params.tick as i32);
   pool.sqrtPrice = event.params.sqrtPriceX96;
-  pool.totalValueLockedToken0 = pool.totalValueLockedToken0.plus(amount0);
-  pool.totalValueLockedToken1 = pool.totalValueLockedToken1.plus(amount1);
 
   // update token0 data
   token0.volume = token0.volume.plus(amount0Abs);
   token0.totalValueLocked = token0.totalValueLocked.plus(amount0);
-  token0.volumeUSD = token0.volumeUSD.plus(amountTotalUSDTracked);
-  token0.untrackedVolumeUSD = token0.untrackedVolumeUSD.plus(amountTotalUSDUntracked);
+  token0.volumeUSD = token0.volumeUSD.plus(volumeUSD);
+  token0.untrackedVolumeUSD = token0.untrackedVolumeUSD.plus(volumeUSDUntracked);
   token0.feesUSD = token0.feesUSD.plus(feesUSD);
-  token0.protocolFeesUSD = token0.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
+  token0.protocolFeesUSD = token0.protocolFeesUSD.plus(protocolFeeAmounts.usd);
   token0.txCount = token0.txCount.plus(ONE_BI);
 
   // update token1 data
   token1.volume = token1.volume.plus(amount1Abs);
   token1.totalValueLocked = token1.totalValueLocked.plus(amount1);
-  token1.volumeUSD = token1.volumeUSD.plus(amountTotalUSDTracked);
-  token1.untrackedVolumeUSD = token1.untrackedVolumeUSD.plus(amountTotalUSDUntracked);
+  token1.volumeUSD = token1.volumeUSD.plus(volumeUSD);
+  token1.untrackedVolumeUSD = token1.untrackedVolumeUSD.plus(volumeUSDUntracked);
   token1.feesUSD = token1.feesUSD.plus(feesUSD);
-  token1.protocolFeesUSD = token1.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
+  token1.protocolFeesUSD = token1.protocolFeesUSD.plus(protocolFeeAmounts.usd);
   token1.txCount = token1.txCount.plus(ONE_BI);
 
   // updated pool ratess
@@ -382,19 +352,14 @@ export function handleSwap(event: SwapEvent): void {
   token0.derivedUSD = token0.derivedETH.times(bundle.ethPriceUSD);
   token1.derivedUSD = token1.derivedETH.times(bundle.ethPriceUSD);
 
-  /**
-   * Things afffected by new USD rates
-   */
-  pool.totalValueLockedETH = pool.totalValueLockedToken0
-    .times(token0.derivedETH)
-    .plus(pool.totalValueLockedToken1.times(token1.derivedETH));
-  pool.totalValueLockedUSD = pool.totalValueLockedETH.times(bundle.ethPriceUSD);
-
-  factory.totalValueLockedETH = factory.totalValueLockedETH.plus(pool.totalValueLockedETH);
-  factory.totalValueLockedUSD = factory.totalValueLockedETH.times(bundle.ethPriceUSD);
-
-  token0.totalValueLockedUSD = token0.totalValueLocked.times(token0.derivedETH).times(bundle.ethPriceUSD);
-  token1.totalValueLockedUSD = token1.totalValueLocked.times(token1.derivedETH).times(bundle.ethPriceUSD);
+  // Update TVL values.
+  let oldPoolTVLETH = pool.totalValueLockedETH;
+  let oldPoolTVLETHUntracked = pool.totalValueLockedETHUntracked;
+  pool.totalValueLockedToken0 = pool.totalValueLockedToken0.plus(amount0);
+  pool.totalValueLockedToken1 = pool.totalValueLockedToken1.plus(amount1);
+  token0.totalValueLocked = token0.totalValueLocked.plus(amount0);
+  token1.totalValueLocked = token1.totalValueLocked.plus(amount1);
+  updateDerivedTVLAmounts(pool as Pool, factory as Factory, oldPoolTVLETH, oldPoolTVLETHUntracked);
 
   // create Swap event
   let transaction = loadTransaction(event);
@@ -409,8 +374,8 @@ export function handleSwap(event: SwapEvent): void {
   swap.recipient = event.params.recipient;
   swap.amount0 = amount0;
   swap.amount1 = amount1;
-  swap.amountUSD = amountTotalUSDTracked;
-  swap.amountFeeUSD = amountTotalProtocolFeesUSDTracked;
+  swap.amountUSD = volumeUSD;
+  swap.amountFeeUSD = protocolFeeAmounts.usd;
   swap.tick = BigInt.fromI32(event.params.tick as i32);
   swap.sqrtPriceX96 = event.params.sqrtPriceX96;
   swap.logIndex = event.logIndex;
@@ -432,57 +397,57 @@ export function handleSwap(event: SwapEvent): void {
   let token1HourData = updateTokenHourData(token1 as Token, event);
 
   // update volume metrics
-  pancakeDayData.volumeETH = pancakeDayData.volumeETH.plus(amountTotalETHTracked);
-  pancakeDayData.volumeUSD = pancakeDayData.volumeUSD.plus(amountTotalUSDTracked);
+  pancakeDayData.volumeETH = pancakeDayData.volumeETH.plus(volumeETH);
+  pancakeDayData.volumeUSD = pancakeDayData.volumeUSD.plus(volumeUSD);
   pancakeDayData.feesUSD = pancakeDayData.feesUSD.plus(feesUSD);
-  pancakeDayData.protocolFeesUSD = pancakeDayData.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
+  pancakeDayData.protocolFeesUSD = pancakeDayData.protocolFeesUSD.plus(protocolFeeAmounts.usd);
 
-  poolDayData.volumeUSD = poolDayData.volumeUSD.plus(amountTotalUSDTracked);
+  poolDayData.volumeUSD = poolDayData.volumeUSD.plus(volumeUSD);
   poolDayData.volumeToken0 = poolDayData.volumeToken0.plus(amount0Abs);
   poolDayData.volumeToken1 = poolDayData.volumeToken1.plus(amount1Abs);
   poolDayData.feesUSD = poolDayData.feesUSD.plus(feesUSD);
-  poolDayData.protocolFeesUSD = poolDayData.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
+  poolDayData.protocolFeesUSD = poolDayData.protocolFeesUSD.plus(protocolFeeAmounts.usd);
 
-  poolHourData.volumeUSD = poolHourData.volumeUSD.plus(amountTotalUSDTracked);
+  poolHourData.volumeUSD = poolHourData.volumeUSD.plus(volumeUSD);
   poolHourData.volumeToken0 = poolHourData.volumeToken0.plus(amount0Abs);
   poolHourData.volumeToken1 = poolHourData.volumeToken1.plus(amount1Abs);
   poolHourData.feesUSD = poolHourData.feesUSD.plus(feesUSD);
-  poolHourData.protocolFeesUSD = poolHourData.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
+  poolHourData.protocolFeesUSD = poolHourData.protocolFeesUSD.plus(protocolFeeAmounts.usd);
 
   token0DayData.volume = token0DayData.volume.plus(amount0Abs);
-  token0DayData.volumeUSD = token0DayData.volumeUSD.plus(amountTotalUSDTracked);
-  token0DayData.untrackedVolumeUSD = token0DayData.untrackedVolumeUSD.plus(amountTotalUSDTracked);
+  token0DayData.volumeUSD = token0DayData.volumeUSD.plus(volumeUSD);
+  token0DayData.untrackedVolumeUSD = token0DayData.untrackedVolumeUSD.plus(volumeUSDUntracked);
   token0DayData.feesUSD = token0DayData.feesUSD.plus(feesUSD);
-  token0DayData.protocolFeesUSD = token0DayData.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
+  token0DayData.protocolFeesUSD = token0DayData.protocolFeesUSD.plus(protocolFeeAmounts.usd);
 
   token0HourData.volume = token0HourData.volume.plus(amount0Abs);
-  token0HourData.volumeUSD = token0HourData.volumeUSD.plus(amountTotalUSDTracked);
-  token0HourData.untrackedVolumeUSD = token0HourData.untrackedVolumeUSD.plus(amountTotalUSDTracked);
+  token0HourData.volumeUSD = token0HourData.volumeUSD.plus(volumeUSD);
+  token0HourData.untrackedVolumeUSD = token0HourData.untrackedVolumeUSD.plus(volumeUSDUntracked);
   token0HourData.feesUSD = token0HourData.feesUSD.plus(feesUSD);
-  token0HourData.protocolFeesUSD = token0HourData.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
+  token0HourData.protocolFeesUSD = token0HourData.protocolFeesUSD.plus(protocolFeeAmounts.usd);
 
   token1DayData.volume = token1DayData.volume.plus(amount1Abs);
-  token1DayData.volumeUSD = token1DayData.volumeUSD.plus(amountTotalUSDTracked);
-  token1DayData.untrackedVolumeUSD = token1DayData.untrackedVolumeUSD.plus(amountTotalUSDTracked);
+  token1DayData.volumeUSD = token1DayData.volumeUSD.plus(volumeUSD);
+  token1DayData.untrackedVolumeUSD = token1DayData.untrackedVolumeUSD.plus(volumeUSDUntracked);
   token1DayData.feesUSD = token1DayData.feesUSD.plus(feesUSD);
-  token1DayData.protocolFeesUSD = token1DayData.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
+  token1DayData.protocolFeesUSD = token1DayData.protocolFeesUSD.plus(protocolFeeAmounts.usd);
 
   token1HourData.volume = token1HourData.volume.plus(amount1Abs);
-  token1HourData.volumeUSD = token1HourData.volumeUSD.plus(amountTotalUSDTracked);
-  token1HourData.untrackedVolumeUSD = token1HourData.untrackedVolumeUSD.plus(amountTotalUSDTracked);
+  token1HourData.volumeUSD = token1HourData.volumeUSD.plus(volumeUSD);
+  token1HourData.untrackedVolumeUSD = token1HourData.untrackedVolumeUSD.plus(volumeUSDUntracked);
   token1HourData.feesUSD = token1HourData.feesUSD.plus(feesUSD);
-  token1HourData.protocolFeesUSD = token1HourData.protocolFeesUSD.plus(amountTotalProtocolFeesUSDTracked);
+  token1HourData.protocolFeesUSD = token1HourData.protocolFeesUSD.plus(protocolFeeAmounts.usd);
 
   swap.save();
+  factory.save();
+  pancakeDayData.save();
+  pool.save();
+  poolDayData.save();
+  poolHourData.save();
   token0DayData.save();
   token1DayData.save();
-  pancakeDayData.save();
-  poolDayData.save();
   token0HourData.save();
   token1HourData.save();
-  poolHourData.save();
-  factory.save();
-  pool.save();
   token0.save();
   token1.save();
 
@@ -545,4 +510,63 @@ function loadTickUpdateFeeVarsAndSave(tickId: i32, event: ethereum.Event): void 
   if (tick !== null) {
     updateTickFeeVarsAndSave(tick!, event);
   }
+}
+
+export function handleCollect(event: CollectEvent): void {
+  // update fee growth
+  let pool = Pool.load(event.address.toHexString());
+  let factory = Factory.load(FACTORY_ADDRESS);
+  let token0 = Token.load(pool.token0);
+  let token1 = Token.load(pool.token1);
+  let transaction = loadTransaction(event);
+
+  // Get formatted amounts collected.
+  let amount0 = convertTokenToDecimal(event.params.amount0, token0.decimals);
+  let amount1 = convertTokenToDecimal(event.params.amount1, token1.decimals);
+  let amounts: AmountType = getAdjustedAmounts(
+    // Used for USD in Collect event.
+    amount0,
+    token0 as Token,
+    amount1,
+    token1 as Token
+  );
+
+  // Adjust pool TVL based on amount collected.
+  let oldPoolTVLETH = pool.totalValueLockedETH;
+  let oldPoolTVLETHUntracked = pool.totalValueLockedETHUntracked;
+  pool.totalValueLockedToken0 = pool.totalValueLockedToken0.minus(amount0);
+  pool.totalValueLockedToken1 = pool.totalValueLockedToken1.minus(amount1);
+  token0.totalValueLocked = token0.totalValueLocked.minus(amount0);
+  token1.totalValueLocked = token1.totalValueLocked.minus(amount1);
+  updateDerivedTVLAmounts(pool as Pool, factory as Factory, oldPoolTVLETH, oldPoolTVLETHUntracked);
+
+  // Update aggregate fee collection values.
+  pool.collectedFeesToken0 = pool.collectedFeesToken0.plus(amount0);
+  pool.collectedFeesToken1 = pool.collectedFeesToken1.plus(amount1);
+  pool.collectedFeesUSD = pool.collectedFeesUSD.plus(amounts.usd);
+
+  // Update transaction counts.
+  factory.txCount = factory.txCount.plus(ONE_BI);
+  token0.txCount = token0.txCount.plus(ONE_BI);
+  token1.txCount = token1.txCount.plus(ONE_BI);
+  pool.txCount = pool.txCount.plus(ONE_BI);
+
+  let collectID = event.transaction.hash.toString().concat("-").concat(event.logIndex.toString());
+  let collect = new Collect(collectID);
+  collect.transaction = transaction.id;
+  collect.timestamp = event.block.timestamp;
+  collect.pool = pool.id;
+  collect.owner = event.params.owner;
+  collect.amount0 = amount0;
+  collect.amount1 = amount1;
+  collect.amountUSD = amounts.usd;
+  collect.tickLower = BigInt.fromI32(event.params.tickLower);
+  collect.tickUpper = BigInt.fromI32(event.params.tickUpper);
+  collect.logIndex = event.logIndex;
+
+  token0.save();
+  token1.save();
+  factory.save();
+  pool.save();
+  collect.save();
 }

@@ -131,6 +131,7 @@ export function handlePoolCreated(event: PoolCreated): void {
   pool.totalValueLockedUSD = ZERO_BD;
   pool.totalValueLockedETH = ZERO_BD;
   pool.totalValueLockedUSDUntracked = ZERO_BD;
+  pool.totalValueLockedETHUntracked = ZERO_BD;
   pool.volumeToken0 = ZERO_BD;
   pool.volumeToken1 = ZERO_BD;
   pool.volumeUSD = ZERO_BD;

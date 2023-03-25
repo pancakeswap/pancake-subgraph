@@ -72,6 +72,8 @@ export function handleMint(event: MintEvent): void {
   pool.totalValueLockedToken0 = pool.totalValueLockedToken0.plus(amount0);
   pool.totalValueLockedToken1 = pool.totalValueLockedToken1.plus(amount1);
 
+  pool.liquidityProviderCount = pool.liquidityProviderCount.plus(ONE_BI);
+
   let transaction = loadTransaction(event);
   let mint = new Mint(transaction.id.toString() + "#" + pool.txCount.toString());
   mint.transaction = transaction.id;
