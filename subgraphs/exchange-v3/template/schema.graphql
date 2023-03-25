@@ -145,7 +145,7 @@ type Pool @entity {
   totalValueLockedUSD: BigDecimal!
   # TVL derived in USD untracked
   totalValueLockedUSDUntracked: BigDecimal!
-  # TVL derived in ETH untracked
+    # TVL derived in ETH untracked
   totalValueLockedETHUntracked: BigDecimal!
   # Fields used to help derived relationship
   liquidityProviderCount: BigInt! # used to detect new exchanges
