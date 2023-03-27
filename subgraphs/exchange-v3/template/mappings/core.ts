@@ -271,15 +271,8 @@ export function handleSwap(event: SwapEvent): void {
   let protocolFeeAmount1 = convertTokenToDecimal(event.params.protocolFeesToken1, token1.decimals);
 
   // need absolute amounts for volume
-  let amount0Abs = amount0;
-  if (amount0.lt(ZERO_BD)) {
-    amount0Abs = amount0.times(BigDecimal.fromString("-1"));
-  }
-  let amount1Abs = amount1;
-  if (amount1.lt(ZERO_BD)) {
-    amount1Abs = amount1.times(BigDecimal.fromString("-1"));
-  }
-
+  let amount0Abs = amount0.times(BigDecimal.fromString(amount0.lt(ZERO_BD) ? "-1" : "1"));
+  let amount1Abs = amount1.times(BigDecimal.fromString(amount1.lt(ZERO_BD) ? "-1" : "1"));
   let volumeAmounts: AmountType = getAdjustedAmounts(amount0Abs, token0 as Token, amount1Abs, token1 as Token);
   let volumeETH = volumeAmounts.eth.div(TWO_BD);
   let volumeUSD = volumeAmounts.usd.div(TWO_BD);
