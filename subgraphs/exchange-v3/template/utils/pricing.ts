@@ -7,7 +7,7 @@ import { exponentToBigDecimal, safeDiv } from "./index";
 // prettier-ignore
 const WETH_ADDRESS = "0xae13d989dac2f0debff460ac112a837c89baa7cd";
 // prettier-ignore
-const USDC_WETH_03_POOL = "0x137957f79ca4d8c5eb11916da8e0f33e29470b48";
+const USDC_WETH_03_POOL = "0x5147173e452ae4dd23dcee7baaaaab7318f16f6b";
 
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s

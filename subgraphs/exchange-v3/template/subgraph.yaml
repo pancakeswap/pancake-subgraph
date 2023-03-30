@@ -10,9 +10,9 @@ dataSources:
     name: Factory
     network: chapel
     source:
-      address: "0xd84787a01b0cad89fbca231e6960cc0f3f18df34"
+      address: "0x0bfbcf9fa4f9c56b0f40a671ad40e0805a091865"
       abi: Factory
-      startBlock: 28284402
+      startBlock: 28488223
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -39,9 +39,9 @@ dataSources:
     name: NonfungiblePositionManager
     network: chapel
     source:
-      address: "0xee02dc74894c7e973e058a676d513f25f4e1bec7"
+      address: "0x427bf5b37357632377ecbec9de3626c71a5396c1"
       abi: NonfungiblePositionManager
-      startBlock: 28284500
+      startBlock: 28488308
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
