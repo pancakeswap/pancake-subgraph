@@ -78,16 +78,16 @@ export class StaticTokenDefinition {
 
   // Helper for hardcoded tokens
   static fromAddress(tokenAddress: Address): StaticTokenDefinition | null {
-    let staticDefinitions = this.getStaticDefinitions();
-    let tokenAddressHex = tokenAddress.toHexString();
+    // let staticDefinitions = this.getStaticDefinitions();
+    // let tokenAddressHex = tokenAddress.toHexString();
 
-    // Search the definition using the address
-    for (let i = 0; i < staticDefinitions.length; i++) {
-      let staticDefinition = staticDefinitions[i];
-      if (staticDefinition.address.toHexString() == tokenAddressHex) {
-        return staticDefinition;
-      }
-    }
+    // // Search the definition using the address
+    // for (let i = 0; i < staticDefinitions.length; i++) {
+    //   let staticDefinition = staticDefinitions[i];
+    //   if (staticDefinition.address.toHexString() == tokenAddressHex) {
+    //     return staticDefinition;
+    //   }
+    // }
 
     // If not found, return null
     return null;

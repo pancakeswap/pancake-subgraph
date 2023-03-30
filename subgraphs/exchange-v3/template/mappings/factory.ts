@@ -109,9 +109,11 @@ export function handlePoolCreated(event: PoolCreated): void {
     token0.whitelistPools = newPools;
   }
 
+  let feeTier = BigInt.fromI32(event.params.fee);
+
   pool.token0 = token0.id;
   pool.token1 = token1.id;
-  pool.feeTier = BigInt.fromI32(event.params.fee);
+  pool.feeTier = feeTier;
   pool.createdAtTimestamp = event.block.timestamp;
   pool.createdAtBlockNumber = event.block.number;
   pool.liquidityProviderCount = ZERO_BI;
@@ -120,6 +122,7 @@ export function handlePoolCreated(event: PoolCreated): void {
   pool.sqrtPrice = ZERO_BI;
   pool.feeGrowthGlobal0X128 = ZERO_BI;
   pool.feeGrowthGlobal1X128 = ZERO_BI;
+  pool.feeProtocol = feeTierToProtoclFeeDefault(feeTier);
   pool.token0Price = ZERO_BD;
   pool.token1Price = ZERO_BD;
   pool.observationIndex = ZERO_BI;
@@ -145,4 +148,21 @@ export function handlePoolCreated(event: PoolCreated): void {
   token0.save();
   token1.save();
   factory.save();
+}
+
+function feeTierToProtoclFeeDefault(feeTier: BigInt): BigInt {
+  if (feeTier.equals(BigInt.fromI32(10000))) {
+    return BigInt.fromI32(209718400);
+  }
+  if (feeTier.equals(BigInt.fromI32(2500))) {
+    return BigInt.fromI32(209718400);
+  }
+  if (feeTier.equals(BigInt.fromI32(500))) {
+    return BigInt.fromI32(222825800);
+  }
+  if (feeTier.equals(BigInt.fromI32(100))) {
+    return BigInt.fromI32(216272100);
+  }
+
+  return BigInt.fromI32(209718400);
 }

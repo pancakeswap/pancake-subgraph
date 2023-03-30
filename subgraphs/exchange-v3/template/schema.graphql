@@ -99,6 +99,10 @@ type Pool @entity {
   liquidity: BigInt!
   # current price tracker
   sqrtPrice: BigInt!
+  # pool fee protocol 2 uint32 values store in a uint32 variable (fee/PROTOCOL_FEE_DENOMINATOR)
+  # token0: feeProtocol % 65536
+  # token1: feeProtocol >> 16
+  feeProtocol: BigInt!
   # tracker for global fee growth
   feeGrowthGlobal0X128: BigInt!
   # tracker for global fee growth
