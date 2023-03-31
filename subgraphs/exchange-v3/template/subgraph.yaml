@@ -8,11 +8,11 @@ features:
 dataSources:
   - kind: ethereum/contract
     name: Factory
-    network: chapel
+    network: goerli
     source:
       address: "0x0bfbcf9fa4f9c56b0f40a671ad40e0805a091865"
       abi: Factory
-      startBlock: 28488223
+      startBlock: 8744706
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -37,11 +37,11 @@ dataSources:
           handler: handlePoolCreated
   - kind: ethereum/contract
     name: NonfungiblePositionManager
-    network: chapel
+    network: goerli
     source:
       address: "0x427bf5b37357632377ecbec9de3626c71a5396c1"
       abi: NonfungiblePositionManager
-      startBlock: 28488308
+      startBlock: 8744479
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -71,7 +71,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pool
-    network: chapel
+    network: goerli
     source:
       abi: Pool
     mapping:
