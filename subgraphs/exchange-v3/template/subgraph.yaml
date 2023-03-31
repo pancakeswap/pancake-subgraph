@@ -102,5 +102,5 @@ templates:
           handler: handleFlash
         # - event: Collect(indexed address,address,indexed int24,indexed int24,uint128,uint128)
         #   handler: handleCollect
-        # - event: CollectProtocol(indexed address,indexed address,uint128,uint128)
-        #   handler: handleCollectProtocol
+        - event: CollectProtocol(indexed address,indexed address,uint128,uint128)
+          handler: handleCollectProtocol
