@@ -7,9 +7,9 @@ module.exports = {
   network: "mainnet",
   wNativeAddress: WETH,
   v3: {
-    wNativeStablePoolAddress: "",
-    factoryAddress: "",
-    startBlock: 0,
+    wNativeStablePoolAddress: "0x6ca298d2983ab03aa1da7679389d955a4efee15c",
+    factoryAddress: "0x0bfbcf9fa4f9c56b0f40a671ad40e0805a091865",
+    startBlock: 16950686,
     stableCoins: [
       "0x6b175474e89094c44da98b954eedeac495271d0f", // DAI
       "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", // USDC
@@ -41,7 +41,7 @@ module.exports = {
       "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9", // AAVE
       "0xfe2e637202056d30016725477c5da089ab0a043a", // sETH2
     ],
-    nonfungiblePositionManagerAddress: "",
-    nonfungiblePositionManagerStartBlock: 0,
+    nonfungiblePositionManagerAddress: "0x46a15b0b27311cedf172ab29e4f4766fbe7f4364",
+    nonfungiblePositionManagerStartBlock: 16944786,
   },
 };
