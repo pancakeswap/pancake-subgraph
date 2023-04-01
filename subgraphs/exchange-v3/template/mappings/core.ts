@@ -524,14 +524,15 @@ export function handleCollect(event: CollectEvent): void {
     token1 as Token
   );
 
-  // Adjust pool TVL based on amount collected.
-  let oldPoolTVLETH = pool.totalValueLockedETH;
-  let oldPoolTVLETHUntracked = pool.totalValueLockedETHUntracked;
-  pool.totalValueLockedToken0 = pool.totalValueLockedToken0.minus(amount0);
-  pool.totalValueLockedToken1 = pool.totalValueLockedToken1.minus(amount1);
-  token0.totalValueLocked = token0.totalValueLocked.minus(amount0);
-  token1.totalValueLocked = token1.totalValueLocked.minus(amount1);
-  updateDerivedTVLAmounts(pool as Pool, factory as Factory, oldPoolTVLETH, oldPoolTVLETHUntracked);
+  // commented to avoid double counting as burn event is emitted with same amount
+  // // Adjust pool TVL based on amount collected.
+  // let oldPoolTVLETH = pool.totalValueLockedETH;
+  // let oldPoolTVLETHUntracked = pool.totalValueLockedETHUntracked;
+  // pool.totalValueLockedToken0 = pool.totalValueLockedToken0.minus(amount0);
+  // pool.totalValueLockedToken1 = pool.totalValueLockedToken1.minus(amount1);
+  // token0.totalValueLocked = token0.totalValueLocked.minus(amount0);
+  // token1.totalValueLocked = token1.totalValueLocked.minus(amount1);
+  // updateDerivedTVLAmounts(pool as Pool, factory as Factory, oldPoolTVLETH, oldPoolTVLETHUntracked);
 
   // Update aggregate fee collection values.
   pool.collectedFeesToken0 = pool.collectedFeesToken0.plus(amount0);
@@ -544,7 +545,7 @@ export function handleCollect(event: CollectEvent): void {
   token1.txCount = token1.txCount.plus(ONE_BI);
   pool.txCount = pool.txCount.plus(ONE_BI);
 
-  let collectID = event.transaction.hash.toString().concat("-").concat(event.logIndex.toString());
+  let collectID = transaction.id.toString() + "#" + pool.txCount.toString();
   let collect = new Collect(collectID);
   collect.transaction = transaction.id;
   collect.timestamp = event.block.timestamp;
