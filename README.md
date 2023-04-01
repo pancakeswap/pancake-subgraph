@@ -34,7 +34,7 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 
 14. **[MasterChef (v2)](https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v2)**: Tracks data for MasterChefV2.
 
-15. **MasterChef (v3)**: Tracks data for MasterChefV2.
+15. **MasterChef (v3)**: Tracks data for MasterChefV3.
     - BNB https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-bsc
     - BNB testnet https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-chapel
     - ETH https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-eth
