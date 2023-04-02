@@ -5,17 +5,19 @@ import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { exponentToBigDecimal, safeDiv } from "./index";
 
 // prettier-ignore
-const WETH_ADDRESS = "0xae13d989dac2f0debff460ac112a837c89baa7cd";
+const WETH_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
 // prettier-ignore
-const USDC_WETH_03_POOL = "0x5147173e452ae4dd23dcee7baaaaab7318f16f6b";
+const USDC_WETH_03_POOL = "0x36696169c63e42cd08ce11f5deebbcebae652050";
+
+const STABLE_IS_TOKEN0 = "true" as string;
 
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s
 // prettier-ignore
-export let WHITELIST_TOKENS: string[] = "0xae13d989dac2f0debff460ac112a837c89baa7cd,0x828e3fc56dd48e072e3b6f3c4fd4ddb4733c2c5e,0xc1ed9955c11585f47d0d6bfbc29034349a746a81,0x0fb5d7c73fa349a90392f873a4fa1ecf6a3d0a96,0xab1a4d4f1d656d2450692d237fdd6c7f9146e814".split(",");
+export let WHITELIST_TOKENS: string[] = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c,0x55d398326f99059ff775485246999027b3197955,0xe9e7cea3dedca5984780bafc599bd69add087d56,0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d,0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c,0x2170ed0880ac9a755fd29b2688956bd959f933f8,0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82".split(",");
 
 // prettier-ignore
-let STABLE_COINS: string[] = "0x828e3fc56dd48e072e3b6f3c4fd4ddb4733c2c5e,0x0fb5d7c73fa349a90392f873a4fa1ecf6a3d0a96,0xab1a4d4f1d656d2450692d237fdd6c7f9146e814".split(",");
+let STABLE_COINS: string[] = "0x55d398326f99059ff775485246999027b3197955,0xe9e7cea3dedca5984780bafc599bd69add087d56,0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d".split(",");
 
 let MINIMUM_ETH_LOCKED = BigDecimal.fromString("60");
 
@@ -33,7 +35,10 @@ export function getEthPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
   let usdcPool = Pool.load(USDC_WETH_03_POOL); // dai is token0
   if (usdcPool !== null) {
-    return usdcPool.token0Price;
+    if (STABLE_IS_TOKEN0 === "true") {
+      return usdcPool.token0Price;
+    }
+    return usdcPool.token1Price;
   } else {
     return ZERO_BD;
   }

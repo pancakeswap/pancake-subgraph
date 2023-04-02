@@ -8,11 +8,11 @@ features:
 dataSources:
   - kind: ethereum/contract
     name: Factory
-    network: mainnet
+    network: bsc
     source:
       address: "0x0bfbcf9fa4f9c56b0f40a671ad40e0805a091865"
       abi: Factory
-      startBlock: 16950686
+      startBlock: 26956207
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -37,11 +37,11 @@ dataSources:
           handler: handlePoolCreated
   - kind: ethereum/contract
     name: NonfungiblePositionManager
-    network: mainnet
+    network: bsc
     source:
       address: "0x46a15b0b27311cedf172ab29e4f4766fbe7f4364"
       abi: NonfungiblePositionManager
-      startBlock: 16944786
+      startBlock: 26931961
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -71,7 +71,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pool
-    network: mainnet
+    network: bsc
     source:
       abi: Pool
     mapping:
@@ -100,7 +100,7 @@ templates:
           handler: handleBurn
         - event: Flash(indexed address,indexed address,uint256,uint256,uint256,uint256)
           handler: handleFlash
-        # - event: Collect(indexed address,address,indexed int24,indexed int24,uint128,uint128)
-        #   handler: handleCollect
+        - event: Collect(indexed address,address,indexed int24,indexed int24,uint128,uint128)
+          handler: handleCollect
         - event: CollectProtocol(indexed address,indexed address,uint128,uint128)
           handler: handleCollectProtocol
