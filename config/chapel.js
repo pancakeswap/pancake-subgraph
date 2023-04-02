@@ -6,6 +6,7 @@ module.exports = {
   wNativeAddress: "0xae13d989dac2f0debff460ac112a837c89baa7cd",
   v3: {
     wNativeStablePoolAddress: "0x5147173e452ae4dd23dcee7baaaaab7318f16f6b",
+    stableIsToken0: true,
     factoryAddress: "0x0bfbcf9fa4f9c56b0f40a671ad40e0805a091865",
     startBlock: 28488223,
     stableCoins: [

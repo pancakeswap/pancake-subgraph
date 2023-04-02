@@ -9,6 +9,7 @@ export type NetworkConfig = {
     whitelistAddresses: string[];
     nonfungiblePositionManagerAddress: string;
     nonfungiblePositionManagerStartBlock: number;
+    stableIsToken0: boolean;
   };
   masterChefV3: {
     startBlock: number;

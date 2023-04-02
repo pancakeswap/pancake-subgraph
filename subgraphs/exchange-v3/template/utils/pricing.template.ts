@@ -9,6 +9,8 @@ const WETH_ADDRESS = "{{ wNativeAddress }}";
 // prettier-ignore
 const USDC_WETH_03_POOL = "{{ v3.wNativeStablePoolAddress }}";
 
+const STABLE_IS_TOKEN0 = "{{ v3.stableIsToken0 }}" as string;
+
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s
 // prettier-ignore
@@ -33,7 +35,10 @@ export function getEthPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
   let usdcPool = Pool.load(USDC_WETH_03_POOL); // dai is token0
   if (usdcPool !== null) {
-    return usdcPool.token0Price;
+    if (STABLE_IS_TOKEN0 === "true") {
+      return usdcPool.token0Price;
+    }
+    return usdcPool.token1Price;
   } else {
     return ZERO_BD;
   }

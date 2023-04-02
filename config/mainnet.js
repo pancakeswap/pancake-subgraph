@@ -8,6 +8,7 @@ module.exports = {
   wNativeAddress: WETH,
   v3: {
     wNativeStablePoolAddress: "0x6ca298d2983ab03aa1da7679389d955a4efee15c",
+    stableIsToken0: false,
     factoryAddress: "0x0bfbcf9fa4f9c56b0f40a671ad40e0805a091865",
     startBlock: 16950686,
     stableCoins: [

@@ -19,7 +19,7 @@ export class StaticTokenDefinition {
   static getStaticDefinitions(): Array<StaticTokenDefinition> {
     let staticDefinitions = new Array<StaticTokenDefinition>(6);
 
-    // Add DGD
+    // // Add DGD
     // let tokenDGD = new StaticTokenDefinition(
     //   Address.fromString("0xe0b7927c4af23765cb51314a0e0521a9645f0e2a"),
     //   "DGD",
