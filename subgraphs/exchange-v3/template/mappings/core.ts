@@ -79,7 +79,14 @@ export function handleMint(event: MintEvent): void {
   token1.totalValueLocked = token1.totalValueLocked.plus(amount1);
   pool.totalValueLockedToken0 = pool.totalValueLockedToken0.plus(amount0);
   pool.totalValueLockedToken1 = pool.totalValueLockedToken1.plus(amount1);
-  updateDerivedTVLAmounts(pool as Pool, factory as Factory, oldPoolTVLETH, oldPoolTVLETHUntracked);
+  updateDerivedTVLAmounts(
+    pool as Pool,
+    factory as Factory,
+    token0 as Token,
+    token1 as Token,
+    oldPoolTVLETH,
+    oldPoolTVLETHUntracked
+  );
 
   // update tx counts
   factory.txCount = factory.txCount.plus(ONE_BI);
@@ -191,7 +198,14 @@ export function handleBurn(event: BurnEvent): void {
   token1.totalValueLocked = token1.totalValueLocked.minus(amount1);
   pool.totalValueLockedToken0 = pool.totalValueLockedToken0.minus(amount0);
   pool.totalValueLockedToken1 = pool.totalValueLockedToken1.minus(amount1);
-  updateDerivedTVLAmounts(pool as Pool, factory as Factory, oldPoolTotalValueLockedETH, oldPoolTVLETHUntracked);
+  updateDerivedTVLAmounts(
+    pool as Pool,
+    factory as Factory,
+    token0 as Token,
+    token1 as Token,
+    oldPoolTotalValueLockedETH,
+    oldPoolTVLETHUntracked
+  );
 
   // Pools liquidity tracks the currently active liquidity given pools current tick.
   // We only want to update it on burn if the position being burnt includes the current tick.
@@ -352,7 +366,14 @@ export function handleSwap(event: SwapEvent): void {
   pool.totalValueLockedToken1 = pool.totalValueLockedToken1.plus(amount1);
   token0.totalValueLocked = token0.totalValueLocked.plus(amount0);
   token1.totalValueLocked = token1.totalValueLocked.plus(amount1);
-  updateDerivedTVLAmounts(pool as Pool, factory as Factory, oldPoolTVLETH, oldPoolTVLETHUntracked);
+  updateDerivedTVLAmounts(
+    pool as Pool,
+    factory as Factory,
+    token0 as Token,
+    token1 as Token,
+    oldPoolTVLETH,
+    oldPoolTVLETHUntracked
+  );
 
   // create Swap event
   let transaction = loadTransaction(event);
@@ -583,7 +604,14 @@ export function handleCollectProtocol(event: CollectProtocolEvent): void {
   pool.totalValueLockedToken1 = pool.totalValueLockedToken1.minus(amount1);
   token0.totalValueLocked = token0.totalValueLocked.minus(amount0);
   token1.totalValueLocked = token1.totalValueLocked.minus(amount1);
-  updateDerivedTVLAmounts(pool as Pool, factory as Factory, oldPoolTVLETH, oldPoolTVLETHUntracked);
+  updateDerivedTVLAmounts(
+    pool as Pool,
+    factory as Factory,
+    token0 as Token,
+    token1 as Token,
+    oldPoolTVLETH,
+    oldPoolTVLETHUntracked
+  );
 
   // Update transaction counts.
   factory.txCount = factory.txCount.plus(ONE_BI);
