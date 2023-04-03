@@ -22,12 +22,12 @@ import { AmountType, getAdjustedAmounts } from "./pricing";
 export function updateDerivedTVLAmounts(
   pool: Pool,
   factory: Factory,
+  token0: Token,
+  token1: Token,
   oldPoolTotalValueLockedETH: BigDecimal,
   oldPoolTotalValueLockedETHUntracked: BigDecimal
 ): void {
   let bundle = Bundle.load("1");
-  let token0 = Token.load(pool.token0);
-  let token1 = Token.load(pool.token1);
 
   // Update token TVL values.
   token0.totalValueLockedUSD = token0.totalValueLocked.times(token0.derivedETH.times(bundle.ethPriceUSD));
