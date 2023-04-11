@@ -329,7 +329,6 @@ export function handleSwap(event: SwapEvent): void {
 
   // update token0 data
   token0.volume = token0.volume.plus(amount0Abs);
-  token0.totalValueLocked = token0.totalValueLocked.plus(amount0);
   token0.volumeUSD = token0.volumeUSD.plus(volumeUSD);
   token0.untrackedVolumeUSD = token0.untrackedVolumeUSD.plus(volumeUSDUntracked);
   token0.feesUSD = token0.feesUSD.plus(feesUSD);
@@ -338,7 +337,6 @@ export function handleSwap(event: SwapEvent): void {
 
   // update token1 data
   token1.volume = token1.volume.plus(amount1Abs);
-  token1.totalValueLocked = token1.totalValueLocked.plus(amount1);
   token1.volumeUSD = token1.volumeUSD.plus(volumeUSD);
   token1.untrackedVolumeUSD = token1.untrackedVolumeUSD.plus(volumeUSDUntracked);
   token1.feesUSD = token1.feesUSD.plus(feesUSD);
