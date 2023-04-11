@@ -22,8 +22,6 @@ dataSources:
         - name: CakePool
           file: ./abis/CakePool.json
       eventHandlers:
-        - event: Deposit(indexed address,uint256,uint256,uint256,uint256)
-          handler: handleDeposit
         - event: Lock(indexed address,uint256,uint256,uint256,uint256)
           handler: handleLock
         - event: Unlock(indexed address,uint256,uint256)
