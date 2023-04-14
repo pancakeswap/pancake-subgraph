@@ -14,7 +14,6 @@ export function startCountdown(event: NewMaxLockDuration): void {
     cakePool.blockNumber = event.block.number;
     cakePool.totalLocked = ZERO_BI;
     cakePool.maxLockDuration = event.params.maxLockDuration;
-    cakePool.usersWithLockedCake = [];
     cakePool.save();
   }
 }

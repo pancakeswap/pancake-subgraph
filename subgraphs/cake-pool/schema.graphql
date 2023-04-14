@@ -29,5 +29,4 @@ type CakePool @entity {
     maxLockDuration: BigInt!
     "Total locked"
     totalLocked: BigInt!
-    usersWithLockedCake: [String!]!
 }
