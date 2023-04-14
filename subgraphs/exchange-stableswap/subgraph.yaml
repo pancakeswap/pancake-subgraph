@@ -5,7 +5,7 @@ schema:
   file: ./schema.graphql
 graft:
   base: QmZMeDY8PjpwRQKxUEN7ZXeJPX5BpnER8MDN5zCfyWNAFR
-  block: 26105842 # for previous exiting factory
+  block: 25535458 # for previous exiting factory
 dataSources:
   - kind: ethereum/contract
     name: StableSwapFactory
@@ -13,7 +13,7 @@ dataSources:
     source:
       address: '0x25a55f9f2279A54951133D503490342b50E5cd15'
       abi: StableSwapFactory
-      startBlock: 25656575
+      startBlock: 25535458
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
