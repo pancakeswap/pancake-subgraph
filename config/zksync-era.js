@@ -23,6 +23,7 @@ module.exports = {
     ],
     nonfungiblePositionManagerAddress: "0x46a15b0b27311cedf172ab29e4f4766fbe7f4364", // TODO: new chain
     nonfungiblePositionManagerStartBlock: 26931961, // TODO: new chain
+    minETHLocked: 0,
   },
   v2: {
     factoryAddress: "", // TODO: new chain
