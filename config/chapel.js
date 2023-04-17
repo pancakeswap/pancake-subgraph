@@ -23,6 +23,7 @@ module.exports = {
     ],
     nonfungiblePositionManagerAddress: "0x427bf5b37357632377ecbec9de3626c71a5396c1",
     nonfungiblePositionManagerStartBlock: 28488308,
+    minETHLocked: 60,
   },
   masterChefV3: {
     masterChefAddress: "0x4c650fb471fe4e0f476fd3437c3411b1122c4e3b",

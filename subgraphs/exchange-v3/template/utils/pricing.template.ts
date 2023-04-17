@@ -19,7 +19,7 @@ export let WHITELIST_TOKENS: string[] = "{{ v3.whitelistAddresses }}".split(",")
 // prettier-ignore
 let STABLE_COINS: string[] = "{{ v3.stableCoins }}".split(",");
 
-let MINIMUM_ETH_LOCKED = BigDecimal.fromString("60");
+let MINIMUM_ETH_LOCKED = BigDecimal.fromString("{{ v3.minETHLocked }}");
 
 let Q192 = 2 ** 192;
 export function sqrtPriceX96ToTokenPrices(sqrtPriceX96: BigInt, token0: Token, token1: Token): BigDecimal[] {

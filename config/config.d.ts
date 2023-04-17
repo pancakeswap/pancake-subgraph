@@ -10,6 +10,7 @@ export type NetworkConfig = {
     nonfungiblePositionManagerAddress: string;
     nonfungiblePositionManagerStartBlock: number;
     stableIsToken0: boolean;
+    minETHLocked: number;
   };
   masterChefV3: {
     startBlock: number;
