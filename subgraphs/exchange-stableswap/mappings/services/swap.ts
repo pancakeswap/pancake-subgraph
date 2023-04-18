@@ -102,7 +102,7 @@ export function swap(event: ethereum.Event, params: SwapParams): void {
   pair.save();
 
   // update global values, only used tracked amounts for volume
-  let factory = getOrCreateFactory();
+  let factory = getOrCreateFactory(pair.factory);
   factory.totalVolumeUSD = factory.totalVolumeUSD.plus(trackedAmountUSD);
   factory.totalVolumeBNB = factory.totalVolumeBNB.plus(trackedAmountBNB);
   factory.untrackedVolumeUSD = factory.untrackedVolumeUSD.plus(derivedAmountUSD);

@@ -11,7 +11,7 @@ export function mint(event: ethereum.Event, tokenAmount0: BigInt, tokenAmount1: 
   let mint = Mint.load(mints[mints.length - 1]);
 
   let pair = Pair.load(event.address.toHex());
-  let factory = getOrCreateFactory();
+  let factory = getOrCreateFactory(pair.factory);
 
   let token0 = Token.load(pair.token0);
   let token1 = Token.load(pair.token1);

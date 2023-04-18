@@ -1,0 +1,17 @@
+{
+  "name": "masterchef-v3",
+  "description": "PancakeSwap MasterChef V3 Subgraph",
+  "version": "1.0.0",
+  "repository": "git@github.com:pancakeswap/pancake-subgraph.git",
+  "author": "PancakeSwap",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "template": "mustache ../../config/$NETWORK.js subgraph.template.yaml > subgraph.yaml",
+    "codegen": "graph codegen subgraph.yaml",
+    "build": "graph build subgraph.yaml",
+    "deploy:chapel": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ chef-jojo/masterchef-v3-chapel subgraph.yaml",
+    "deploy:goerli": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ chef-jojo/masterchef-v3-goerli subgraph.yaml",
+    "deploy:eth": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/masterchef-v3-eth subgraph.yaml",
+    "deploy:bsc": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/masterchef-v3-bsc subgraph.yaml"
+  }
+}

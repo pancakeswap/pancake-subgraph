@@ -3,46 +3,49 @@ import { Address, BigDecimal } from "@graphprotocol/graph-ts/index";
 import { Bundle, Pair, Token } from "../../generated/schema";
 import {
   ADDRESS_ZERO,
-  BIG_DECIMAL_1E18,
   BIG_DECIMAL_ONE,
   BIG_DECIMAL_ZERO,
   BIG_INT_18,
   BUSD_ADDR,
-  BUSD_ADDRESS,
   convertTokenToDecimal,
-  PCS_FACTORY_ADDRESS,
-  pcsFactoryContract,
   stableSwapFactoryContract,
+  exponentToBigDecimal,
+  WBNB_ADDR,
 } from "./index";
 import { Pair as PairContract } from "../../generated/StableSwapFactory/Pair";
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { StableSwapPair as StableSwapPairContract } from "../../generated/StableSwapFactory/StableSwapPair";
+import { BigInt } from "@graphprotocol/graph-ts";
+import { getOrCreateToken } from "./data";
 
 let BUSD_WBNB_PAIR = "0x58f876857a02d6762e0101bb5c46a8c1ed44dc16";
 let USDT_WBNB_PAIR = "0x16b9a82891338f9ba80e2d6970fdda79d1eb0dae";
+// let USDT_ADDRESS = "0x55d398326f99059ff775485246999027b3197955";
 
-export function getPriceFromPCS(token: Address): BigDecimal {
-  if (token.equals(Address.fromString(BUSD_ADDRESS))) {
-    return BIG_DECIMAL_ONE;
-  }
-  let address = pcsFactoryContract.getPair(token, BUSD_ADDR);
-  if (address.toHex() == ADDRESS_ZERO) {
-    log.debug("No pair found for {} on {}", [token.toHexString(), PCS_FACTORY_ADDRESS]);
-    return BIG_DECIMAL_ZERO;
-  }
-  let pair = PairContract.bind(address);
-  let reserves = pair.getReserves();
-  // if reserves are below a certain threshold we consider them invalid
-  // ideally we'd account for different decimals, but this would increase
-  // number of calls. so we only filter for a common lower denom for dust.
-  if (reserves.value1.lt(BigInt.fromI32(100000000)) || reserves.value0.lt(BigInt.fromI32(100000000))) {
-    log.debug("Low reserves found for {} on {}", [token.toHexString(), PCS_FACTORY_ADDRESS]);
-    return BIG_DECIMAL_ZERO;
-  }
-  let price = pair.token0().equals(BUSD_ADDR)
-    ? reserves.value0.toBigDecimal().times(BIG_DECIMAL_1E18).div(reserves.value1.toBigDecimal())
-    : reserves.value1.toBigDecimal().times(BIG_DECIMAL_1E18).div(reserves.value0.toBigDecimal());
+function getByDy(pair_: Pair | null, token: Address): BigDecimal {
+  if (!pair_) return BIG_DECIMAL_ZERO;
+  let targetTokenAddress = token.toHexString();
+  let targetToken = getOrCreateToken(token);
+  let targetTokenIndex = pair_.token0 == targetTokenAddress ? 0 : pair_.token1 == targetTokenAddress ? 1 : 2;
+  let baseTokenIndex = targetTokenIndex == 0 ? 1 : 0;
+  let baseToken =
+    baseTokenIndex == 0
+      ? getOrCreateToken(Address.fromString(pair_.token0))
+      : getOrCreateToken(Address.fromString(pair_.token1));
+  let pair = StableSwapPairContract.bind(Address.fromString(pair_.id));
+  let dy = pair.try_get_dy(
+    BigInt.fromI32(baseTokenIndex),
+    BigInt.fromI32(targetTokenIndex),
+    BigInt.fromI32(1).times(BigInt.fromString(exponentToBigDecimal(baseToken.decimals).toString()))
+  );
 
-  return price.div(BIG_DECIMAL_1E18);
+  if (!dy.reverted) {
+    return dy.value.divDecimal(exponentToBigDecimal(targetToken.decimals));
+  }
+  return BIG_DECIMAL_ZERO;
+}
+
+export function getPriceFromPCS(token: Address, pair_: Pair | null): BigDecimal {
+  return getByDy(pair_, token);
 }
 
 export function getBusdPerBnb(): BigDecimal {
@@ -100,8 +103,9 @@ export function getBnbPriceInUSD(): BigDecimal {
   }
 }
 
-// token where amounts should contribute to tracked volume and liquidity. Stablecoins only, other case update findBnbPerToken
+// token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
+  "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", // WBNB
   "0xe9e7cea3dedca5984780bafc599bd69add087d56", // BUSD
   "0x55d398326f99059ff775485246999027b3197955", // USDT
   "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", // USDC
@@ -117,6 +121,9 @@ let WHITELIST: string[] = [
 export function findBnbPerToken(token: Token): BigDecimal {
   if (Address.fromString(token.id).equals(BUSD_ADDR)) {
     return getBusdPerBnb();
+  }
+  if (Address.fromString(token.id).equals(WBNB_ADDR)) {
+    return BIG_DECIMAL_ONE;
   }
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {
