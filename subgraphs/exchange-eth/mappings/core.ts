@@ -367,26 +367,26 @@ export function handleSwap(event: Swap): void {
   // BNB/USD prices
   let bundle = Bundle.load("1");
 
-  let derivedToken0AmountBNB = token0.derivedBNB.times(amount0Total);
-  let derivedToken1AmountBNB = token1.derivedBNB.times(amount1Total);
+  let derivedToken0AmountETH = token0.derivedETH.times(amount0Total);
+  let derivedToken1AmountETH = token1.derivedETH.times(amount1Total);
 
   // get total amounts of derived USD and BNB for tracking
-  let derivedAmountBNB = derivedToken1AmountBNB.plus(derivedToken0AmountBNB).div(BigDecimal.fromString("2"));
-  let derivedAmountUSD = derivedAmountBNB.times(bundle.bnbPrice);
+  let derivedAmountBNB = derivedToken1AmountETH.plus(derivedToken0AmountETH).div(BigDecimal.fromString("2"));
+  let derivedAmountUSD = derivedAmountBNB.times(bundle.ethPrice);
 
   // get swap fee amount of derived USD and BNB for tracking
   let derivedFeeAmountBNB: BigDecimal;
   if (
-    derivedToken0AmountBNB.equals(BigDecimal.fromString("0")) ||
-    derivedToken1AmountBNB.equals(BigDecimal.fromString("0"))
+    derivedToken0AmountETH.equals(BigDecimal.fromString("0")) ||
+    derivedToken1AmountETH.equals(BigDecimal.fromString("0"))
   ) {
     derivedFeeAmountBNB = ZERO_BD;
-  } else if (derivedToken0AmountBNB.ge(derivedToken1AmountBNB)) {
-    derivedFeeAmountBNB = derivedToken0AmountBNB.minus(derivedToken1AmountBNB);
+  } else if (derivedToken0AmountETH.ge(derivedToken1AmountETH)) {
+    derivedFeeAmountBNB = derivedToken0AmountETH.minus(derivedToken1AmountETH);
   } else {
-    derivedFeeAmountBNB = derivedToken1AmountBNB.minus(derivedToken0AmountBNB);
+    derivedFeeAmountBNB = derivedToken1AmountETH.minus(derivedToken0AmountETH);
   }
-  let derivedFeeAmountUSD = derivedFeeAmountBNB.times(bundle.bnbPrice);
+  let derivedFeeAmountUSD = derivedFeeAmountBNB.times(bundle.ethPrice);
 
   // only accounts for volume through white listed tokens
   let trackedAmountUSD = getTrackedVolumeUSD(

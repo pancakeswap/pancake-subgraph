@@ -187,9 +187,9 @@ type Swap @entity {
   to: Bytes!
   logIndex: BigInt
 
-   # derived info
-   amountUSD: BigDecimal!
-   amountFeeUSD: BigDecimal!
+  # derived info
+  amountUSD: BigDecimal!
+  amountFeeUSD: BigDecimal!
 }
 
 type PancakeDayData @entity {
