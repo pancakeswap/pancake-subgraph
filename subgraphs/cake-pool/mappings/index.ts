@@ -2,7 +2,7 @@
 import { BigInt, log } from "@graphprotocol/graph-ts";
 import { CakePool } from "../generated/schema";
 import { Lock, NewMaxLockDuration, Unlock } from "../generated/CakePool/CakePool";
-import { getOrCreateUser, getUserLockAmount, ZERO_BI } from "./utils";
+import { getOrCreateUser, getUserLockAmount, getUserLockTime, ZERO_BI } from "./utils";
 
 export function startCountdown(event: NewMaxLockDuration): void {
   let cakePool = CakePool.load("1");
@@ -23,20 +23,14 @@ export function handleLock(event: Lock): void {
   if (cakePool !== null) {
     let user = getOrCreateUser(event.params.sender.toHex());
 
-    if (event.params.lockedDuration.gt(ZERO_BI)) {
-      if (user.lockEndTime < event.block.timestamp) {
-        user.lockStartTime = event.block.timestamp;
-        user.lockEndTime = event.block.timestamp.plus(event.params.lockedDuration);
-      } else {
-        user.lockEndTime = user.lockEndTime.plus(event.params.lockedDuration);
-      }
-    }
-
+    let lockTime = getUserLockTime(user.id);
     let userTotalLocked = getUserLockAmount(user.id);
 
-    cakePool.totalLocked = cakePool.totalLocked.plus(userTotalLocked);
+    cakePool.totalLocked = cakePool.totalLocked.minus(user.totalLocked).plus(userTotalLocked);
     cakePool.save();
 
+    user.lockStartTime = lockTime.lockStartTime;
+    user.lockEndTime = lockTime.lockEndTime;
     user.totalLocked = userTotalLocked;
     user.duration = event.params.lockedDuration;
     user.locked = true;

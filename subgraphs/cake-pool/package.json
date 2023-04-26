@@ -9,6 +9,6 @@
     "auth": "graph auth --product hosted-service SUBGRAPH_ACCESS_TOKEN",
     "codegen": "graph codegen subgraph.yaml",
     "build": "graph build subgraph.yaml",
-    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/cake-pool subgraph.yaml"
+    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ chef-huan/cake-pool-fix subgraph.yaml"
   }
 }
