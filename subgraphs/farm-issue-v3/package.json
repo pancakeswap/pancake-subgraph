@@ -1,0 +1,17 @@
+{
+  "name": "farm-issue-v3",
+  "description": "PancakeSwap Subgraph",
+  "version": "1.0.0",
+  "repository": "git@github.com:pancakeswap/pancake-subgraph.git",
+  "author": "PancakeSwap",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "auth": "graph auth --product hosted-service ''",
+    "codegen:bsc": "graph codegen subgraph-bsc.yaml",
+    "build:bsc": "graph build subgraph-bsc.yaml",
+    "deploy:bsc": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ chef-huan/farm-issue-v3-bsc subgraph-bsc.yaml",
+    "codegen:eth": "graph codegen subgraph-eth.yaml",
+    "build:eth": "graph build subgraph-eth.yaml",
+    "deploy:eth": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ chef-huan/farm-issue-v3-eth subgraph-eth.yaml"
+  }
+}
