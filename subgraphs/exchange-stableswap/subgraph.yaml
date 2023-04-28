@@ -4,7 +4,7 @@ repository: https://github.com/pancakeswap
 schema:
   file: ./schema.graphql
 graft:
-  base: QmZMeDY8PjpwRQKxUEN7ZXeJPX5BpnER8MDN5zCfyWNAFR
+  base: Qme4U6by9yqGwTPKRaPvbgo7Ar9CwYFaTjmy9z6uVSjxvL
   block: 25535458 # for previous exiting factory
 dataSources:
   - kind: ethereum/contract
