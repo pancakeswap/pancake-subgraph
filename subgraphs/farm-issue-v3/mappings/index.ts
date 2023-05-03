@@ -46,6 +46,7 @@ export function handleDeposit(event: DepositEvent): void {
       deposit.liquidity = event.params.liquidity;
       deposit.boostLiquidity = boostLiquidity;
       deposit.timestamp = event.block.timestamp;
+      deposit.block = event.block.number;
 
       let result = mChefV3.try_poolInfo(event.params.pid);
       if (result.reverted) {

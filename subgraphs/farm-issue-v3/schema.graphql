@@ -18,4 +18,5 @@ type Deposit @entity {
     boostLiquidity: BigInt
     lmPool: Bytes
     timestamp: BigInt!
+    block: BigInt!
 }
