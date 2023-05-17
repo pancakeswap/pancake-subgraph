@@ -1,0 +1,9 @@
+type ClaimRecord @entity {
+  id: ID!
+  hash: Bytes! # transaction hash
+  type: Int!
+  nonce: BigInt! # uint256
+  claimer: Bytes! # address
+  amount: BigInt! # uint256
+  claimTime: BigInt! # uint256
+}
