@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Factory
-    network: arbitrum-one
+    network: zkSync2-testnet
     source:
-      address: ""
+      address: "0xa4370037e4c151449fb7166dccb9fcf30b812baf"
       abi: Factory
-      startBlock: 0
+      startBlock: 5135461
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -34,7 +34,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pair
-    network: mainnet
+    network: zkSync2-testnet
     source:
       abi: Pair
     mapping:

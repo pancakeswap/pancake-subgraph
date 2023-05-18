@@ -1,4 +1,4 @@
-const WETH = "0x36696169c63e42cd08ce11f5deebbcebae652050";
+const WETH = "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1";
 
 /**
  * @type import('./config').NetworkConfig
