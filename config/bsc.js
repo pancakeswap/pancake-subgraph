@@ -23,6 +23,7 @@ module.exports = {
       "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c", // BTCB
       "0x2170ed0880ac9a755fd29b2688956bd959f933f8", // WETH
       "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82", // CAKE
+      "0x0Ae38f7E10A43B5b2fB064B42a2f4514cbA909ef", // unshETH
     ],
     nonfungiblePositionManagerAddress: "0x46a15b0b27311cedf172ab29e4f4766fbe7f4364",
     nonfungiblePositionManagerStartBlock: 26931961,
