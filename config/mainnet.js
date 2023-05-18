@@ -42,10 +42,11 @@ module.exports = {
       "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9", // AAVE
       "0xfe2e637202056d30016725477c5da089ab0a043a", // sETH2
       "0x152649ea73beab28c5b49b26eb48f7ead6d4c898", // CAKE
+      "0x5e8422345238f34275888049021821e8e08caa1f", // fraxETH
     ],
     nonfungiblePositionManagerAddress: "0x46a15b0b27311cedf172ab29e4f4766fbe7f4364",
     nonfungiblePositionManagerStartBlock: 16944786,
-    minETHLocked: 10,
+    minETHLocked: 5,
   },
   masterChefV3: {
     masterChefAddress: "0x556b9306565093c855aea9ae92a594704c2cd59e",
