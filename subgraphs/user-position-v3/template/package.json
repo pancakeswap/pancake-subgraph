@@ -6,8 +6,8 @@
   "author": "PancakeSwap",
   "license": "GPL-3.0-or-later",
   "scripts": {
-    "template": "mustache ../../../config/bsc.js subgraph.template.yaml > subgraph.yaml && mustache ../../../config/bsc.js utils/constants.template.ts > utils/constants.ts",
-    "auth": "graph auth --product hosted-service SUBGRAPH_KEY",
+    "template": "mustache ../../../config/bsc.js subgraph.template.yaml > subgraph.yaml",
+    "auth": "graph auth --product hosted-service f4b727b41dd3465f461ee000115b1102",
     "codegen": "graph codegen subgraph.yaml",
     "build": "graph build subgraph.yaml",
     "deploy:goerli": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/user-position-v3-goerli subgraph.yaml",
