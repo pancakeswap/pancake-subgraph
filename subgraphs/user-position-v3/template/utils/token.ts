@@ -1,8 +1,8 @@
 /* eslint-disable prefer-const */
+import { BigInt, Address } from "@graphprotocol/graph-ts";
 import { ERC20 } from "../generated/Factory/ERC20";
 import { ERC20SymbolBytes } from "../generated/Factory/ERC20SymbolBytes";
 import { ERC20NameBytes } from "../generated/Factory/ERC20NameBytes";
-import { BigInt, Address } from "@graphprotocol/graph-ts";
 import { isNullEthValue } from ".";
 
 export function fetchTokenSymbol(tokenAddress: Address): string {
@@ -18,12 +18,6 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
       // for broken pairs that have no symbol function exposed
       if (!isNullEthValue(symbolResultBytes.value.toHexString())) {
         symbolValue = symbolResultBytes.value.toString();
-      } else {
-        // try with the static definition
-        let staticTokenDefinition = StaticTokenDefinition.fromAddress(tokenAddress);
-        if (staticTokenDefinition != null) {
-          symbolValue = staticTokenDefinition.symbol;
-        }
       }
     }
   } else {
@@ -46,12 +40,6 @@ export function fetchTokenName(tokenAddress: Address): string {
       // for broken exchanges that have no name function exposed
       if (!isNullEthValue(nameResultBytes.value.toHexString())) {
         nameValue = nameResultBytes.value.toString();
-      } else {
-        // try with the static definition
-        let staticTokenDefinition = StaticTokenDefinition.fromAddress(tokenAddress);
-        if (staticTokenDefinition != null) {
-          nameValue = staticTokenDefinition.name;
-        }
       }
     }
   } else {
@@ -59,16 +47,6 @@ export function fetchTokenName(tokenAddress: Address): string {
   }
 
   return nameValue;
-}
-
-export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
-  let contract = ERC20.bind(tokenAddress);
-  let totalSupplyValue = null;
-  let totalSupplyResult = contract.try_totalSupply();
-  if (!totalSupplyResult.reverted) {
-    totalSupplyValue = totalSupplyResult as i32;
-  }
-  return BigInt.fromI32(totalSupplyValue as i32);
 }
 
 export function fetchTokenDecimals(tokenAddress: Address): BigInt {
