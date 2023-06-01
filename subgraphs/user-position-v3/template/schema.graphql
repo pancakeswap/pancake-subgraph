@@ -30,6 +30,7 @@ type Pool @entity {
 type Transaction @entity {
   # txn hash
   id: ID!
+  pool: Pool
   # block txn was included in
   blockNumber: BigInt!
   # timestamp txn was confirmed
@@ -122,7 +123,7 @@ type UserPosition @entity {
   id: ID!
   owner: Bytes!
   # pool position is within
-  pool: Pool!
+  pool: Pool
 
   liquidity: BigInt!
   tickLower: BigInt!

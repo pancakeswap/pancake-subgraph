@@ -39,9 +39,11 @@ export function handleMint(event: MintEvent): void {
   transaction.tickLower = BigInt.fromI32(event.params.tickLower);
   transaction.tickUpper = BigInt.fromI32(event.params.tickUpper);
   transaction.increaseLiquidityAmount = event.params.amount;
+  transaction.pool = pool.id;
+
   transaction.save();
 
-  updateUserPosition(event, transaction, pool.id);
+  updateUserPosition(event, transaction);
 }
 
 export function handleBurn(event: BurnEvent): void {
@@ -76,7 +78,9 @@ export function handleBurn(event: BurnEvent): void {
   transaction.tickLower = BigInt.fromI32(event.params.tickLower);
   transaction.tickUpper = BigInt.fromI32(event.params.tickUpper);
   transaction.decreaseLiquidityAmount = event.params.amount;
+  transaction.pool = pool.id;
+
   transaction.save();
 
-  updateUserPosition(event, transaction, pool.id);
+  updateUserPosition(event, transaction);
 }
