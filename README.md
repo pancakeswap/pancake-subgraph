@@ -9,6 +9,8 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 1. **[Blocks](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/blocks)**: Tracks all blocks on Binance Smart Chain.
 
 2. **[Exchange V2](https://nodereal.io/meganode/api-marketplace/pancakeswap-graphql)**: Tracks all PancakeSwap V2 Exchange data with price, volume, liquidity, ...
+    - ETH https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth
+    - ARB GRO https://api.thegraph.com/subgraphs/name/chef-jojo/exchange-v2-arb-goerli
 
 3. **[Farm Auctions](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/farm-auctions)**: Tracks all PancakeSwap Farm Auctions with auctions and bids.
 
@@ -38,13 +40,14 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - BSC https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-bsc
     - BSC testnet https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-chapel
     - ETH https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-eth
-    - ETH https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-goerli
+    - GOR https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-goerli
 
 16. **Exchange (v3)**: Tracks all PancakeSwap V3 Exchange data with price, volume, liquidity
     - BSC https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-bsc
     - BSC testnet https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-chapel
     - ETH https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-eth
-    - ETH https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-goerli
+    - GOR https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-goerli
+    - ARB GOR https://api.thegraph.com/subgraphs/name/chef-jojo/exhange-v3-arb-goerli
 
 
 ## Dependencies
