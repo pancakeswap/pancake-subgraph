@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 import { BigInt } from "@graphprotocol/graph-ts";
-import { Burn as BurnEvent, Mint as MintEvent, Swap as SwapEvent } from "../generated/templates/Pool/Pool";
+import { Burn as BurnEvent, Mint as MintEvent } from "../generated/templates/Pool/Pool";
 import { Burn, Mint, Pool, Token } from "../generated/schema";
 import { convertTokenToDecimal } from "../utils";
 import { loadTransaction, updateUserPosition } from "../utils/schema";
@@ -41,7 +41,7 @@ export function handleMint(event: MintEvent): void {
   transaction.increaseLiquidityAmount = event.params.amount;
   transaction.save();
 
-  updateUserPosition(transaction, pool.id);
+  updateUserPosition(event, transaction, pool.id);
 }
 
 export function handleBurn(event: BurnEvent): void {
@@ -78,5 +78,5 @@ export function handleBurn(event: BurnEvent): void {
   transaction.decreaseLiquidityAmount = event.params.amount;
   transaction.save();
 
-  updateUserPosition(transaction, pool.id);
+  updateUserPosition(event, transaction, pool.id);
 }
