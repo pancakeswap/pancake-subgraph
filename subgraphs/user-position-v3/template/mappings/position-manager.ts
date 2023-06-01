@@ -5,7 +5,7 @@ import {
   IncreaseLiquidity,
   Transfer,
 } from "../generated/NonfungiblePositionManager/NonfungiblePositionManager";
-import { loadTransaction } from "../utils/schema";
+import { loadTransaction, updateUserPosition } from "../utils/schema";
 import { ADDRESS_ZERO } from "../utils/constants";
 import { UserPosition } from "../generated/schema";
 
@@ -13,12 +13,14 @@ export function handleIncreaseLiquidity(event: IncreaseLiquidity): void {
   let transaction = loadTransaction(event);
   transaction.tokenId = event.params.tokenId;
   transaction.save();
+  updateUserPosition(event, transaction);
 }
 
 export function handleDecreaseLiquidity(event: DecreaseLiquidity): void {
   let transaction = loadTransaction(event);
   transaction.tokenId = event.params.tokenId;
   transaction.save();
+  updateUserPosition(event, transaction);
 }
 
 export function handleTransfer(event: Transfer): void {
