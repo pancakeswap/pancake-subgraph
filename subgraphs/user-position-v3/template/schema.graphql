@@ -127,4 +127,8 @@ type UserPosition @entity {
   liquidity: BigInt!
   tickLower: BigInt!
   tickUpper: BigInt!
+  # creation
+  createdAtTimestamp: BigInt!
+  # block pool was created at
+  createdAtBlockNumber: BigInt!
 }

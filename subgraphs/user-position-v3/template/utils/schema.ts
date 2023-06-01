@@ -16,7 +16,7 @@ export function loadTransaction(event: ethereum.Event): Transaction {
   return transaction as Transaction;
 }
 
-export function updateUserPosition(tx: Transaction, poolId: string): void {
+export function updateUserPosition(event: ethereum.Event, tx: Transaction, poolId: string): void {
   if (
     tx.isPositionUpdated === false &&
     tx.tickLower !== null &&
@@ -30,6 +30,8 @@ export function updateUserPosition(tx: Transaction, poolId: string): void {
       userPosition = new UserPosition(tx.tokenId.toString());
       userPosition.liquidity = ZERO_BI;
       userPosition.pool = poolId;
+      userPosition.createdAtBlockNumber = event.block.number;
+      userPosition.createdAtTimestamp = event.block.timestamp;
     }
     userPosition.tickLower = tx.tickLower as BigInt;
     userPosition.tickUpper = tx.tickUpper as BigInt;
