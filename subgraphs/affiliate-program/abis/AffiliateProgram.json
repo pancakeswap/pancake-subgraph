@@ -1,10 +1,26 @@
 [
   {
     "inputs": [
-      { "internalType": "address", "name": "_admin", "type": "address" },
-      { "internalType": "address", "name": "_signer", "type": "address" },
-      { "internalType": "address", "name": "_cake", "type": "address" },
-      { "internalType": "uint256", "name": "_dailyLimit", "type": "uint256" }
+      {
+        "internalType": "address",
+        "name": "_admin",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_signer",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_cake",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_dailyLimit",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -150,11 +166,32 @@
     "type": "event"
   },
   {
+    "inputs": [],
+    "name": "approvalSigner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "components": [
-          { "internalType": "uint256", "name": "nonce", "type": "uint256" },
-          { "internalType": "address", "name": "claimer", "type": "address" },
+          {
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "claimer",
+            "type": "address"
+          },
           {
             "internalType": "enum AffiliateProgram.ClaimType",
             "name": "claimType",
@@ -175,11 +212,41 @@
         "name": "_request",
         "type": "tuple"
       },
-      { "internalType": "bytes", "name": "_signature", "type": "bytes" }
+      {
+        "internalType": "bytes",
+        "name": "_signature",
+        "type": "bytes"
+      }
     ],
     "name": "claim",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "dailyClaimLimit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "dailyClaimedAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -191,13 +258,21 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_user", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
     ],
     "name": "getAffiliateInfo",
     "outputs": [
       {
         "components": [
-          { "internalType": "uint256", "name": "nonce", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          },
           {
             "internalType": "uint256",
             "name": "totalClaimedAmount",
@@ -214,13 +289,21 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_user", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
     ],
     "name": "getUserInfo",
     "outputs": [
       {
         "components": [
-          { "internalType": "uint256", "name": "nonce", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          },
           {
             "internalType": "uint256",
             "name": "totalClaimedAmount",
@@ -237,7 +320,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_user", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      },
       {
         "internalType": "enum AffiliateProgram.ClaimType",
         "name": "_claimType",
@@ -251,8 +338,27 @@
   },
   {
     "inputs": [],
+    "name": "lastLimitResetTimestamp",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "owner",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -266,7 +372,13 @@
   {
     "inputs": [],
     "name": "paused",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -279,7 +391,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_dailyLimit", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_dailyLimit",
+        "type": "uint256"
+      }
     ],
     "name": "setDailyLimit",
     "outputs": [],
@@ -288,7 +404,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_signer", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_signer",
+        "type": "address"
+      }
     ],
     "name": "setSigner",
     "outputs": [],
@@ -297,7 +417,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "newOwner", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
     "name": "transferOwnership",
     "outputs": [],
@@ -308,8 +432,16 @@
     "inputs": [
       {
         "components": [
-          { "internalType": "uint256", "name": "nonce", "type": "uint256" },
-          { "internalType": "address", "name": "claimer", "type": "address" },
+          {
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "claimer",
+            "type": "address"
+          },
           {
             "internalType": "enum AffiliateProgram.ClaimType",
             "name": "claimType",
@@ -330,16 +462,30 @@
         "name": "_request",
         "type": "tuple"
       },
-      { "internalType": "bytes", "name": "_signature", "type": "bytes" }
+      {
+        "internalType": "bytes",
+        "name": "_signature",
+        "type": "bytes"
+      }
     ],
     "name": "verifySignature",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_token", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      }
     ],
     "name": "withdraw",
     "outputs": [],

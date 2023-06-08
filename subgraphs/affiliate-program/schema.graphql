@@ -1,7 +1,11 @@
+enum RequestType {
+    AFFILIATE
+    USER
+}
 type ClaimRecord @entity {
   id: ID!
   hash: Bytes! # transaction hash
-  type: Int!
+  type: RequestType!
   nonce: BigInt! # uint256
   claimer: Bytes! # address
   amount: BigInt! # uint256
