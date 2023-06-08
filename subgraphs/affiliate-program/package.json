@@ -5,6 +5,6 @@
     "auth": "graph auth --product hosted-service SUBGRAPH_KEY",
     "codegen": "graph codegen subgraph.yaml",
     "build": "graph build subgraph.yaml",
-    "deploy": "graph deploy --product hosted-service chefrabbid/affiliate-program"
+    "deploy": "graph deploy --product hosted-service pancakeswap/affiliate-program"
   }
 }
