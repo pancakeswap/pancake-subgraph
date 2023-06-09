@@ -8,11 +8,11 @@ features:
 dataSources:
   - kind: ethereum/contract
     name: Factory
-    network: arbitrum-goerli
+    network: polygon-zkevm
     source:
-      address: "0xba40c83026213f9cbc79998752721a0312bdb74a"
+      address: "0x0bfbcf9fa4f9c56b0f40a671ad40e0805a091865"
       abi: Factory
-      startBlock: 22705895
+      startBlock: 750149
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -37,11 +37,11 @@ dataSources:
           handler: handlePoolCreated
   - kind: ethereum/contract
     name: NonfungiblePositionManager
-    network: arbitrum-goerli
+    network: polygon-zkevm
     source:
-      address: "0xb10120961f7504766976a89e29802fa00553da5b"
+      address: "0x46a15b0b27311cedf172ab29e4f4766fbe7f4364"
       abi: NonfungiblePositionManager
-      startBlock: 22708195
+      startBlock: 750354
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -71,7 +71,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pool
-    network: arbitrum-goerli
+    network: polygon-zkevm
     source:
       abi: Pool
     mapping:

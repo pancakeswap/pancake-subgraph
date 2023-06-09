@@ -1,4 +1,4 @@
-const WETH = "0x2ad78787ccaf7fa8fae8953fd78ab9163f81dcc8";
+const WETH = "0x30ec47f7dfae72ea79646e6cf64a8a7db538915b";
 
 /**
  * @type import('./config').NetworkConfig
@@ -8,31 +8,29 @@ module.exports = {
   wNativeAddress: WETH,
   v3: {
     // WETH-USDT 500
-    wNativeStablePoolAddress: "0xb7e245b9dabf373194c912e72333b8355a0725bd", // TODO: new chain
+    wNativeStablePoolAddress: "0x885cd30213b89cb53e812eb2dd56c61a8178a256",
     stableIsToken0: false,
     factoryAddress: "0x2430dbd123bc40f8be6110065a448c1aa0619cb1",
-    startBlock: 774348,
+    startBlock: 776055,
     stableCoins: [
-      "0x7379a261bc347bdd445484a91648abf4a2bdee5e", // USDT
+      "0x7379a261bC347BDD445484A91648Abf4A2BDEe5E", // USDT
     ],
     whitelistAddresses: [
       WETH,
-      "0x7379a261bc347bdd445484a91648abf4a2bdee5e", // USDT
+      "0x7379a261bC347BDD445484A91648Abf4A2BDEe5E", // USDT
     ],
-    nonfungiblePositionManagerAddress: "0x8ab65a2ebc44a38eace6cd14643337b03787b08f", // TODO: new chain
-    nonfungiblePositionManagerStartBlock: 774445, // TODO: new chain
+    nonfungiblePositionManagerAddress: "0x1f489dd5b559e976ae74303f939cfd0af1b62c2b",
+    nonfungiblePositionManagerStartBlock: 774445,
     minETHLocked: 0,
   },
   v2: {
-    factoryAddress: "", // TODO: new chain
-    startBlock: 0, // TODO: new chain
-    wNativeStablePair0: "0x0000000000000000000000000000000000000000", // TODO: new chain
-    wNativeStablePair1: "0x0000000000000000000000000000000000000000", // TODO: new chain
+    factoryAddress: "0xba40c83026213f9cbc79998752721a0312bdb74a",
+    startBlock: 773605,
+    wNativeStablePair0: "0x30ac79ce17f99cec768fbc6d5d4596f6582fe284",
+    wNativeStablePair1: "0x0000000000000000000000000000000000000000",
     whitelistAddresses: [
       WETH,
-      "0x1e4a5963abfd975d8c9021ce480b42188849d41d", // USDT
-      "0xa8ce8aee21bc2a48a5ef670afcc9274c7bbbc035", // USDC
-      "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", // WMATIC
+      "0x7379a261bC347BDD445484A91648Abf4A2BDEe5E", // USDT
     ],
   },
 };
