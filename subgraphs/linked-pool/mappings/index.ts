@@ -1,7 +1,6 @@
 /* eslint-disable prefer-const */
 import { Swap } from "../generated/schema";
 import { Swap as SwapEven } from "../generated/PancakeSwapMMPool/PancakeSwapMMPool";
-import { convertTokenToDecimal, getOrCreateToken } from "../utils";
 
 export function handleSwap(event: SwapEven): void {
   let id = event.transaction.hash
@@ -15,9 +14,6 @@ export function handleSwap(event: SwapEven): void {
 
   let swap = Swap.load(id);
   if (swap === null) {
-    let baseToken = getOrCreateToken(event.params.baseToken);
-    let quoteToken = getOrCreateToken(event.params.quoteToken);
-
     swap = new Swap(id);
     swap.user = event.params.user.toHex();
     swap.mm = event.params.mm.toHex();
@@ -25,9 +21,11 @@ export function handleSwap(event: SwapEven): void {
     swap.mmTreasury = event.params.mmTreasury.toHex();
     swap.baseToken = event.params.baseToken.toHex();
     swap.quoteToken = event.params.quoteToken.toHex();
-    swap.baseTokenAmount = convertTokenToDecimal(event.params.baseTokenAmount, baseToken.decimals);
-    swap.quoteTokenAmount = convertTokenToDecimal(event.params.quoteTokenAmount, quoteToken.decimals);
+    swap.baseTokenAmount = event.params.baseTokenAmount;
+    swap.quoteTokenAmount = event.params.quoteTokenAmount;
     swap.timestamp = event.block.timestamp;
+    swap.tx = event.transaction.hash;
+    swap.block = event.block.number;
     swap.save();
   }
 }
