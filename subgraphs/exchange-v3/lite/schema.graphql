@@ -291,7 +291,7 @@ type Swap @entity {
   transaction: Transaction!
   # timestamp of transaction
   timestamp: BigInt!
-  # pool swap occured within
+  # pool swap occurred within
   pool: Pool!
   # allow indexing by tokens
   token0: Token!
@@ -322,7 +322,7 @@ type Collect @entity {
   transaction: Transaction!
   # timestamp of event
   timestamp: BigInt!
-  # pool collect occured within
+  # pool collect occurred within
   pool: Pool!
   # owner of position collect was performed on
   owner: Bytes
@@ -345,7 +345,7 @@ type Flash @entity {
   transaction: Transaction!
   # timestamp of event
   timestamp: BigInt!
-  # pool collect occured within
+  # pool collect occurred within
   pool: Pool!
   # sender of the flash
   sender: Bytes!
