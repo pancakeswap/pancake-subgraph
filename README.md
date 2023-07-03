@@ -9,8 +9,11 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 1. **[Blocks](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/blocks)**: Tracks all blocks on Binance Smart Chain.
 
 2. **[Exchange V2](https://nodereal.io/meganode/api-marketplace/pancakeswap-graphql)**: Tracks all PancakeSwap V2 Exchange data with price, volume, liquidity, ...
+    - BSC https://nodereal.io/meganode/api-marketplace/pancakeswap-graphql
     - ETH https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth
+    - ARB https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v2-arb
     - ARB GRO https://api.thegraph.com/subgraphs/name/chef-jojo/exchange-v2-arb-goerli
+    - Polygon zkEVM https://api.studio.thegraph.com/query/45376/exchange-v2-polygon-zkevm/version/latest
 
 3. **[Farm Auctions](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/farm-auctions)**: Tracks all PancakeSwap Farm Auctions with auctions and bids.
 
@@ -47,7 +50,9 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - BSC testnet https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-chapel
     - ETH https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-eth
     - GOR https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-goerli
+    - ARB https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-arb
     - ARB GOR https://api.thegraph.com/subgraphs/name/chef-jojo/exhange-v3-arb-goerli
+    - Polygon zkEVM https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm/version/latest
 
 
 ## Dependencies
