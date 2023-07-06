@@ -11,6 +11,7 @@
     "codegen": "graph codegen subgraph.yaml",
     "build": "graph build subgraph.yaml",
     "deploy": "graph deploy --product hosted-service pancakeswap/exhange-eth",
-    "deploy:polygon-zkevm": "graph deploy --studio exchange-v2-polygon-zkevm"
+    "deploy:polygon-zkevm": "graph deploy --studio exchange-v2-polygon-zkevm",
+    "deploy:zksync-goerli": "graph deploy --studio graph deploy --studio exchange-v2-zksync-testnet"
   }
 }
