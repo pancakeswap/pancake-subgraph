@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Factory
-    network: zkSync2-testnet
+    network: polygon-zkevm-testnet
     source:
-      address: "0x48a33610cd0e130af2024d55f67ae72a8c51ac27"
+      address: "0xba40c83026213f9cbc79998752721a0312bdb74a"
       abi: Factory
-      startBlock: 9053101
+      startBlock: 773605
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -34,7 +34,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pair
-    network: zkSync2-testnet
+    network: polygon-zkevm-testnet
     source:
       abi: Pair
     mapping:

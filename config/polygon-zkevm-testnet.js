@@ -33,4 +33,8 @@ module.exports = {
       "0x7379a261bC347BDD445484A91648Abf4A2BDEe5E", // USDT
     ],
   },
+  masterChefV3: {
+    masterChefAddress: "0xb66b07590b30d4e6e22e45ddc83b06bb018a7b44",
+    startBlock: 1097428,
+  },
 };

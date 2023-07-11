@@ -14,6 +14,7 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - ARB https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v2-arb
     - ARB GRO https://api.thegraph.com/subgraphs/name/chef-jojo/exchange-v2-arb-goerli
     - Polygon zkEVM https://api.studio.thegraph.com/query/45376/exchange-v2-polygon-zkevm/version/latest
+    - Polygon zkEVM testnet https://api.studio.thegraph.com/query/45376/exchange-v2-polygon-zkevm-test/version/latest
     - zkSync testnet https://api.studio.thegraph.com/query/45376/exchange-v2-zksync-testnet/version/latest
 
 3. **[Farm Auctions](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/farm-auctions)**: Tracks all PancakeSwap Farm Auctions with auctions and bids.
@@ -45,6 +46,8 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - BSC testnet https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-chapel
     - ETH https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-eth
     - GOR https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-goerli
+    - Polygon zkEVM https://api.studio.thegraph.com/query/45376/masterchef-v3-polygon-zkevm/version/latest
+    - Polygon zkEVM testnet https://api.studio.thegraph.com/query/45376/masterchef-v3-zkevm-testnet/version/latest
 
 16. **Exchange (v3)**: Tracks all PancakeSwap V3 Exchange data with price, volume, liquidity
     - BSC https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-bsc
@@ -54,6 +57,7 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - ARB https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-arb
     - ARB GOR https://api.thegraph.com/subgraphs/name/chef-jojo/exhange-v3-arb-goerli
     - Polygon zkEVM https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm/version/latest
+    - Polygon zkEVM testnet https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm-test/version/latest
     - zkSync testnet https://api.studio.thegraph.com/query/45376/exchange-v3-zksync-testnet/version/latest
 
 

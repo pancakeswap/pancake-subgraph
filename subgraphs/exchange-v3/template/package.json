@@ -15,6 +15,7 @@
     "deploy:eth": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/exchange-v3-eth subgraph.yaml",
     "deploy:bsc": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/exchange-v3-bsc subgraph.yaml",
     "deploy:zksync-goerli": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ chef-jojo/exchange-v3-zksync-goerli subgraph.yaml",
-    "deploy:arb": "graph deploy --product hosted-service pancakeswap/exchange-v3-arb"
+    "deploy:arb": "graph deploy --product hosted-service pancakeswap/exchange-v3-arb",
+    "deploy:polygon-zkevm-testnet": "graph deploy --studio exchange-v3-polygon-zkevm-test"
   }
 }
