@@ -7,6 +7,10 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 ## Subgraphs
 
 1. **[Blocks](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/blocks)**: Tracks all blocks on Binance Smart Chain.
+    - BSC https://thegraph.com/legacy-explorer/subgraph/pancakeswap/blocks
+    - zkSync https://api.studio.thegraph.com/query/45376/blocks-zksync/version/latest
+    - zkSync testnet https://api.studio.thegraph.com/query/45376/blocks-zksync-testnet/version/latest
+    - Polygon zkEVM https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest
 
 2. **[Exchange V2](https://nodereal.io/meganode/api-marketplace/pancakeswap-graphql)**: Tracks all PancakeSwap V2 Exchange data with price, volume, liquidity, ...
     - BSC https://nodereal.io/meganode/api-marketplace/pancakeswap-graphql
