@@ -4,11 +4,11 @@ import { Bundle, Pair, Token } from "../generated/schema";
 import { ADDRESS_ZERO, factoryContract, ONE_BD, ZERO_BD } from "./utils";
 
 // prettier-ignore
-let WETH_ADDRESS = "0x30ec47f7dfae72ea79646e6cf64a8a7db538915b";
+let WETH_ADDRESS = "0x4f9a0e7fd2bf6067db6994cf12e4495df938e6e9";
 // prettier-ignore
-let WETH_USDT_PAIR = "0x0000000000000000000000000000000000000000";
+let WETH_USDT_PAIR = "0xcf6030b2bfb39bb51f70bf666581483b36ee0113";
 // prettier-ignore
-let WETH_USDC_PAIR = "0x30ac79ce17f99cec768fbc6d5d4596f6582fe284";
+let WETH_USDC_PAIR = "0x03a9a6a8f62af9376a83c391fd90eeeea67fad6c";
 
 export function getETHPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
@@ -35,7 +35,7 @@ export function getETHPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 // prettier-ignore
-let WHITELIST: string[] = "0x30ec47f7dfae72ea79646e6cf64a8a7db538915b,0x7379a261bC347BDD445484A91648Abf4A2BDEe5E".split(",");
+let WHITELIST: string[] = "0x4f9a0e7fd2bf6067db6994cf12e4495df938e6e9,0x1e4a5963abfd975d8c9021ce480b42188849d41d,0xa8ce8aee21bc2a48a5ef670afcc9274c7bbbc035,0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270,0xc5015b9d9161dca7e18e32f6f25c4ad850731fd4,0xea034fb02eb1808c2cc3adbc15f447b93cbe08e1".split(",");
 
 // minimum liquidity for price to get tracked
 let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString("5");
@@ -67,6 +67,36 @@ export function findEthPerToken(token: Token): BigDecimal {
 }
 
 /**
+ * Accepts tokens and amounts, return tracked fee amount based on token whitelist
+ * If both are, return the difference between the token amounts
+ * If not, return 0
+ */
+export function getTrackedFeeVolumeUSD(
+  bundle: Bundle,
+  tokenAmount0: BigDecimal,
+  token0: Token,
+  tokenAmount1: BigDecimal,
+  token1: Token
+): BigDecimal {
+  let price0 = token0.derivedETH.times(bundle.ethPrice);
+  let price1 = token1.derivedETH.times(bundle.ethPrice);
+
+  // both are whitelist tokens, take average of both amounts
+  if (WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {
+    let tokenAmount0USD = tokenAmount0.times(price0);
+    let tokenAmount1USD = tokenAmount1.times(price1);
+    if (tokenAmount0USD.ge(tokenAmount1USD)) {
+      return tokenAmount0USD.minus(tokenAmount1USD);
+    } else {
+      return tokenAmount1USD.minus(tokenAmount0USD);
+    }
+  }
+
+  // neither token is on white list, tracked volume is 0
+  return ZERO_BD;
+}
+
+/**
  * Accepts tokens and amounts, return tracked amount based on token whitelist
  * If one token on whitelist, return amount in that token converted to USD.
  * If both are, return average of two amounts
@@ -95,36 +125,6 @@ export function getTrackedVolumeUSD(
   // take full value of the whitelisted token amount
   if (!WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {
     return tokenAmount1.times(price1);
-  }
-
-  // neither token is on white list, tracked volume is 0
-  return ZERO_BD;
-}
-
-/**
- * Accepts tokens and amounts, return tracked fee amount based on token whitelist
- * If both are, return the difference between the token amounts
- * If not, return 0
- */
-export function getTrackedFeeVolumeUSD(
-  bundle: Bundle,
-  tokenAmount0: BigDecimal,
-  token0: Token,
-  tokenAmount1: BigDecimal,
-  token1: Token
-): BigDecimal {
-  let price0 = token0.derivedETH.times(bundle.ethPrice);
-  let price1 = token1.derivedETH.times(bundle.ethPrice);
-
-  // both are whitelist tokens, take average of both amounts
-  if (WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {
-    let tokenAmount0USD = tokenAmount0.times(price0);
-    let tokenAmount1USD = tokenAmount1.times(price1);
-    if (tokenAmount0USD.ge(tokenAmount1USD)) {
-      return tokenAmount0USD.minus(tokenAmount1USD);
-    } else {
-      return tokenAmount1USD.minus(tokenAmount0USD);
-    }
   }
 
   // neither token is on white list, tracked volume is 0
