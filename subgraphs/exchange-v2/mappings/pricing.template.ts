@@ -67,12 +67,11 @@ export function findEthPerToken(token: Token): BigDecimal {
 }
 
 /**
- * Accepts tokens and amounts, return tracked amount based on token whitelist
- * If one token on whitelist, return amount in that token converted to USD.
- * If both are, return average of two amounts
- * If neither is, return 0
+ * Accepts tokens and amounts, return tracked fee amount based on token whitelist
+ * If both are, return the difference between the token amounts
+ * If not, return 0
  */
-export function getTrackedVolumeUSD(
+export function getTrackedFeeVolumeUSD(
   bundle: Bundle,
   tokenAmount0: BigDecimal,
   token0: Token,
@@ -84,17 +83,13 @@ export function getTrackedVolumeUSD(
 
   // both are whitelist tokens, take average of both amounts
   if (WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {
-    return tokenAmount0.times(price0).plus(tokenAmount1.times(price1)).div(BigDecimal.fromString("2"));
-  }
-
-  // take full value of the whitelisted token amount
-  if (WHITELIST.includes(token0.id) && !WHITELIST.includes(token1.id)) {
-    return tokenAmount0.times(price0);
-  }
-
-  // take full value of the whitelisted token amount
-  if (!WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {
-    return tokenAmount1.times(price1);
+    let tokenAmount0USD = tokenAmount0.times(price0);
+    let tokenAmount1USD = tokenAmount1.times(price1);
+    if (tokenAmount0USD.ge(tokenAmount1USD)) {
+      return tokenAmount0USD.minus(tokenAmount1USD);
+    } else {
+      return tokenAmount1USD.minus(tokenAmount0USD);
+    }
   }
 
   // neither token is on white list, tracked volume is 0
