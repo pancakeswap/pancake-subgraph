@@ -1,0 +1,24 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: AffiliateProgram
+    network: bsc
+    source:
+      address: "0x92C73D90F709DFf7e5E7307e8F2EE20e39396b12"
+      abi: AffiliateProgram
+      startBlock: 28916072
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - Claim
+      abis:
+        - name: AffiliateProgram
+          file: ./abis/AffiliateProgram.json
+      eventHandlers:
+        - event: Claim(uint256,address,uint8,uint256)
+          handler: handleClaim
+      file: ./src/mapping.ts
