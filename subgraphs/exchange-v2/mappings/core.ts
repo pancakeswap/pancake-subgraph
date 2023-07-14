@@ -12,7 +12,13 @@ import {
 } from "../generated/schema";
 import { Burn, Mint, Swap, Sync, Transfer } from "../generated/templates/Pair/Pair";
 import { updatePairDayData, updatePairHourData, updatePancakeDayData, updateTokenDayData } from "./dayUpdates";
-import { findEthPerToken, getETHPriceInUSD, getTrackedLiquidityUSD, getTrackedVolumeUSD } from "./pricing";
+import {
+  findEthPerToken,
+  getETHPriceInUSD,
+  getTrackedFeeVolumeUSD,
+  getTrackedLiquidityUSD,
+  getTrackedVolumeUSD,
+} from "./pricing";
 import { ADDRESS_ZERO, BI_18, convertTokenToDecimal, FACTORY_ADDRESS, ONE_BI, ZERO_BD } from "./utils";
 
 function isCompleteMint(mintId: string): boolean {
@@ -361,12 +367,26 @@ export function handleSwap(event: Swap): void {
   // BNB/USD prices
   let bundle = Bundle.load("1");
 
-  // get total amounts of derived USD and ETH for tracking
-  let derivedAmountBNB = token1.derivedETH
-    .times(amount1Total)
-    .plus(token0.derivedETH.times(amount0Total))
-    .div(BigDecimal.fromString("2"));
-  let derivedAmountUSD = derivedAmountBNB.times(bundle.ethPrice);
+  let derivedToken0AmountETH = token0.derivedETH.times(amount0Total);
+  let derivedToken1AmountETH = token1.derivedETH.times(amount1Total);
+
+  // get total amounts of derived USD and BNB for tracking
+  let derivedAmountETH = derivedToken1AmountETH.plus(derivedToken0AmountETH).div(BigDecimal.fromString("2"));
+  let derivedAmountUSD = derivedAmountETH.times(bundle.ethPrice);
+
+  // get swap fee amount of derived USD and BNB for tracking
+  let derivedFeeAmountETH: BigDecimal;
+  if (
+    derivedToken0AmountETH.equals(BigDecimal.fromString("0")) ||
+    derivedToken1AmountETH.equals(BigDecimal.fromString("0"))
+  ) {
+    derivedFeeAmountETH = ZERO_BD;
+  } else if (derivedToken0AmountETH.ge(derivedToken1AmountETH)) {
+    derivedFeeAmountETH = derivedToken0AmountETH.minus(derivedToken1AmountETH);
+  } else {
+    derivedFeeAmountETH = derivedToken1AmountETH.minus(derivedToken0AmountETH);
+  }
+  let derivedFeeAmountUSD = derivedFeeAmountETH.times(bundle.ethPrice);
 
   // only accounts for volume through white listed tokens
   let trackedAmountUSD = getTrackedVolumeUSD(
@@ -376,12 +396,19 @@ export function handleSwap(event: Swap): void {
     amount1Total,
     token1 as Token
   );
+  let trackedFeeAmountUSD = getTrackedFeeVolumeUSD(
+    bundle as Bundle,
+    amount0Total,
+    token0 as Token,
+    amount1Total,
+    token1 as Token
+  );
 
-  let trackedAmountBNB: BigDecimal;
+  let trackedAmountETH: BigDecimal;
   if (bundle.ethPrice.equals(ZERO_BD)) {
-    trackedAmountBNB = ZERO_BD;
+    trackedAmountETH = ZERO_BD;
   } else {
-    trackedAmountBNB = trackedAmountUSD.div(bundle.ethPrice);
+    trackedAmountETH = trackedAmountUSD.div(bundle.ethPrice);
   }
 
   // update token0 global volume and token liquidity stats
@@ -409,7 +436,7 @@ export function handleSwap(event: Swap): void {
   // update global values, only used tracked amounts for volume
   let pancake = PancakeFactory.load(FACTORY_ADDRESS);
   pancake.totalVolumeUSD = pancake.totalVolumeUSD.plus(trackedAmountUSD);
-  pancake.totalVolumeETH = pancake.totalVolumeETH.plus(trackedAmountBNB);
+  pancake.totalVolumeETH = pancake.totalVolumeETH.plus(trackedAmountETH);
   pancake.untrackedVolumeUSD = pancake.untrackedVolumeUSD.plus(derivedAmountUSD);
   pancake.totalTransactions = pancake.totalTransactions.plus(ONE_BI);
 
@@ -448,6 +475,7 @@ export function handleSwap(event: Swap): void {
   swap.logIndex = event.logIndex;
   // use the tracked amount if we have it
   swap.amountUSD = trackedAmountUSD === ZERO_BD ? derivedAmountUSD : trackedAmountUSD;
+  swap.amountFeeUSD = trackedFeeAmountUSD === ZERO_BD ? derivedFeeAmountUSD : trackedFeeAmountUSD;
   swap.save();
 
   // update the transaction
@@ -467,7 +495,7 @@ export function handleSwap(event: Swap): void {
 
   // swap specific updating
   pancakeDayData.dailyVolumeUSD = pancakeDayData.dailyVolumeUSD.plus(trackedAmountUSD);
-  pancakeDayData.dailyVolumeETH = pancakeDayData.dailyVolumeETH.plus(trackedAmountBNB);
+  pancakeDayData.dailyVolumeETH = pancakeDayData.dailyVolumeETH.plus(trackedAmountETH);
   pancakeDayData.dailyVolumeUntracked = pancakeDayData.dailyVolumeUntracked.plus(derivedAmountUSD);
   pancakeDayData.save();
 

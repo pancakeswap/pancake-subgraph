@@ -103,6 +103,41 @@ export function getTrackedVolumeUSD(
 
 /**
  * Accepts tokens and amounts, return tracked amount based on token whitelist
+ * If one token on whitelist, return amount in that token converted to USD.
+ * If both are, return average of two amounts
+ * If neither is, return 0
+ */
+export function getTrackedVolumeUSD(
+  bundle: Bundle,
+  tokenAmount0: BigDecimal,
+  token0: Token,
+  tokenAmount1: BigDecimal,
+  token1: Token
+): BigDecimal {
+  let price0 = token0.derivedETH.times(bundle.ethPrice);
+  let price1 = token1.derivedETH.times(bundle.ethPrice);
+
+  // both are whitelist tokens, take average of both amounts
+  if (WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {
+    return tokenAmount0.times(price0).plus(tokenAmount1.times(price1)).div(BigDecimal.fromString("2"));
+  }
+
+  // take full value of the whitelisted token amount
+  if (WHITELIST.includes(token0.id) && !WHITELIST.includes(token1.id)) {
+    return tokenAmount0.times(price0);
+  }
+
+  // take full value of the whitelisted token amount
+  if (!WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {
+    return tokenAmount1.times(price1);
+  }
+
+  // neither token is on white list, tracked volume is 0
+  return ZERO_BD;
+}
+
+/**
+ * Accepts tokens and amounts, return tracked amount based on token whitelist
  * If one token on whitelist, return amount in that token converted to USD * 2.
  * If both are, return sum of two amounts
  * If neither is, return 0
