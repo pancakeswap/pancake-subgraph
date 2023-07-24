@@ -8,32 +8,34 @@ module.exports = {
   wNativeAddress: WETH,
   v3: {
     // WETH-USDT 500
-    wNativeStablePoolAddress: "0x36696169c63e42cd08ce11f5deebbcebae652050", // TODO: new chain
-    stableIsToken0: true, // TODO: new chain
-    factoryAddress: "0x0bfbcf9fa4f9c56b0f40a671ad40e0805a091865", // TODO: new chain
-    startBlock: 26956207, // TODO: new chain
+    wNativeStablePoolAddress: "0x23f655ba756070c76cba32772c7d5f99c2e82d7a",
+    stableIsToken0: true,
+    factoryAddress: "0x1bb72e0cbbea93c08f535fc7856e0338d7f7a8ab",
+    startBlock: 8639214,
     stableCoins: [
-      "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181", // BUSD
+      "0x493257fd37edb34451f62edf8d2a0c418852ba4c", // USDT
       "0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4", // USDC
     ],
     whitelistAddresses: [
       WETH,
-      "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181", // BUSD
+      "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181", // USDT
       "0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4", // USDC
+      "0xbbeb516fb02a01611cbbe0453fe3c580d7281011", // WBTC
     ],
-    nonfungiblePositionManagerAddress: "0x46a15b0b27311cedf172ab29e4f4766fbe7f4364", // TODO: new chain
-    nonfungiblePositionManagerStartBlock: 26931961, // TODO: new chain
+    nonfungiblePositionManagerAddress: "0xa815e2ed7f7d5b0c49fda367f249232a1b9d2883",
+    nonfungiblePositionManagerStartBlock: 8640657,
     minETHLocked: 0,
   },
   v2: {
-    factoryAddress: "", // TODO: new chain
-    startBlock: 0, // TODO: new chain
-    wNativeStablePair0: "0x0000000000000000000000000000000000000000", // TODO: new chain
-    wNativeStablePair1: "0x0000000000000000000000000000000000000000", // TODO: new chain
+    factoryAddress: "0xd03d8d566183f0086d8d09a84e1e30b58dd5619d",
+    startBlock: 8637655,
+    wNativeStablePair0: "0x0896c8c76382812336a190df2d192ebf8f2e0915",
+    wNativeStablePair1: "0x0000000000000000000000000000000000000000",
     whitelistAddresses: [
       WETH,
-      "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181", // BUSD
+      "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181", // USDT
       "0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4", // USDC
+      "0xbbeb516fb02a01611cbbe0453fe3c580d7281011", // WBTC
     ],
   },
 };

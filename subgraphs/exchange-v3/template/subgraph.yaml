@@ -8,11 +8,11 @@ features:
 dataSources:
   - kind: ethereum/contract
     name: Factory
-    network: polygon-zkevm-testnet
+    network: zksync-era
     source:
-      address: "0x2430dbd123bc40f8be6110065a448c1aa0619cb1"
+      address: "0x1bb72e0cbbea93c08f535fc7856e0338d7f7a8ab"
       abi: Factory
-      startBlock: 776055
+      startBlock: 8639214
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -37,11 +37,11 @@ dataSources:
           handler: handlePoolCreated
   - kind: ethereum/contract
     name: NonfungiblePositionManager
-    network: polygon-zkevm-testnet
+    network: zksync-era
     source:
-      address: "0x1f489dd5b559e976ae74303f939cfd0af1b62c2b"
+      address: "0xa815e2ed7f7d5b0c49fda367f249232a1b9d2883"
       abi: NonfungiblePositionManager
-      startBlock: 774445
+      startBlock: 8640657
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -71,7 +71,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pool
-    network: polygon-zkevm-testnet
+    network: zksync-era
     source:
       abi: Pool
     mapping:

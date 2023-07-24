@@ -19,6 +19,7 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - ARB GRO https://api.thegraph.com/subgraphs/name/chef-jojo/exchange-v2-arb-goerli
     - Polygon zkEVM https://api.studio.thegraph.com/query/45376/exchange-v2-polygon-zkevm/version/latest
     - Polygon zkEVM testnet https://api.studio.thegraph.com/query/45376/exchange-v2-polygon-zkevm-test/version/latest
+    - zkSync https://api.studio.thegraph.com/query/45376/exchange-v2-zksync/version/latest
     - zkSync testnet https://api.studio.thegraph.com/query/45376/exchange-v2-zksync-testnet/version/latest
 
 3. **[Farm Auctions](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/farm-auctions)**: Tracks all PancakeSwap Farm Auctions with auctions and bids.
@@ -62,6 +63,7 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - ARB GOR https://api.thegraph.com/subgraphs/name/chef-jojo/exhange-v3-arb-goerli
     - Polygon zkEVM https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm/version/latest
     - Polygon zkEVM testnet https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm-test/version/latest
+    - zkSync https://api.studio.thegraph.com/query/45376/exchange-v3-zksync/version/latest
     - zkSync testnet https://api.studio.thegraph.com/query/45376/exchange-v3-zksync-testnet/version/latest
 
 

@@ -5,19 +5,19 @@ import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { exponentToBigDecimal, safeDiv } from "./index";
 
 // prettier-ignore
-const WETH_ADDRESS = "0x30ec47f7dfae72ea79646e6cf64a8a7db538915b";
+const WETH_ADDRESS = "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91";
 // prettier-ignore
-const USDC_WETH_03_POOL = "0x885cd30213b89cb53e812eb2dd56c61a8178a256";
+const USDC_WETH_03_POOL = "0x23f655ba756070c76cba32772c7d5f99c2e82d7a";
 
-const STABLE_IS_TOKEN0 = "false" as string;
+const STABLE_IS_TOKEN0 = "true" as string;
 
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s
 // prettier-ignore
-export let WHITELIST_TOKENS: string[] = "0x30ec47f7dfae72ea79646e6cf64a8a7db538915b,0x7379a261bC347BDD445484A91648Abf4A2BDEe5E".split(",");
+export let WHITELIST_TOKENS: string[] = "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91,0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181,0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4,0xbbeb516fb02a01611cbbe0453fe3c580d7281011".split(",");
 
 // prettier-ignore
-let STABLE_COINS: string[] = "0x7379a261bC347BDD445484A91648Abf4A2BDEe5E".split(",");
+let STABLE_COINS: string[] = "0x493257fd37edb34451f62edf8d2a0c418852ba4c,0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4".split(",");
 
 let MINIMUM_ETH_LOCKED = BigDecimal.fromString("0");
 
