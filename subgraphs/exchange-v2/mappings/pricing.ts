@@ -8,7 +8,7 @@ let WETH_ADDRESS = "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91";
 // prettier-ignore
 let WETH_USDT_PAIR = "0x0000000000000000000000000000000000000000";
 // prettier-ignore
-let WETH_USDC_PAIR = "0x0896c8c76382812336a190df2d192ebf8f2e0915";
+let WETH_USDC_PAIR = "0x8eff846dd04981def0048c1ec8a7b334b2111635";
 
 export function getETHPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin

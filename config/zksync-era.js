@@ -8,7 +8,7 @@ module.exports = {
   wNativeAddress: WETH,
   v3: {
     // WETH-USDT 500
-    wNativeStablePoolAddress: "0x23f655ba756070c76cba32772c7d5f99c2e82d7a",
+    wNativeStablePoolAddress: "0x6ff6b5c5957606220c6cd0422499c9c1224c399b",
     stableIsToken0: true,
     factoryAddress: "0x1bb72e0cbbea93c08f535fc7856e0338d7f7a8ab",
     startBlock: 8639214,
@@ -29,7 +29,7 @@ module.exports = {
   v2: {
     factoryAddress: "0xd03d8d566183f0086d8d09a84e1e30b58dd5619d",
     startBlock: 8637655,
-    wNativeStablePair0: "0x0896c8c76382812336a190df2d192ebf8f2e0915",
+    wNativeStablePair0: "0x8eff846dd04981def0048c1ec8a7b334b2111635",
     wNativeStablePair1: "0x0000000000000000000000000000000000000000",
     whitelistAddresses: [
       WETH,
