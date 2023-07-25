@@ -7,8 +7,8 @@ module.exports = {
   network: "zksync-era",
   wNativeAddress: WETH,
   v3: {
-    // WETH-USDT 500
-    wNativeStablePoolAddress: "0x6ff6b5c5957606220c6cd0422499c9c1224c399b",
+    // WETH-USDC 500
+    wNativeStablePoolAddress: "0x291d9f9764c72c9ba6ff47b451a9f7885ebf9977",
     stableIsToken0: true,
     factoryAddress: "0x1bb72e0cbbea93c08f535fc7856e0338d7f7a8ab",
     startBlock: 8639214,
