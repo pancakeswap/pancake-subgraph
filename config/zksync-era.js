@@ -15,10 +15,12 @@ module.exports = {
     stableCoins: [
       "0x493257fd37edb34451f62edf8d2a0c418852ba4c", // USDT
       "0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4", // USDC
+      "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181", // BUSD
     ],
     whitelistAddresses: [
       WETH,
-      "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181", // USDT
+      "0x493257fd37edb34451f62edf8d2a0c418852ba4c", // USDT
+      "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181", // BUSD
       "0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4", // USDC
       "0xbbeb516fb02a01611cbbe0453fe3c580d7281011", // WBTC
     ],
@@ -33,7 +35,8 @@ module.exports = {
     wNativeStablePair1: "0x0000000000000000000000000000000000000000",
     whitelistAddresses: [
       WETH,
-      "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181", // USDT
+      "0x493257fd37edb34451f62edf8d2a0c418852ba4c", // USDT
+      "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181", // BUSD
       "0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4", // USDC
       "0xbbeb516fb02a01611cbbe0453fe3c580d7281011", // WBTC
     ],

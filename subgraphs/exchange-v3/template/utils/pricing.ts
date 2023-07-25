@@ -14,10 +14,10 @@ const STABLE_IS_TOKEN0 = "true" as string;
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s
 // prettier-ignore
-export let WHITELIST_TOKENS: string[] = "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91,0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181,0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4,0xbbeb516fb02a01611cbbe0453fe3c580d7281011".split(",");
+export let WHITELIST_TOKENS: string[] = "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91,0x493257fd37edb34451f62edf8d2a0c418852ba4c,0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181,0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4,0xbbeb516fb02a01611cbbe0453fe3c580d7281011".split(",");
 
 // prettier-ignore
-let STABLE_COINS: string[] = "0x493257fd37edb34451f62edf8d2a0c418852ba4c,0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4".split(",");
+let STABLE_COINS: string[] = "0x493257fd37edb34451f62edf8d2a0c418852ba4c,0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4,0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181".split(",");
 
 let MINIMUM_ETH_LOCKED = BigDecimal.fromString("0");
 
