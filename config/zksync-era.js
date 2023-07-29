@@ -31,7 +31,7 @@ module.exports = {
   v2: {
     factoryAddress: "0xd03d8d566183f0086d8d09a84e1e30b58dd5619d",
     startBlock: 8637655,
-    wNativeStablePair0: "0x8eff846dd04981def0048c1ec8a7b334b2111635",
+    wNativeStablePair0: "0x63edb9338d81c6d8219856548251bacf2a9b1830",
     wNativeStablePair1: "0x0000000000000000000000000000000000000000",
     whitelistAddresses: [
       WETH,
