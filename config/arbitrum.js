@@ -7,8 +7,8 @@ module.exports = {
   network: "arbitrum-one",
   wNativeAddress: WETH,
   v3: {
-    // WETH-USDT 500
-    wNativeStablePoolAddress: "0x0bacc7a9717e70ea0da5ac075889bd87d4c81197",
+    // WETH-USDC 500
+    wNativeStablePoolAddress: "0x0e8fcea6153205e3a3a184b0613578c3d1729eab",
     stableIsToken0: false,
     factoryAddress: "0x0bfbcf9fa4f9c56b0f40a671ad40e0805a091865",
     startBlock: 101028949,
@@ -30,7 +30,7 @@ module.exports = {
     factoryAddress: "0x02a84c1b3bbd7401a5f7fa98a384ebc70bb5749e",
     startBlock: 101022992,
     wNativeStablePair0: "0x0000000000000000000000000000000000000000", // TODO: new chain
-    wNativeStablePair1: "0x630388b8a8d22bb401e0c6a91c3a7956535cb30e", // WETH-USDT
+    wNativeStablePair1: "0xf91cb08df79a668fbe8038308ab1b0187a9f61a9", // WETH-USDC
     whitelistAddresses: [
       WETH,
       "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9", // USDT
