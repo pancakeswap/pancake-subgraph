@@ -15,12 +15,15 @@ module.exports = {
     stableCoins: [
       "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9", // USDT
       "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8", // USDC
+      "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", // DAI
     ],
     whitelistAddresses: [
       WETH,
       "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9", // USDT
       "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8", // USDC
       "0x912ce59144191c1204e64559fe8253a0e49e6548", // ARB
+      "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f", // WBTC
+      "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", // DAI
     ],
     nonfungiblePositionManagerAddress: "0x46a15b0b27311cedf172ab29e4f4766fbe7f4364",
     nonfungiblePositionManagerStartBlock: 101032520,
@@ -36,6 +39,8 @@ module.exports = {
       "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9", // USDT
       "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8", // USDC
       "0x912ce59144191c1204e64559fe8253a0e49e6548", // ARB
+      "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f", // WBTC
+      "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", // DAI
     ],
   },
 };
