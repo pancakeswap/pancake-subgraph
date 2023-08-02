@@ -15,7 +15,9 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 2. **[Exchange V2](https://nodereal.io/meganode/api-marketplace/pancakeswap-graphql)**: Tracks all PancakeSwap V2 Exchange data with price, volume, liquidity, ...
     - BSC https://nodereal.io/meganode/api-marketplace/pancakeswap-graphql
     - ETH https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth
-    - ARB https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v2-arb
+    - ARB
+        - Hosted https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v2-arb
+        - Studio https://api.studio.thegraph.com/query/45376/exchange-v2-arbitrum/version/latest
     - ARB GRO https://api.thegraph.com/subgraphs/name/chef-jojo/exchange-v2-arb-goerli
     - Polygon zkEVM https://api.studio.thegraph.com/query/45376/exchange-v2-polygon-zkevm/version/latest
     - Polygon zkEVM testnet https://api.studio.thegraph.com/query/45376/exchange-v2-polygon-zkevm-test/version/latest
@@ -59,7 +61,9 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - BSC testnet https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-chapel
     - ETH https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-eth
     - GOR https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-goerli
-    - ARB https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-arb
+    - ARB
+        - Hosted https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-arb
+        - Studio https://api.studio.thegraph.com/query/45376/exchange-v3-arbitrum/version/latest
     - ARB GOR https://api.thegraph.com/subgraphs/name/chef-jojo/exhange-v3-arb-goerli
     - Polygon zkEVM https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm/version/latest
     - Polygon zkEVM testnet https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm-test/version/latest
