@@ -1,0 +1,63 @@
+specVersion: 0.0.2
+description: PancakeSwap is a multi-chain decentralized exchange and automated market maker protocol.
+repository: https://github.com/pancakeswap
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Factory
+    network: {{ network }}
+    source:
+      address: "{{v2.factoryAddress}}"
+      abi: Factory
+      startBlock: {{ v2.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/factory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+      eventHandlers:
+        - event: PairCreated(indexed address,indexed address,address,uint256)
+          handler: handlePairCreated
+templates:
+  - kind: ethereum/contract
+    name: Pair
+    network: {{ network }}
+    source:
+      abi: Pair
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/core.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: Pair
+          file: ./abis/Pair.json
+      eventHandlers:
+        - event: Mint(indexed address,uint256,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,uint256,uint256,indexed address)
+          handler: handleBurn
+        - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
+          handler: handleSwap
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: Sync(uint112,uint112)
+          handler: handleSync
