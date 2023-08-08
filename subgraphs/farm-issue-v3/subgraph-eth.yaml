@@ -1,0 +1,28 @@
+specVersion: 0.0.3
+description: Pancake Farm Issue v3
+repository: https://github.com/pancakeswap
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: MasterChefV3
+    network: mainnet
+    source:
+      address: '0x556B9306565093C855AEA9AE92A594704c2Cd59e'
+      abi: MasterChefV3
+      startBlock: 16945103
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/index.ts
+      entities:
+        - Gravatar
+      abis:
+        - name: MasterChefV3
+          file: ./abis/MasterChefV3.json
+        - name: V3Pool
+          file: ./abis/PancakeV3Pool.json
+      eventHandlers:
+        - event: Deposit(indexed address,indexed uint256,indexed uint256,uint256,int24,int24)
+          handler: handleDeposit

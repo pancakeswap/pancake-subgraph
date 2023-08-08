@@ -1,0 +1,22 @@
+type User @entity {
+    "ID"
+    id: ID!
+}
+
+type Deposit @entity {
+    "ID"
+    id: ID!
+    user: User!
+
+    rewardGrowthInside: BigInt!
+
+    pid: BigInt!
+    tokenId: BigInt!
+    tickLower: BigInt!
+    tickUpper: BigInt!
+    liquidity: BigInt!
+    boostLiquidity: BigInt
+    lmPool: Bytes
+    timestamp: BigInt!
+    block: BigInt!
+}
