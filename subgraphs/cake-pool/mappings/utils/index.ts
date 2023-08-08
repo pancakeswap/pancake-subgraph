@@ -7,6 +7,11 @@ export let ZERO_BI = BigInt.fromI32(0);
 export let BI_1E18 = BigInt.fromString("1000000000000000000");
 export let CAKE_POOL_CONTRACT = CakePool.bind(Address.fromString("0x45c54210128a065de780C4B0Df3d16664f7f859e"));
 
+export class LockTime {
+  lockStartTime: BigInt;
+  lockEndTime: BigInt;
+}
+
 export function getOrCreateUser(id: string): User {
   let user = User.load(id);
   if (user === null) {
@@ -39,4 +44,18 @@ export function getUserLockAmount(userAddress: string): BigInt {
     }
   }
   return cakeAmount;
+}
+
+export function getUserLockTime(userAddress: string): LockTime {
+  let userInfoResult = CAKE_POOL_CONTRACT.try_userInfo(Address.fromString(userAddress));
+  let lockStartTime = ZERO_BI;
+  let lockEndTime = ZERO_BI;
+  if (userInfoResult.reverted) {
+    log.warning("Unable to fetch try_userInfo for {}", [CAKE_POOL_CONTRACT._address.toHex()]);
+  } else {
+    let userInfo = userInfoResult.value;
+    lockStartTime = userInfo.value4;
+    lockEndTime = userInfo.value5;
+  }
+  return { lockStartTime, lockEndTime };
 }
