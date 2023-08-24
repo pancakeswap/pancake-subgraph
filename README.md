@@ -25,6 +25,8 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - zkSync testnet https://api.studio.thegraph.com/query/45376/exchange-v2-zksync-testnet/version/latest
     - Linea https://graph-query.linea.build/subgraphs/name/pancakeswap/exhange-v2
 
+    - Base testnet https://api.studio.thegraph.com/query/45376/exchange-v2-base-testnet/version/latest
+    - Scroll Sepolia https://api.studio.thegraph.com/query/45376/exchange-v2-scroll-sepolia/version/latest
 
 3. **[Farm Auctions](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/farm-auctions)**: Tracks all PancakeSwap Farm Auctions with auctions and bids.
 
@@ -57,6 +59,8 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - GOR https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-goerli
     - Polygon zkEVM https://api.studio.thegraph.com/query/45376/masterchef-v3-polygon-zkevm/version/latest
     - Polygon zkEVM testnet https://api.studio.thegraph.com/query/45376/masterchef-v3-zkevm-testnet/version/latest
+    - ARB TODO
+    - zkSync TODO
 
 16. **Exchange (v3)**: Tracks all PancakeSwap V3 Exchange data with price, volume, liquidity
     - BSC https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-bsc
@@ -72,6 +76,8 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - zkSync https://api.studio.thegraph.com/query/45376/exchange-v3-zksync/version/latest
     - zkSync testnet https://api.studio.thegraph.com/query/45376/exchange-v3-zksync-testnet/version/latest
     - Linea https://graph-query.linea.build/subgraphs/name/pancakeswap/exchange-v3-linea
+    - Base testnet https://api.studio.thegraph.com/query/45376/exchange-v3-base-testnet/version/latest
+    - Scroll Sepolia https://api.studio.thegraph.com/query/45376/exchange-v3-scroll-sepolia/version/latest
 
 
 ## Dependencies
