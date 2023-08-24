@@ -23,6 +23,8 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - Polygon zkEVM testnet https://api.studio.thegraph.com/query/45376/exchange-v2-polygon-zkevm-test/version/latest
     - zkSync https://api.studio.thegraph.com/query/45376/exchange-v2-zksync/version/latest
     - zkSync testnet https://api.studio.thegraph.com/query/45376/exchange-v2-zksync-testnet/version/latest
+    - Linea https://graph-query.linea.build/subgraphs/name/pancakeswap/exhange-v2
+
 
 3. **[Farm Auctions](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/farm-auctions)**: Tracks all PancakeSwap Farm Auctions with auctions and bids.
 
@@ -69,6 +71,7 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - Polygon zkEVM testnet https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm-test/version/latest
     - zkSync https://api.studio.thegraph.com/query/45376/exchange-v3-zksync/version/latest
     - zkSync testnet https://api.studio.thegraph.com/query/45376/exchange-v3-zksync-testnet/version/latest
+    - Linea https://graph-query.linea.build/subgraphs/name/pancakeswap/exchange-v3-linea
 
 
 ## Dependencies
