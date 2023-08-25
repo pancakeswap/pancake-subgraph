@@ -7,7 +7,7 @@ module.exports = {
   network: "base-testnet",
   wNativeAddress: WETH,
   v3: {
-    // WETH-USDT 500
+    // WETH-USDC 500
     wNativeStablePoolAddress: "0xb72a9c64a31d735049bd1977b4d5a800753c2e27",
     stableIsToken0: false,
     factoryAddress: "0x618f16159d489aa7761168f0200b7705dee9e2c0",

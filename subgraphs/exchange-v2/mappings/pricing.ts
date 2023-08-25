@@ -4,11 +4,11 @@ import { Bundle, Pair, Token } from "../generated/schema";
 import { ADDRESS_ZERO, factoryContract, ONE_BD, ZERO_BD } from "./utils";
 
 // prettier-ignore
-let WETH_ADDRESS = "0x5300000000000000000000000000000000000004";
+let WETH_ADDRESS = "0x4200000000000000000000000000000000000006";
 // prettier-ignore
-let WETH_USDT_PAIR = "0x0000000000000000000000000000000000000000";
+let WETH_USDT_PAIR = "0xfc947cffb9794743a25136a880094d6adbca3fcf";
 // prettier-ignore
-let WETH_USDC_PAIR = "0x894998d4312c1ff95ad0b195637c0e6d82dd0561";
+let WETH_USDC_PAIR = "0x0000000000000000000000000000000000000000";
 
 export function getETHPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
@@ -35,7 +35,7 @@ export function getETHPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 // prettier-ignore
-let WHITELIST: string[] = "0x5300000000000000000000000000000000000004,0x02a3e7e0480b668bd46b42852c58363f93e3ba5c".split(",");
+let WHITELIST: string[] = "0x4200000000000000000000000000000000000006,0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22,0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c,0x50c5725949a6f0c72e6c4a641f24049a917db0cb,0x417ac0e078398c154edfadd9ef675d30be60af93".split(",");
 
 // minimum liquidity for price to get tracked
 let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString("5");
