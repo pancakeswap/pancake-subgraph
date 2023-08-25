@@ -7,19 +7,19 @@ import { exponentToBigDecimal, safeDiv } from "./index";
 // prettier-ignore
 const WETH_ADDRESS = "0x4200000000000000000000000000000000000006";
 // prettier-ignore
-const USDC_WETH_03_POOL = "0xb72a9c64a31d735049bd1977b4d5a800753c2e27";
+const USDC_WETH_03_POOL = "0xe58b73ff901325b8b2056b29712c50237242f520";
 
 const STABLE_IS_TOKEN0 = "true" as string;
 
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s
 // prettier-ignore
-export let WHITELIST_TOKENS: string[] = "0x4200000000000000000000000000000000000006,0x853154e2A5604E5C74a2546E2871Ad44932eB92C".split(",");
+export let WHITELIST_TOKENS: string[] = "0x4200000000000000000000000000000000000006,0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22,0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c,0x50c5725949a6f0c72e6c4a641f24049a917db0cb,0x417ac0e078398c154edfadd9ef675d30be60af93".split(",");
 
 // prettier-ignore
-let STABLE_COINS: string[] = "0x853154e2A5604E5C74a2546E2871Ad44932eB92C".split(",");
+let STABLE_COINS: string[] = "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x50c5725949a6f0c72e6c4a641f24049a917db0cb,0x417ac0e078398c154edfadd9ef675d30be60af93".split(",");
 
-let MINIMUM_ETH_LOCKED = BigDecimal.fromString("0");
+let MINIMUM_ETH_LOCKED = BigDecimal.fromString("1");
 
 let Q192 = 2 ** 192;
 export function sqrtPriceX96ToTokenPrices(sqrtPriceX96: BigInt, token0: Token, token1: Token): BigDecimal[] {
