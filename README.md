@@ -24,7 +24,7 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - zkSync https://api.studio.thegraph.com/query/45376/exchange-v2-zksync/version/latest
     - zkSync testnet https://api.studio.thegraph.com/query/45376/exchange-v2-zksync-testnet/version/latest
     - Linea https://graph-query.linea.build/subgraphs/name/pancakeswap/exhange-v2
-
+    - Base https://api.studio.thegraph.com/query/45376/exchange-v2-base/version/latest
     - Base testnet https://api.studio.thegraph.com/query/45376/exchange-v2-base-testnet/version/latest
     - Scroll Sepolia https://api.studio.thegraph.com/query/45376/exchange-v2-scroll-sepolia/version/latest
 
@@ -76,6 +76,7 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - zkSync https://api.studio.thegraph.com/query/45376/exchange-v3-zksync/version/latest
     - zkSync testnet https://api.studio.thegraph.com/query/45376/exchange-v3-zksync-testnet/version/latest
     - Linea https://graph-query.linea.build/subgraphs/name/pancakeswap/exchange-v3-linea
+    - Base https://api.studio.thegraph.com/query/45376/exchange-v3-base/version/latest
     - Base testnet https://api.studio.thegraph.com/query/45376/exchange-v3-base-testnet/version/latest
     - Scroll Sepolia https://api.studio.thegraph.com/query/45376/exchange-v3-scroll-sepolia/version/latest
 
