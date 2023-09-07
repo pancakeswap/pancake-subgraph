@@ -79,6 +79,8 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - Base https://api.studio.thegraph.com/query/45376/exchange-v3-base/version/latest
     - Base testnet https://api.studio.thegraph.com/query/45376/exchange-v3-base-testnet/version/latest
     - Scroll Sepolia https://api.studio.thegraph.com/query/45376/exchange-v3-scroll-sepolia/version/latest
+17. **StableSwap**
+    - BSC  https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-stableswap
 
 
 ## Dependencies
