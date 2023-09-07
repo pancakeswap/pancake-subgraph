@@ -5,21 +5,21 @@ import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { exponentToBigDecimal, safeDiv } from "./index";
 
 // prettier-ignore
-const WETH_ADDRESS = "0x4200000000000000000000000000000000000006";
+const WETH_ADDRESS = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1";
 // prettier-ignore
-const USDC_WETH_03_POOL = "0xe58b73ff901325b8b2056b29712c50237242f520";
+const USDC_WETH_03_POOL = "0xd9e2a1a61b6e61b275cec326465d417e52c1b95c";
 
 const STABLE_IS_TOKEN0 = "false" as string;
 
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s
 // prettier-ignore
-export let WHITELIST_TOKENS: string[] = "0x4200000000000000000000000000000000000006,0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22,0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c,0x50c5725949a6f0c72e6c4a641f24049a917db0cb,0x417ac0e078398c154edfadd9ef675d30be60af93,0x833589fcd6edb6e08f4c7c32d4f71b54bda02913".split(",");
+export let WHITELIST_TOKENS: string[] = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1,0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9,0xaf88d065e77c8cc2239327c5edb3a432268e5831,0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,0x912ce59144191c1204e64559fe8253a0e49e6548,0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f,0xda10009cbd5d07dd0cecc66161fc93d7c9000da1".split(",");
 
 // prettier-ignore
-let STABLE_COINS: string[] = "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x50c5725949a6f0c72e6c4a641f24049a917db0cb,0x417ac0e078398c154edfadd9ef675d30be60af93,0x833589fcd6edb6e08f4c7c32d4f71b54bda02913".split(",");
+let STABLE_COINS: string[] = "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9,0xaf88d065e77c8cc2239327c5edb3a432268e5831,0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,0xda10009cbd5d07dd0cecc66161fc93d7c9000da1".split(",");
 
-let MINIMUM_ETH_LOCKED = BigDecimal.fromString("1");
+let MINIMUM_ETH_LOCKED = BigDecimal.fromString("0");
 
 let Q192 = 2 ** 192;
 export function sqrtPriceX96ToTokenPrices(sqrtPriceX96: BigInt, token0: Token, token1: Token): BigDecimal[] {
