@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: MasterChefV3
-    network: polygon-zkevm-testnet
+    network: zksync-era
     source:
-      address: "0xb66b07590b30d4e6e22e45ddc83b06bb018a7b44"
+      address: "0x4c615e78c5fca1ad31e4d66eb0d8688d84307463"
       abi: MasterChefV3
-      startBlock: 1097428
+      startBlock: 8792225
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
