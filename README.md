@@ -59,8 +59,8 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - GOR https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-goerli
     - Polygon zkEVM https://api.studio.thegraph.com/query/45376/masterchef-v3-polygon-zkevm/version/latest
     - Polygon zkEVM testnet https://api.studio.thegraph.com/query/45376/masterchef-v3-zkevm-testnet/version/latest
-    - ARB TODO
-    - zkSync TODO
+    - ARB https://api.thegraph.com/subgraphs/name/pancakeswap/masterchef-v3-arb
+    - zkSync https://api.studio.thegraph.com/query/45376/masterchef-v3-zksync/version/latest
 
 16. **Exchange (v3)**: Tracks all PancakeSwap V3 Exchange data with price, volume, liquidity
     - BSC https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-bsc

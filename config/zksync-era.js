@@ -41,4 +41,8 @@ module.exports = {
       "0xbbeb516fb02a01611cbbe0453fe3c580d7281011", // WBTC
     ],
   },
+  masterChefV3: {
+    masterChefAddress: "0x4c615e78c5fca1ad31e4d66eb0d8688d84307463",
+    startBlock: 8792225,
+  },
 };

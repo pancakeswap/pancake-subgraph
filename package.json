@@ -17,6 +17,10 @@
     "lint": "eslint '*/**/*.{js,ts}'",
     "prepare": "husky install"
   },
+  "resolutions": {
+    "gluegun": "github:edgeandnode/gluegun#b34b9003d7bf556836da41b57ef36eb21570620a",
+    "assemblyscript": "github:AssemblyScript/assemblyscript#3ed76a97f05335504166fce1653da75f4face28f"
+  },
   "devDependencies": {
     "mustache": "^4.2.0",
     "@commitlint/cli": "^13.1.0",
