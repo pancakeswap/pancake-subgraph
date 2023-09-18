@@ -12,6 +12,7 @@
     "build": "graph build subgraph.yaml",
     "deploy": "graph deploy --product hosted-service pancakeswap/exhange-eth",
     "deploy:polygon-zkevm": "graph deploy --studio exchange-v2-polygon-zkevm",
-    "deploy:zksync-goerli": "graph deploy --studio graph deploy --studio exchange-v2-zksync-testnet"
+    "deploy:zksync-goerli": "graph deploy --studio graph deploy --studio exchange-v2-zksync-testnet",
+    "deploy:opbnb": "graph deploy --node https://open-platform-ap.nodereal.io/$API_KEY/opbnb-mainnet-graph-indexer/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/exchange-v2"
   }
 }
