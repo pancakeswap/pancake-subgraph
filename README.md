@@ -7,26 +7,30 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 ## Subgraphs
 
 1. **[Blocks](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/blocks)**: Tracks all blocks on Binance Smart Chain.
-    - BSC https://thegraph.com/legacy-explorer/subgraph/pancakeswap/blocks
-    - zkSync https://api.studio.thegraph.com/query/45376/blocks-zksync/version/latest
-    - zkSync testnet https://api.studio.thegraph.com/query/45376/blocks-zksync-testnet/version/latest
-    - Polygon zkEVM https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest
+
+   - BSC https://thegraph.com/legacy-explorer/subgraph/pancakeswap/blocks
+   - zkSync https://api.studio.thegraph.com/query/45376/blocks-zksync/version/latest
+   - zkSync testnet https://api.studio.thegraph.com/query/45376/blocks-zksync-testnet/version/latest
+   - Polygon zkEVM https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest
+   - opBNB https://opbnb-mainnet-graph.nodereal.io/subgraphs/name/pancakeswap/blocks
 
 2. **[Exchange V2](https://nodereal.io/meganode/api-marketplace/pancakeswap-graphql)**: Tracks all PancakeSwap V2 Exchange data with price, volume, liquidity, ...
-    - BSC https://nodereal.io/meganode/api-marketplace/pancakeswap-graphql
-    - ETH https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth
-    - ARB
-        - Hosted https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v2-arb
-        - Studio https://api.studio.thegraph.com/query/45376/exchange-v2-arbitrum/version/latest
-    - ARB GRO https://api.thegraph.com/subgraphs/name/chef-jojo/exchange-v2-arb-goerli
-    - Polygon zkEVM https://api.studio.thegraph.com/query/45376/exchange-v2-polygon-zkevm/version/latest
-    - Polygon zkEVM testnet https://api.studio.thegraph.com/query/45376/exchange-v2-polygon-zkevm-test/version/latest
-    - zkSync https://api.studio.thegraph.com/query/45376/exchange-v2-zksync/version/latest
-    - zkSync testnet https://api.studio.thegraph.com/query/45376/exchange-v2-zksync-testnet/version/latest
-    - Linea https://graph-query.linea.build/subgraphs/name/pancakeswap/exhange-v2
-    - Base https://api.studio.thegraph.com/query/45376/exchange-v2-base/version/latest
-    - Base testnet https://api.studio.thegraph.com/query/45376/exchange-v2-base-testnet/version/latest
-    - Scroll Sepolia https://api.studio.thegraph.com/query/45376/exchange-v2-scroll-sepolia/version/latest
+
+   - BSC https://nodereal.io/meganode/api-marketplace/pancakeswap-graphql
+   - ETH https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth
+   - ARB
+     - Hosted https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v2-arb
+     - Studio https://api.studio.thegraph.com/query/45376/exchange-v2-arbitrum/version/latest
+   - ARB GRO https://api.thegraph.com/subgraphs/name/chef-jojo/exchange-v2-arb-goerli
+   - Polygon zkEVM https://api.studio.thegraph.com/query/45376/exchange-v2-polygon-zkevm/version/latest
+   - Polygon zkEVM testnet https://api.studio.thegraph.com/query/45376/exchange-v2-polygon-zkevm-test/version/latest
+   - zkSync https://api.studio.thegraph.com/query/45376/exchange-v2-zksync/version/latest
+   - zkSync testnet https://api.studio.thegraph.com/query/45376/exchange-v2-zksync-testnet/version/latest
+   - Linea https://graph-query.linea.build/subgraphs/name/pancakeswap/exhange-v2
+   - Base https://api.studio.thegraph.com/query/45376/exchange-v2-base/version/latest
+   - Base testnet https://api.studio.thegraph.com/query/45376/exchange-v2-base-testnet/version/latest
+   - Scroll Sepolia https://api.studio.thegraph.com/query/45376/exchange-v2-scroll-sepolia/version/latest
+   - opBNB https://opbnb-mainnet-graph.nodereal.io/subgraphs/name/pancakeswap/exchange-v2
 
 3. **[Farm Auctions](https://thegraph.com/legacy-explorer/subgraph/pancakeswap/farm-auctions)**: Tracks all PancakeSwap Farm Auctions with auctions and bids.
 
@@ -53,6 +57,7 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 14. **[MasterChef (v2)](https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v2)**: Tracks data for MasterChefV2.
 
 15. **MasterChef (v3)**: Tracks data for MasterChefV3.
+
     - BSC https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-bsc
     - BSC testnet https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-chapel
     - ETH https://thegraph.com/hosted-service/subgraph/pancakeswap/masterchef-v3-eth
@@ -69,8 +74,8 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - ETH https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-eth
     - GOR https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-goerli
     - ARB
-        - Hosted https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-arb
-        - Studio https://api.studio.thegraph.com/query/45376/exchange-v3-arbitrum/version/latest
+      - Hosted https://thegraph.com/hosted-service/subgraph/pancakeswap/exchange-v3-arb
+      - Studio https://api.studio.thegraph.com/query/45376/exchange-v3-arbitrum/version/latest
     - ARB GOR https://api.thegraph.com/subgraphs/name/chef-jojo/exhange-v3-arb-goerli
     - Polygon zkEVM https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm/version/latest
     - Polygon zkEVM testnet https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm-test/version/latest
@@ -80,12 +85,12 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - Base https://api.studio.thegraph.com/query/45376/exchange-v3-base/version/latest
     - Base testnet https://api.studio.thegraph.com/query/45376/exchange-v3-base-testnet/version/latest
     - Scroll Sepolia https://api.studio.thegraph.com/query/45376/exchange-v3-scroll-sepolia/version/latest
-
+    - opBNB https://opbnb-mainnet-graph.nodereal.io/subgraphs/name/pancakeswap/exchange-v3
 
 ## Dependencies
 
 - [Graph CLI](https://github.com/graphprotocol/graph-cli)
-    - Required to generate and build local GraphQL dependencies.
+  - Required to generate and build local GraphQL dependencies.
 
 ```shell
 yarn global add @graphprotocol/graph-cli
@@ -97,7 +102,7 @@ For any of the subgraph: `blocks` as `[subgraph]`
 
 1. Run the `cd subgraphs/[subgraph]` command to move to the subgraph directory.
 
-2. Run the `yarn codegen` command to prepare the TypeScript sources for the GraphQL (generated/*).
+2. Run the `yarn codegen` command to prepare the TypeScript sources for the GraphQL (generated/\*).
 
 3. Run the `yarn build` command to build the subgraph, and check compilation errors before deploying.
 
