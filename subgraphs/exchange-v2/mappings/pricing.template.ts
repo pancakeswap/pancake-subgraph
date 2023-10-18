@@ -38,7 +38,7 @@ export function getETHPriceInUSD(): BigDecimal {
 let WHITELIST: string[] = "{{ v2.whitelistAddresses }}".split(",");
 
 // minimum liquidity for price to get tracked
-let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString("5");
+let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString("{{ v2.minETHLocked }}");
 
 /**
  * Search through graph to find derived BNB per token.

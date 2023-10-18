@@ -45,6 +45,7 @@ module.exports = {
       "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f", // WBTC
       "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", // DAI
     ],
+    minETHLocked: 5,
   },
   masterChefV3: {
     masterChefAddress: "0x5e09acf80c0296740ec5d6f643005a4ef8daa694",

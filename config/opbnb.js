@@ -25,5 +25,6 @@ module.exports = {
     wNativeStablePair0: "0x0000000000000000000000000000000000000000", // WETH-USDC
     wNativeStablePair1: "0x706f7257e78b6f2404a1afb5c480645a6f5be91d", // WETH-USDT
     whitelistAddresses: [WETH, USDT],
+    minETHLocked: 0,
   },
 };

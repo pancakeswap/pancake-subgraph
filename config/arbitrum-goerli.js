@@ -34,5 +34,6 @@ module.exports = {
       "0x179522635726710dd7d2035a81d856de4aa7836c", // USDC
       "0xbe737d08fb505ad45e08a89ac7fda9791f025bf2", // ARB
     ],
+    minETHLocked: 5,
   },
 };
