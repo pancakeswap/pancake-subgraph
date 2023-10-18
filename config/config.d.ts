@@ -19,6 +19,7 @@ export type NetworkConfig = {
     whitelistAddresses: string[];
     wNativeStablePair0: string;
     wNativeStablePair1: string;
+    minETHLocked: number;
   };
   masterChefV3: {
     startBlock: number;

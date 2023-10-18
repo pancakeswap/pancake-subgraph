@@ -32,5 +32,6 @@ module.exports = {
       WETH,
       "0x0faf6df7054946141266420b43783387a78d82a9", // USDC
     ],
+    minETHLocked: 0,
   },
 };

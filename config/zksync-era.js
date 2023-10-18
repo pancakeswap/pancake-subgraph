@@ -40,6 +40,7 @@ module.exports = {
       "0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4", // USDC
       "0xbbeb516fb02a01611cbbe0453fe3c580d7281011", // WBTC
     ],
+    minETHLocked: 1,
   },
   masterChefV3: {
     masterChefAddress: "0x4c615e78c5fca1ad31e4d66eb0d8688d84307463",

@@ -29,6 +29,7 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
    - Linea https://graph-query.linea.build/subgraphs/name/pancakeswap/exhange-v2
    - Base https://api.studio.thegraph.com/query/45376/exchange-v2-base/version/latest
    - Base testnet https://api.studio.thegraph.com/query/45376/exchange-v2-base-testnet/version/latest
+   - Scroll https://api.studio.thegraph.com/query/45376/exchange-v2-scroll/version/latest
    - Scroll Sepolia https://api.studio.thegraph.com/query/45376/exchange-v2-scroll-sepolia/version/latest
    - opBNB https://opbnb-mainnet-graph.nodereal.io/subgraphs/name/pancakeswap/exchange-v2
 
@@ -84,6 +85,7 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
     - Linea https://graph-query.linea.build/subgraphs/name/pancakeswap/exchange-v3-linea
     - Base https://api.studio.thegraph.com/query/45376/exchange-v3-base/version/latest
     - Base testnet https://api.studio.thegraph.com/query/45376/exchange-v3-base-testnet/version/latest
+    - Scroll https://api.studio.thegraph.com/query/45376/exchange-v3-scroll/version/latest
     - Scroll Sepolia https://api.studio.thegraph.com/query/45376/exchange-v3-scroll-sepolia/version/latest
     - opBNB https://opbnb-mainnet-graph.nodereal.io/subgraphs/name/pancakeswap/exchange-v3
 

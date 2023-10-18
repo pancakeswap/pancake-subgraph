@@ -45,6 +45,7 @@ module.exports = {
       "0x417ac0e078398c154edfadd9ef675d30be60af93", // crvUSD
       "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913", // USDC native
     ],
+    minETHLocked: 5,
   },
   masterChefV3: {
     masterChefAddress: "0xc6a2db661d5a5690172d8eb0a7dea2d3008665a3",
