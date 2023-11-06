@@ -1,0 +1,15 @@
+{
+  "name": "gauges-voting",
+  "description": "PancakeSwap Subgraph for Gauges Voting",
+  "version": "1.0.0",
+  "repository": "git@github.com:pancakeswap/pancake-subgraph.git",
+  "author": "PancakeSwap",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "auth": "graph auth --product hosted-service 'UPDATE_ME'",
+    "codegen": "graph codegen subgraph.yaml",
+    "build": "graph build subgraph.yaml",
+    "deploy:bsc": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/gauge-voting-bsc subgraph.yaml",
+    "deploy:chapel": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ chef-huan/gauge-voting-chapel subgraph.yaml"
+  }
+}
