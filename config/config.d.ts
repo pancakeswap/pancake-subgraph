@@ -25,4 +25,8 @@ export type NetworkConfig = {
     startBlock: number;
     masterChefAddress: string;
   };
+  predictionV2: {
+    startBlock: number;
+    address: string;
+  };
 };
