@@ -1,0 +1,50 @@
+specVersion: 0.0.2
+description: Pancake Prediction V2
+features:
+  - grafting
+graft:
+  base: QmaHRgUYDNKEXueDTA1Ntnv4rTWsignS9LojZFwyBr2mVm
+  block: 17140600
+repository: https://github.com/pancakeswap
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: PredictionV2
+    network: bsc
+    source:
+      address: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA'
+      abi: PredictionV2
+      startBlock: 10333825
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/index.ts
+      entities:
+        - Market
+        - Round
+        - User
+        - Bet
+      abis:
+        - name: PredictionV2
+          file: ./abis/PredictionV2.json
+      eventHandlers:
+        - event: StartRound(indexed uint256)
+          handler: handleStartRound
+        - event: LockRound(indexed uint256,indexed uint256,int256)
+          handler: handleLockRound
+        - event: EndRound(indexed uint256,indexed uint256,int256)
+          handler: handleEndRound
+        - event: BetBull(indexed address,indexed uint256,uint256)
+          handler: handleBetBull
+        - event: BetBear(indexed address,indexed uint256,uint256)
+          handler: handleBetBear
+        - event: Claim(indexed address,indexed uint256,uint256)
+          handler: handleClaim
+        - event: Pause(indexed uint256)
+          handler: handlePause
+        - event: Unpause(indexed uint256)
+          handler: handleUnpause
+        - event: RewardsCalculated(indexed uint256,uint256,uint256,uint256)
+          handler: handleRewardsCalculated
