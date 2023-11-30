@@ -1,0 +1,17 @@
+{
+  "name": "user-position-v3",
+  "description": "PancakeSwap Subgraph for User positions V3",
+  "version": "1.0.0",
+  "repository": "git@github.com:pancakeswap/pancake-subgraph.git",
+  "author": "PancakeSwap",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "template": "mustache ../../../config/$NETWORK.js subgraph.template.yaml > subgraph.yaml && mustache ../../../config/$NETWORK.js utils/constants.template.ts > utils/constants.ts",
+    "codegen": "graph codegen subgraph.yaml",
+    "build": "graph build subgraph.yaml",
+    "deploy:goerli": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/user-position-v3-goerli subgraph.yaml",
+    "deploy:chapel": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/user-position-v3-chapel subgraph.yaml",
+    "deploy:eth": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/user-position-v3-eth subgraph.yaml",
+    "deploy:bsc": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/user-position-v3-bsc subgraph.yaml"
+  }
+}
