@@ -36,6 +36,7 @@ export function updateUserPosition(event: ethereum.Event, tx: Transaction): void
     userPosition.tickLower = tx.tickLower as BigInt;
     userPosition.tickUpper = tx.tickUpper as BigInt;
     userPosition.owner = tx.positionOwner as Bytes;
+    userPosition.originOwner = tx.positionOwner as Bytes;
     if (tx.increaseLiquidityAmount !== null) {
       userPosition.liquidity = userPosition.liquidity.plus(tx.increaseLiquidityAmount as BigInt);
     }

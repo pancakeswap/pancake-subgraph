@@ -121,7 +121,10 @@ type Burn @entity {
 type UserPosition @entity {
   # tokenId
   id: ID!
+  # current owner of position
   owner: Bytes!
+  # the owner of the position consider after transfer to MasterChef
+  originOwner: Bytes!
   # pool position is within
   pool: Pool
 

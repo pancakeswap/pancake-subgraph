@@ -6,7 +6,7 @@ import {
   Transfer,
 } from "../generated/NonfungiblePositionManager/NonfungiblePositionManager";
 import { loadTransaction, updateUserPosition } from "../utils/schema";
-import { ADDRESS_ZERO } from "../utils/constants";
+import { ADDRESS_ZERO, MASTERCHEF_ADDRESS } from "../utils/constants";
 import { UserPosition } from "../generated/schema";
 
 export function handleIncreaseLiquidity(event: IncreaseLiquidity): void {
@@ -30,6 +30,9 @@ export function handleTransfer(event: Transfer): void {
   } else {
     let userPosition = UserPosition.load(event.params.tokenId.toString());
     userPosition.owner = event.params.to;
+    if (!event.params.to.equals(Address.fromString(MASTERCHEF_ADDRESS))) {
+      userPosition.originOwner = event.params.to;
+    }
     userPosition.save();
   }
   transaction.save();

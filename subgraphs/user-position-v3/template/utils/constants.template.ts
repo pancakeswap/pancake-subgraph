@@ -8,4 +8,4 @@ export let ONE_BI = BigInt.fromI32(1);
 export let ZERO_BD = BigDecimal.fromString("0");
 export let ONE_BD = BigDecimal.fromString("1");
 
-export const MASTERCHEF_ADDRESS = "0x556b9306565093c855aea9ae92a594704c2cd59e";
+export const MASTERCHEF_ADDRESS = "{{ masterChefV3.masterChefAddress }}";
