@@ -1,0 +1,44 @@
+specVersion: 0.0.2
+description: Gauges voting system
+repository: https://github.com/pancakeswap/pancake-subgraph
+schema:
+  file: ./schema.graphql
+features:
+  - nonFatalErrors
+dataSources:
+  - kind: ethereum/contract
+    name: GaugeVoting
+    network: bsc
+    source:
+      address: '0xD6f7C34e2FfBE1b8bFD40f5960aE269C596fF893'
+      abi: GaugeVoting
+      startBlock: 33687498
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/core.ts
+      entities:
+        - User
+        - Gauge
+        - GaugeType
+        - GaugeWeight
+        - GaugeTypeWeight
+        - GaugeTotalWeight
+        - GaugeVote
+      abis:
+        - name: GaugeVoting
+          file: ./abis/GaugeVoting.json
+      eventHandlers:
+        - event: AddType(string,uint256)
+          handler: handleAddType
+        - event: NewTypeWeight(uint256,uint256,uint256,uint256)
+          handler: handleNewTypeWeight
+        - event: NewGauge(bytes32,uint256,uint256,uint256,address,uint256,uint256,uint256)
+          handler: handleNewGauge
+        - event: NewGaugeWeight(bytes32,uint256,uint256,uint256)
+          handler: handleNewGaugeWeight
+        - event: VoteForGauge(uint256,address,bytes32,uint256)
+          handler: handleVoteForGauge
+        - event: VoteForGaugeFromAdmin(uint256,address,bytes32,uint256)
+          handler: handleVoteForGaugeFromAdmin

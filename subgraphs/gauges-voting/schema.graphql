@@ -1,0 +1,47 @@
+type User @entity {
+    id: ID!
+}
+
+type Gauge @entity {
+    id: ID! # hash.toString()
+    gaugeType: GaugeType!
+    pid: BigInt!
+    masterChef: Bytes!
+    chainId: BigInt!
+    boostMultiplier: BigInt!
+    maxVoteCap: BigInt!
+}
+
+type GaugeType @entity {
+    id: ID!
+    name: String!
+    gaugeCount: BigInt!
+}
+
+type GaugeWeight @entity {
+    id: ID!
+    gauge: Gauge!
+    time: BigInt!
+    weight: BigInt!
+}
+
+type GaugeTypeWeight @entity {
+    id: ID!
+    type: GaugeType!
+    time: BigInt!
+    weight: BigInt!
+}
+
+type GaugeTotalWeight @entity {
+    id: ID!
+    time: BigInt!
+    weight: BigInt!
+}
+
+type GaugeVote @entity {
+    id: ID!
+    user: User!
+    gauge: Gauge!
+    time: BigInt!
+    weight: BigInt!
+}
