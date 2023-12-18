@@ -5,6 +5,10 @@ schema:
   file: ./schema.graphql
 features:
   - nonFatalErrors
+  - grafting
+graft:
+  base: QmXT8Dy3SWmutmEfseN9B6jbMcXJqCRL8vgaXsy79YyuBq
+  block: 18450861
 dataSources:
   - kind: ethereum/contract
     name: Factory

@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import { Bundle, Burn, Factory, Mint, Pool, Swap, Tick, Token, Collect } from "../generated/schema";
 import { Pool as PoolABI } from "../generated/Factory/Pool";
-import { BigDecimal, BigInt, ethereum } from "@graphprotocol/graph-ts";
+import { BigDecimal, BigInt, ethereum, log } from "@graphprotocol/graph-ts";
 import {
   Burn as BurnEvent,
   Flash as FlashEvent,
@@ -349,11 +349,24 @@ export function handleSwap(event: SwapEvent): void {
   pool.token1Price = prices[1];
   pool.save();
 
+  let token0DerivedETH = token0.derivedETH;
+
   // update USD pricing
   bundle.ethPriceUSD = getEthPriceInUSD();
   bundle.save();
   token0.derivedETH = findEthPerToken(token0 as Token);
   token1.derivedETH = findEthPerToken(token1 as Token);
+
+  let transaction = loadTransaction(event);
+
+  // fix for bad pricing on wbtc-weth
+  if (
+    transaction.id + "#" + pool.txCount.toString() ==
+    "0x5d56353b390e7ffff6df015f20224bdd4ae8487781bbc1d4544de8836b66daa4#2487"
+  ) {
+    token0.derivedETH = token0DerivedETH;
+  }
+
   token0.derivedUSD = token0.derivedETH.times(bundle.ethPriceUSD);
   token1.derivedUSD = token1.derivedETH.times(bundle.ethPriceUSD);
 
@@ -374,7 +387,6 @@ export function handleSwap(event: SwapEvent): void {
   );
 
   // create Swap event
-  let transaction = loadTransaction(event);
   let swap = new Swap(transaction.id + "#" + pool.txCount.toString());
   swap.transaction = transaction.id;
   swap.timestamp = transaction.timestamp;

@@ -43,6 +43,7 @@ module.exports = {
       "0xfe2e637202056d30016725477c5da089ab0a043a", // sETH2
       "0x152649ea73beab28c5b49b26eb48f7ead6d4c898", // CAKE
       "0x5e8422345238f34275888049021821e8e08caa1f", // fraxETH
+      "0xae78736cd615f374d3085123a210448e74fc6393", // rETH
     ],
     nonfungiblePositionManagerAddress: "0x46a15b0b27311cedf172ab29e4f4766fbe7f4364",
     nonfungiblePositionManagerStartBlock: 16944786,
