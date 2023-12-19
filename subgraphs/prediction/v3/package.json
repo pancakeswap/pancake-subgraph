@@ -1,0 +1,14 @@
+{
+  "name": "prediction-v3",
+  "description": "PancakeSwap Subgraph",
+  "version": "1.0.0",
+  "repository": "git@github.com:pancakeswap/pancake-subgraph.git",
+  "author": "PancakeSwap",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "template": "mustache ../../../config/zksync-era.js subgraph.template.yaml > subgraph.yaml",
+    "codegen": "graph codegen subgraph.yaml",
+    "build": "graph build subgraph.yaml",
+    "deploy:zksync-era": "graph deploy --product hosted-service chef-cannoli/prediction-v3-zksync-era"
+  }
+}
