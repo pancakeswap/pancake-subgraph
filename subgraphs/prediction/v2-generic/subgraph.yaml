@@ -1,21 +1,16 @@
 specVersion: 0.0.2
 description: Pancake Prediction V2
-features:
-  - grafting
-graft:
-  base: QmaHRgUYDNKEXueDTA1Ntnv4rTWsignS9LojZFwyBr2mVm
-  block: 17140600
-repository: https://github.com/pancakeswap
+repository: https://github.com/pancakeswap/pancakeswapswap-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: PredictionV2
-    network: bsc
+    network: arbitrum-goerli
     source:
-      address: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA'
+      address: "0xd5330586c035a67bd32A6FD8e390c72DB9372861"
       abi: PredictionV2
-      startBlock: 10333825
+      startBlock: 52492780
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

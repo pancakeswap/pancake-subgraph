@@ -6,10 +6,10 @@
   "author": "PancakeSwap",
   "license": "GPL-3.0-or-later",
   "scripts": {
-    "template": "mustache ../../config/$NETWORK.js subgraph.template.yaml > subgraph.yaml",
+    "template": "mustache ../../../config/arbitrum-goerli.js subgraph.template.yaml > subgraph.yaml",
     "codegen": "graph codegen subgraph.yaml",
     "build": "graph build subgraph.yaml",
     "deploy:bsc": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ chef-cannoli/playground-subgraph subgraph.yaml",
-    "deploy:arbitrum-goerli": "graph deploy --product hosted-service chef-cannoli/playground-subgraph"
+    "deploy:arbitrum-goerli": "graph deploy --product hosted-service chef-cannoli/prediction-v2-arbitrum-goerli"
   }
 }
