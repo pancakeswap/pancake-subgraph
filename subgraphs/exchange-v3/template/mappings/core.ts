@@ -359,11 +359,9 @@ export function handleSwap(event: SwapEvent): void {
 
   let transaction = loadTransaction(event);
 
-  // fix for bad pricing on wbtc-weth
-  if (
-    transaction.id + "#" + pool.txCount.toString() ==
-    "0x5d56353b390e7ffff6df015f20224bdd4ae8487781bbc1d4544de8836b66daa4#2487"
-  ) {
+  // fix for bad pricing on wbtc-weth 18450862
+  if (transaction.blockNumber.equals(BigInt.fromI32(18450862))) {
+    log.warning("bad pricing id: {}, token0: {}", [transaction.id, token0.derivedETH.toString()]);
     token0.derivedETH = token0DerivedETH;
   }
 
