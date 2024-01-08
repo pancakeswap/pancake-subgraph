@@ -1,25 +1,30 @@
 /* eslint-disable prefer-const */
-import { Address, BigDecimal } from "@graphprotocol/graph-ts/index";
+import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { Bundle, Pair, Token } from "../../generated/schema";
 import {
   ADDRESS_ZERO,
+  BIG_DECIMAL_1E18,
   BIG_DECIMAL_ONE,
   BIG_DECIMAL_ZERO,
   BIG_INT_18,
   BUSD_ADDR,
+  CAKE_ADDR,
   convertTokenToDecimal,
-  stableSwapFactoryContract,
   exponentToBigDecimal,
+  powBigDecimal,
+  stableSwapFactoryContract,
   WBNB_ADDR,
 } from "./index";
 import { Pair as PairContract } from "../../generated/StableSwapFactory/Pair";
+import { PairV3 as PairV3Contract } from "../../generated/StableSwapFactory/PairV3";
 import { StableSwapPair as StableSwapPairContract } from "../../generated/StableSwapFactory/StableSwapPair";
-import { BigInt } from "@graphprotocol/graph-ts";
 import { getOrCreateToken } from "./data";
 
 let BUSD_WBNB_PAIR = "0x58f876857a02d6762e0101bb5c46a8c1ed44dc16";
 let USDT_WBNB_PAIR = "0x16b9a82891338f9ba80e2d6970fdda79d1eb0dae";
 // let USDT_ADDRESS = "0x55d398326f99059ff775485246999027b3197955";
+
+let CAKE_BNB_V3_PAIR = "0x133b3d95bad5405d14d53473671200e9342896bf";
 
 function getByDy(pair_: Pair | null, token: Address): BigDecimal {
   if (!pair_) return BIG_DECIMAL_ZERO;
@@ -106,14 +111,28 @@ export function getBnbPriceInUSD(): BigDecimal {
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
   "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", // WBNB
+  "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82", // CAKE
   "0xe9e7cea3dedca5984780bafc599bd69add087d56", // BUSD
   "0x55d398326f99059ff775485246999027b3197955", // USDT
   "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", // USDC
   "0x0782b6d8c4551b9760e74c0545a9bcd90bdc41e5", // HAY
+  "0x581fa684d0ec11ccb46b1d92f1f24c8a3f95c0ca", // MCAKE
+  "0x6a1c1447f97b27da23dc52802f5f1435b5ac821a", // SDCAKE
 ];
 
 // minimum liquidity for price to get tracked
 // let MINIMUM_LIQUIDITY_THRESHOLD_BNB = BigDecimal.fromString("10");
+
+export function findBnbPerCake(): BigDecimal {
+  let cakeBNBPair = PairV3Contract.bind(Address.fromString(CAKE_BNB_V3_PAIR)); //token 0 = CAKE
+  let slot = cakeBNBPair.slot0();
+  let sqrtPriceX96 = slot.value0.toBigDecimal();
+  let sqrtPow = Math.pow(2, 96);
+
+  let buyOneOfToken0 = powBigDecimal(sqrtPriceX96.div(BigDecimal.fromString(sqrtPow.toString())), 2);
+
+  return buyOneOfToken0.times(BIG_DECIMAL_1E18);
+}
 
 /**
  * Search through graph to find derived BNB per token.
@@ -124,6 +143,9 @@ export function findBnbPerToken(token: Token): BigDecimal {
   }
   if (Address.fromString(token.id).equals(WBNB_ADDR)) {
     return BIG_DECIMAL_ONE;
+  }
+  if (Address.fromString(token.id).equals(CAKE_ADDR)) {
+    return findBnbPerCake();
   }
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {
