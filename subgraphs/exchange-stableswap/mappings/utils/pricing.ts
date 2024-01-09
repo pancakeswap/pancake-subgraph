@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, BigInt, log } from "@graphprotocol/graph-ts";
 import { Bundle, Pair, Token } from "../../generated/schema";
 import {
   ADDRESS_ZERO,
@@ -130,8 +130,13 @@ export function findBnbPerCake(): BigDecimal {
   let sqrtPow = Math.pow(2, 96);
 
   let buyOneOfToken0 = powBigDecimal(sqrtPriceX96.div(BigDecimal.fromString(sqrtPow.toString())), 2);
+  let buyOneOfToken0Wei = buyOneOfToken0.times(BIG_DECIMAL_1E18);
+  log.debug("findBnbPerCake. buyOneOfToken0: {}, buyOneOfToken0Wei: {}", [
+    buyOneOfToken0.toString(),
+    buyOneOfToken0Wei.toString(),
+  ]);
 
-  return buyOneOfToken0.times(BIG_DECIMAL_1E18);
+  return buyOneOfToken0Wei;
 }
 
 /**
