@@ -1,9 +1,8 @@
 /* eslint-disable prefer-const */
-import { Address, BigDecimal, BigInt, log } from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { Bundle, Pair, Token } from "../../generated/schema";
 import {
   ADDRESS_ZERO,
-  BIG_DECIMAL_1E18,
   BIG_DECIMAL_ONE,
   BIG_DECIMAL_ZERO,
   BIG_INT_18,
@@ -129,14 +128,9 @@ export function findBnbPerCake(): BigDecimal {
   let sqrtPriceX96 = slot.value0.toBigDecimal();
   let sqrtPow = Math.pow(2, 96);
 
-  let buyOneOfToken0 = powBigDecimal(sqrtPriceX96.div(BigDecimal.fromString(sqrtPow.toString())), 2);
-  let buyOneOfToken0Wei = buyOneOfToken0.times(BIG_DECIMAL_1E18);
-  log.debug("findBnbPerCake. buyOneOfToken0: {}, buyOneOfToken0Wei: {}", [
-    buyOneOfToken0.toString(),
-    buyOneOfToken0Wei.toString(),
-  ]);
+  let buyOneOfCake = powBigDecimal(sqrtPriceX96.div(BigDecimal.fromString(sqrtPow.toString())), 2);
 
-  return buyOneOfToken0Wei;
+  return buyOneOfCake;
 }
 
 /**
