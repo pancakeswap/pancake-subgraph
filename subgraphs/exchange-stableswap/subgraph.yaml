@@ -66,6 +66,8 @@ templates:
           file: ./abis/Factory.json
         - name: Pair
           file: ./abis/Pair.json
+        - name: PairV3
+          file: ./abis/PairV3.json
       eventHandlers:
         - event: AddLiquidity(indexed address,uint256[2],uint256[2],uint256,uint256)
           handler: handleAddLiquidity
@@ -99,6 +101,8 @@ templates:
           file: ./abis/Factory.json
         - name: Pair
           file: ./abis/Pair.json
+        - name: PairV3
+          file: ./abis/PairV3.json
       eventHandlers:
         - event: AddLiquidity(indexed address,uint256[2],uint256[2],uint256,uint256)
           handler: handleAddLiquidity
@@ -132,6 +136,8 @@ templates:
           file: ./abis/Factory.json
         - name: Pair
           file: ./abis/Pair.json
+        - name: PairV3
+          file: ./abis/PairV3.json
       eventHandlers:
         - event: AddLiquidity(indexed address,uint256[3],uint256[3],uint256,uint256)
           handler: handleTriAddLiquidity
