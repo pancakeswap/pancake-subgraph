@@ -5,7 +5,7 @@ schema:
   file: ./schema.graphql
 graft:
   base: Qme4U6by9yqGwTPKRaPvbgo7Ar9CwYFaTjmy9z6uVSjxvL
-  block: 34376850 # for previous exiting factory
+  block: 33890015 # for previous exiting factory
 dataSources:
   - kind: ethereum/contract
     name: StableSwapFactory
