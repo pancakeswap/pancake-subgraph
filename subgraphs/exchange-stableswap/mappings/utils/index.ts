@@ -12,12 +12,14 @@ export let STABLESWAP_FACTORY_ADDRESS_2 = "0x25a55f9f2279A54951133D503490342b50E
 export let PCS_FACTORY_ADDRESS = "0xca143ce32fe78f1f7019d7d551a6402fc5350c73";
 export let BUSD_ADDRESS = "0xe9e7cea3dedca5984780bafc599bd69add087d56";
 export let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
+export let CAKE_ADDRESS = "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82";
 
 //When new factory was deployed, and SC address into list
 export let FACTORIES: string[] = [STABLESWAP_FACTORY_ADDRESS, STABLESWAP_FACTORY_ADDRESS_2];
 
 export let BUSD_ADDR = Address.fromString(BUSD_ADDRESS);
 export let WBNB_ADDR = Address.fromString(WBNB_ADDRESS);
+export let CAKE_ADDR = Address.fromString(CAKE_ADDRESS);
 
 export let BIG_INT_ZERO = BigInt.fromI32(0);
 export let BIG_INT_ONE = BigInt.fromI32(1);
@@ -36,6 +38,17 @@ export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
     bd = bd.times(BigDecimal.fromString("10"));
   }
   return bd;
+}
+
+export function powBigDecimal(base: BigDecimal, exponent: number): BigDecimal {
+  // Convert BigDecimal to f64
+  let baseAsF64 = parseFloat(base.toString());
+
+  // Perform the power operation
+  let result = Math.pow(baseAsF64, exponent);
+
+  // Convert back to BigDecimal
+  return BigDecimal.fromString(result.toString());
 }
 
 export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: BigInt): BigDecimal {
