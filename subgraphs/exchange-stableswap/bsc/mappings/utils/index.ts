@@ -1,10 +1,13 @@
 /* eslint-disable prefer-const */
 import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
-import { ERC20 } from "../../../exchange/generated/Factory/ERC20";
-import { ERC20NameBytes } from "../../../exchange/generated/Factory/ERC20NameBytes";
-import { ERC20SymbolBytes } from "../../../exchange/generated/Factory/ERC20SymbolBytes";
+// import { ERC20 } from "../../../exchange/generated/Factory/ERC20";
+// import { ERC20NameBytes } from "../../../exchange/generated/Factory/ERC20NameBytes";
+// import { ERC20SymbolBytes } from "../../../exchange/generated/Factory/ERC20SymbolBytes";
 import { StableSwapFactory } from "../../generated/StableSwapFactory/StableSwapFactory";
 import { Factory } from "../../generated/StableSwapFactory/Factory";
+import { ERC20 } from "../../generated/StableSwapFactory/ERC20";
+import { ERC20SymbolBytes } from "../../generated/StableSwapFactory/ERC20SymbolBytes";
+import { ERC20NameBytes } from "../../generated/StableSwapFactory/ERC20NameBytes";
 
 export let ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
 export let STABLESWAP_FACTORY_ADDRESS = "0x36bbb126e75351c0dfb651e39b38fe0bc436ffd2";
