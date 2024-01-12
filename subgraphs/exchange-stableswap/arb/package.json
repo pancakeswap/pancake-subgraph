@@ -1,0 +1,14 @@
+{
+  "name": "exchange-stableswap",
+  "description": "PancakeSwap Subgraph",
+  "version": "1.0.0",
+  "repository": "git@github.com:pancakeswap/pancake-subgraph.git",
+  "author": "PancakeSwap",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "auth": "graph auth --product hosted-service 'UPDATE_ME'",
+    "codegen": "graph codegen subgraph.yaml",
+    "build": "graph build subgraph.yaml",
+    "deploy:arb": "graph deploy --product hosted-service pancakeswap/exchange-stableswap-arb"
+  }
+}
