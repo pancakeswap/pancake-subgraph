@@ -51,4 +51,8 @@ module.exports = {
     masterChefAddress: "0x5e09acf80c0296740ec5d6f643005a4ef8daa694",
     startBlock: 105053701,
   },
+  predictionV2: {
+    startBlock: 158927648,
+    address: "0xF2F90E718a3BFaCb430c1818cB962f05A2631998",
+  },
 };

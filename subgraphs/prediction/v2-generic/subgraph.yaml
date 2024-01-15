@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: PredictionV2
-    network: arbitrum-goerli
+    network: arbitrum-one
     source:
-      address: "0xd5330586c035a67bd32A6FD8e390c72DB9372861"
+      address: "0xF2F90E718a3BFaCb430c1818cB962f05A2631998"
       abi: PredictionV2
-      startBlock: 52492780
+      startBlock: 158927648
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
