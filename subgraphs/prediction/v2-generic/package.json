@@ -1,0 +1,17 @@
+{
+  "name": "prediction-v2-generic",
+  "description": "PancakeSwap Subgraph",
+  "version": "1.0.0",
+  "repository": "git@github.com:pancakeswap/pancake-subgraph.git",
+  "author": "PancakeSwap",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "template": "mustache ../../../config/$NETWORK.js subgraph.template.yaml > subgraph.yaml",
+    "codegen": "graph codegen subgraph.yaml",
+    "build": "graph build subgraph.yaml",
+    "deploy:bsc": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ chef-cannoli/playground-subgraph subgraph.yaml",
+    "deploy:arbitrum-goerli": "graph deploy --product hosted-service pancakeswap/prediction-v2-arbitrum-goreli",
+    "deploy:arbitrum": "graph deploy --product hosted-service pancakeswap/prediction-v2-arbitrum",
+    "deploy:zksync-era": "graph deploy --studio prediction-v2-zksync-era"
+  }
+}

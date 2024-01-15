@@ -1,0 +1,45 @@
+specVersion: 0.0.2
+description: Pancake Prediction V2
+repository: https://github.com/pancakeswap/pancakeswapswap-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: PredictionV2
+    network: {{ network }}
+    source:
+      address: "{{ predictionV2.address}}"
+      abi: PredictionV2
+      startBlock: {{ predictionV2.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/index.ts
+      entities:
+        - Market
+        - Round
+        - User
+        - Bet
+      abis:
+        - name: PredictionV2
+          file: ./abis/PredictionV2.json
+      eventHandlers:
+        - event: StartRound(indexed uint256)
+          handler: handleStartRound
+        - event: LockRound(indexed uint256,indexed uint256,int256)
+          handler: handleLockRound
+        - event: EndRound(indexed uint256,indexed uint256,int256)
+          handler: handleEndRound
+        - event: BetBull(indexed address,indexed uint256,uint256)
+          handler: handleBetBull
+        - event: BetBear(indexed address,indexed uint256,uint256)
+          handler: handleBetBear
+        - event: Claim(indexed address,indexed uint256,uint256)
+          handler: handleClaim
+        - event: Pause(indexed uint256)
+          handler: handlePause
+        - event: Unpause(indexed uint256)
+          handler: handleUnpause
+        - event: RewardsCalculated(indexed uint256,uint256,uint256,uint256)
+          handler: handleRewardsCalculated
