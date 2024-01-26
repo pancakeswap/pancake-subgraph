@@ -1,37 +1,36 @@
 /* eslint-disable prefer-const */
 import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
-import { ERC20 } from "../../../exchange/generated/Factory/ERC20";
-import { ERC20NameBytes } from "../../../exchange/generated/Factory/ERC20NameBytes";
-import { ERC20SymbolBytes } from "../../../exchange/generated/Factory/ERC20SymbolBytes";
+// import { ERC20 } from "../../../exchange/generated/Factory/ERC20";
+// import { ERC20NameBytes } from "../../../exchange/generated/Factory/ERC20NameBytes";
+// import { ERC20SymbolBytes } from "../../../exchange/generated/Factory/ERC20SymbolBytes";
 import { StableSwapFactory } from "../../generated/StableSwapFactory/StableSwapFactory";
-import { Factory } from "../../generated/StableSwapFactory/Factory";
+import { ERC20 } from "../../generated/StableSwapFactory/ERC20";
+import { ERC20SymbolBytes } from "../../generated/StableSwapFactory/ERC20SymbolBytes";
+import { ERC20NameBytes } from "../../generated/StableSwapFactory/ERC20NameBytes";
 
 export let ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
-export let STABLESWAP_FACTORY_ADDRESS = "0x36bbb126e75351c0dfb651e39b38fe0bc436ffd2";
-export let STABLESWAP_FACTORY_ADDRESS_2 = "0x25a55f9f2279A54951133D503490342b50E5cd15";
-export let PCS_FACTORY_ADDRESS = "0xca143ce32fe78f1f7019d7d551a6402fc5350c73";
-export let BUSD_ADDRESS = "0xe9e7cea3dedca5984780bafc599bd69add087d56";
-export let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
-export let CAKE_ADDRESS = "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82";
+export let STABLESWAP_FACTORY_ADDRESS = "0x5d5fbb19572c4a89846198c3dbedb2b6ef58a77a";
+export let USDT_ADDRESS = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9";
+export let USDC_ADDRESS = "0xaf88d065e77c8cC2239327C5EDb3A432268e5831";
+export let WETH_ADDRESS = "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1";
+export let PENDLE_ADDRESS = "0x0c880f6761F1af8d9Aa9C466984b80DAb9a8c9e8";
 
 //When new factory was deployed, and SC address into list
-export let FACTORIES: string[] = [STABLESWAP_FACTORY_ADDRESS, STABLESWAP_FACTORY_ADDRESS_2];
+export let FACTORIES: string[] = [STABLESWAP_FACTORY_ADDRESS];
 
-export let BUSD_ADDR = Address.fromString(BUSD_ADDRESS);
-export let WBNB_ADDR = Address.fromString(WBNB_ADDRESS);
-export let CAKE_ADDR = Address.fromString(CAKE_ADDRESS);
+export let USDT_ADDR = Address.fromString(USDT_ADDRESS);
+export let USDC_ADDR = Address.fromString(USDC_ADDRESS);
+export let WETH_ADDR = Address.fromString(WETH_ADDRESS);
+export let PENDLE_ADDR = Address.fromString(PENDLE_ADDRESS);
 
 export let BIG_INT_ZERO = BigInt.fromI32(0);
 export let BIG_INT_ONE = BigInt.fromI32(1);
 export let BIG_DECIMAL_ZERO = BigDecimal.fromString("0");
 export let BIG_DECIMAL_ONE = BigDecimal.fromString("1");
-export let BIG_DECIMAL_1E18 = BigDecimal.fromString("1e18");
-
+export let BIG_DECIMAL_TEN = BigDecimal.fromString("10");
 export let BIG_INT_18 = BigInt.fromI32(18);
 
-export let stableSwapFactoryContract = StableSwapFactory.bind(Address.fromString(STABLESWAP_FACTORY_ADDRESS_2));
-export let pcsFactoryContract = Factory.bind(Address.fromString(PCS_FACTORY_ADDRESS));
-
+export let stableSwapFactoryContract = StableSwapFactory.bind(Address.fromString(STABLESWAP_FACTORY_ADDRESS));
 export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
   let bd = BigDecimal.fromString("1");
   for (let i = BIG_INT_ZERO; i.lt(decimals as BigInt); i = i.plus(BIG_INT_ONE)) {
