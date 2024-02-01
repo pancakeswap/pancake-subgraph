@@ -4,11 +4,11 @@ import { Bundle, Pair, Token } from "../generated/schema";
 import { ADDRESS_ZERO, factoryContract, ONE_BD, ZERO_BD } from "./utils";
 
 // prettier-ignore
-let WETH_ADDRESS = "0x5300000000000000000000000000000000000004";
+let WETH_ADDRESS = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1";
 // prettier-ignore
-let WETH_USDT_PAIR = "0x42290c85a8ee259904416aa2d4802eda7308339e";
+let WETH_USDT_PAIR = "0xa59bd260f9707ea44551c510f714ccd482ec75d8";
 // prettier-ignore
-let WETH_USDC_PAIR = "0xe948be21a0e98f050dd48d8ab954e7b6e26eefa3";
+let WETH_USDC_PAIR = "0x0000000000000000000000000000000000000000";
 
 export function getETHPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
@@ -35,10 +35,10 @@ export function getETHPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 // prettier-ignore
-let WHITELIST: string[] = "0x5300000000000000000000000000000000000004,0xf55bec9cafdbe8730f096aa55dad6d22d44099df,0xf55bec9cafdbe8730f096aa55dad6d22d44099df,0xedeabc3a1e7d21fe835ffa6f83a710c70bb1a051,0x3c1bca5a656e69edcd0d4e36bebb3fcdaca60cf1,0x53878b874283351d26d206fa512aece1bef6c0dd,0xf610a9dfb7c89644979b4a0f27063e9e7d7cda32,0xca77eb3fefe3725dc33bccb54edefc3d9f764f97".split(",");
+let WHITELIST: string[] = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1,0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9,0xaf88d065e77c8cc2239327c5edb3a432268e5831,0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,0x912ce59144191c1204e64559fe8253a0e49e6548,0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f,0xda10009cbd5d07dd0cecc66161fc93d7c9000da1".split(",");
 
 // minimum liquidity for price to get tracked
-let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString("1");
+let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString("0");
 
 /**
  * Search through graph to find derived BNB per token.

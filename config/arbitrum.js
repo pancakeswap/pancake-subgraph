@@ -1,4 +1,4 @@
-const WETH = "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1";
+const WETH = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1";
 
 /**
  * @type import('./config').NetworkConfig
@@ -26,6 +26,8 @@ module.exports = {
       "0x912ce59144191c1204e64559fe8253a0e49e6548", // ARB
       "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f", // WBTC
       "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", // DAI
+      "0xe80772eaf6e2e18b651f160bc9158b2a5cafca65", // USD+
+      "0xb1084db8d3c05cebd5fa9335df95ee4b8a0edc30", // USDT+
     ],
     nonfungiblePositionManagerAddress: "0x46a15b0b27311cedf172ab29e4f4766fbe7f4364",
     nonfungiblePositionManagerStartBlock: 101032520,
@@ -45,7 +47,7 @@ module.exports = {
       "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f", // WBTC
       "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", // DAI
     ],
-    minETHLocked: 5,
+    minETHLocked: 0,
   },
   masterChefV3: {
     masterChefAddress: "0x5e09acf80c0296740ec5d6f643005a4ef8daa694",

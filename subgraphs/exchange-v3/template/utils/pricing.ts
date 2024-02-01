@@ -5,19 +5,19 @@ import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { exponentToBigDecimal, safeDiv } from "./index";
 
 // prettier-ignore
-const WETH_ADDRESS = "0x5300000000000000000000000000000000000004";
+const WETH_ADDRESS = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1";
 // prettier-ignore
-const USDC_WETH_03_POOL = "0xb4ea03fd982685c68279cfe6dd05dd26521c35dd";
+const USDC_WETH_03_POOL = "0xd9e2a1a61b6e61b275cec326465d417e52c1b95c";
 
-const STABLE_IS_TOKEN0 = "true" as string;
+const STABLE_IS_TOKEN0 = "false" as string;
 
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s
 // prettier-ignore
-export let WHITELIST_TOKENS: string[] = "0x5300000000000000000000000000000000000004,0xf55bec9cafdbe8730f096aa55dad6d22d44099df,0xf55bec9cafdbe8730f096aa55dad6d22d44099df,0xedeabc3a1e7d21fe835ffa6f83a710c70bb1a051,0x3c1bca5a656e69edcd0d4e36bebb3fcdaca60cf1,0x53878b874283351d26d206fa512aece1bef6c0dd,0xf610a9dfb7c89644979b4a0f27063e9e7d7cda32,0xca77eb3fefe3725dc33bccb54edefc3d9f764f97".split(",");
+export let WHITELIST_TOKENS: string[] = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1,0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9,0xaf88d065e77c8cc2239327c5edb3a432268e5831,0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,0x912ce59144191c1204e64559fe8253a0e49e6548,0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f,0xda10009cbd5d07dd0cecc66161fc93d7c9000da1,0xe80772eaf6e2e18b651f160bc9158b2a5cafca65,0xb1084db8d3c05cebd5fa9335df95ee4b8a0edc30".split(",");
 
 // prettier-ignore
-let STABLE_COINS: string[] = "0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4,0xf55bec9cafdbe8730f096aa55dad6d22d44099df,0xedeabc3a1e7d21fe835ffa6f83a710c70bb1a051,0xca77eb3fefe3725dc33bccb54edefc3d9f764f97".split(",");
+let STABLE_COINS: string[] = "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9,0xaf88d065e77c8cc2239327c5edb3a432268e5831,0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,0xda10009cbd5d07dd0cecc66161fc93d7c9000da1".split(",");
 
 let MINIMUM_ETH_LOCKED = BigDecimal.fromString("0");
 
