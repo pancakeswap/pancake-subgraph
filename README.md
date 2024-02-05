@@ -1,8 +1,10 @@
-# PancakeSwap Subgraph
+# SectaFi Subgraph
 
-TheGraph exposes a GraphQL endpoint to query the events and entities within the Binance Smart Chain and PancakeSwap ecosystem.
+TheGraph exposes a GraphQL endpoint to query the events and entities within the Linea and SectaFi ecosystem.
 
 Currently, there are multiple subgraphs, but additional subgraphs can be added to this repository, following the current architecture.
+
+We are only using Exchange V3 for now.
 
 ## Subgraphs
 

@@ -1,6 +1,6 @@
-specVersion: 0.0.2
-description: PancakeSwap is a multi-chain decentralized exchange and automated market maker protocol.
-repository: https://github.com/pancakeswap/pancake-subgraph
+specVersion: 0.0.1
+description: SectaFi is a decentralized exchange and automated market maker protocol on Linea.
+repository: https://github.com/secta-finance/secta-subgraph
 schema:
   file: ./schema.graphql
 features:
