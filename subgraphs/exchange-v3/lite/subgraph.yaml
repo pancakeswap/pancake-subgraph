@@ -71,7 +71,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pool
-    network: bsc
+    network: linea-goerli
     source:
       abi: Pool
     mapping:

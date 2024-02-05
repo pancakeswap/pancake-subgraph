@@ -1,4 +1,4 @@
-specVersion: 0.0.1
+specVersion: 0.0.2
 description: SectaFi is a decentralized exchange and automated market maker protocol on Linea.
 repository: https://github.com/secta-finance/secta-subgraph
 schema:
@@ -71,7 +71,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pool
-    network: arbitrum-one
+    network: linea-goerli
     source:
       abi: Pool
     mapping:
