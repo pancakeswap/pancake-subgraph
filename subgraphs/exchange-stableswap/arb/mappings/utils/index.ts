@@ -3,6 +3,7 @@ import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 // import { ERC20 } from "../../../exchange/generated/Factory/ERC20";
 // import { ERC20NameBytes } from "../../../exchange/generated/Factory/ERC20NameBytes";
 // import { ERC20SymbolBytes } from "../../../exchange/generated/Factory/ERC20SymbolBytes";
+import { PriceLens0 } from "../../generated/StableSwapFactory/PriceLens0";
 import { StableSwapFactory } from "../../generated/StableSwapFactory/StableSwapFactory";
 import { ERC20 } from "../../generated/StableSwapFactory/ERC20";
 import { ERC20SymbolBytes } from "../../generated/StableSwapFactory/ERC20SymbolBytes";
@@ -18,6 +19,8 @@ export let PENDLE_ADDRESS = "0x0c880f6761F1af8d9Aa9C466984b80DAb9a8c9e8";
 //When new factory was deployed, and SC address into list
 export let FACTORIES: string[] = [STABLESWAP_FACTORY_ADDRESS];
 
+export let priceLensContract = PriceLens0.bind(Address.fromString("0x6234d989583520565d00131948c1fb7c4ebb691d"));
+
 export let USDT_ADDR = Address.fromString(USDT_ADDRESS);
 export let USDC_ADDR = Address.fromString(USDC_ADDRESS);
 export let WETH_ADDR = Address.fromString(WETH_ADDRESS);
@@ -29,6 +32,7 @@ export let BIG_DECIMAL_ZERO = BigDecimal.fromString("0");
 export let BIG_DECIMAL_ONE = BigDecimal.fromString("1");
 export let BIG_DECIMAL_TEN = BigDecimal.fromString("10");
 export let BIG_INT_18 = BigInt.fromI32(18);
+export let BIG_INT_6 = BigInt.fromI32(6);
 
 export let stableSwapFactoryContract = StableSwapFactory.bind(Address.fromString(STABLESWAP_FACTORY_ADDRESS));
 export function exponentToBigDecimal(decimals: BigInt): BigDecimal {

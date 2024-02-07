@@ -14,6 +14,9 @@ import {
   PENDLE_ADDR,
   USDC_ADDR,
   PENDLE_ADDRESS,
+  priceLensContract,
+  convertTokenToDecimal,
+  BIG_INT_6,
 } from "./index";
 import { PairV3 as PairV3Contract } from "../../generated/StableSwapFactory/PairV3";
 import { StableSwapPair as StableSwapPairContract } from "../../generated/StableSwapFactory/StableSwapPair";
@@ -128,72 +131,12 @@ export function findBnbPerToken(token: Token): BigDecimal {
       }
     }
   }
+  let tokenBNBPrice = priceLensContract.try_getNativePrice(Address.fromString(token.id));
+  if (!tokenBNBPrice.reverted) {
+    return convertTokenToDecimal(tokenBNBPrice.value, BIG_INT_6);
+  }
+
   return BIG_DECIMAL_ZERO; // nothing was found return 0
-}
-
-/**
- * Accepts tokens and amounts, return tracked amount based on token whitelist
- * If one token on whitelist, return amount in that token converted to USD.
- * If both are, return average of two amounts
- * If neither is, return 0
- */
-export function getTrackedVolumeUSD(
-  bundle: Bundle,
-  tokenAmount0: BigDecimal,
-  token0: Token,
-  tokenAmount1: BigDecimal,
-  token1: Token
-): BigDecimal {
-  let price0 = token0.derivedETH.times(bundle.ethPrice);
-  let price1 = token1.derivedETH.times(bundle.ethPrice);
-
-  // both are whitelist tokens, take average of both amounts
-  if (WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {
-    return tokenAmount0.times(price0).plus(tokenAmount1.times(price1)).div(BigDecimal.fromString("2"));
-  }
-
-  // take full value of the whitelisted token amount
-  if (WHITELIST.includes(token0.id) && !WHITELIST.includes(token1.id)) {
-    return tokenAmount0.times(price0);
-  }
-
-  // take full value of the whitelisted token amount
-  if (!WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {
-    return tokenAmount1.times(price1);
-  }
-
-  // neither token is on white list, tracked volume is 0
-  return BIG_DECIMAL_ZERO;
-}
-
-/**
- * Accepts tokens and amounts, return tracked fee amount based on token whitelist
- * If both are, return the difference between the token amounts
- * If not, return 0
- */
-export function getTrackedFeeVolumeUSD(
-  bundle: Bundle,
-  tokenAmount0: BigDecimal,
-  token0: Token,
-  tokenAmount1: BigDecimal,
-  token1: Token
-): BigDecimal {
-  let price0 = token0.derivedETH.times(bundle.ethPrice);
-  let price1 = token1.derivedETH.times(bundle.ethPrice);
-
-  // both are whitelist tokens, take average of both amounts
-  if (WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {
-    let tokenAmount0USD = tokenAmount0.times(price0);
-    let tokenAmount1USD = tokenAmount1.times(price1);
-    if (tokenAmount0USD.ge(tokenAmount1USD)) {
-      return tokenAmount0USD.minus(tokenAmount1USD);
-    } else {
-      return tokenAmount1USD.minus(tokenAmount0USD);
-    }
-  }
-
-  // neither token is on white list, tracked volume is 0
-  return BIG_DECIMAL_ZERO;
 }
 
 /**
@@ -212,11 +155,6 @@ export function getTrackedLiquidityUSD(
   let price0 = token0.derivedETH.times(bundle.ethPrice);
   let price1 = token1.derivedETH.times(bundle.ethPrice);
 
-  // both are whitelist tokens, take average of both amounts
-  if (WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {
-    return tokenAmount0.times(price0).plus(tokenAmount1.times(price1));
-  }
-
   // take double value of the whitelisted token amount
   if (WHITELIST.includes(token0.id) && !WHITELIST.includes(token1.id)) {
     return tokenAmount0.times(price0).times(BigDecimal.fromString("2"));
@@ -227,6 +165,5 @@ export function getTrackedLiquidityUSD(
     return tokenAmount1.times(price1).times(BigDecimal.fromString("2"));
   }
 
-  // neither token is on white list, tracked volume is 0
-  return BIG_DECIMAL_ZERO;
+  return tokenAmount0.times(price0).plus(tokenAmount1.times(price1));
 }

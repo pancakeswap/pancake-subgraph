@@ -51,31 +51,8 @@ export function swap(event: ethereum.Event, params: SwapParams): void {
   }
   let derivedFeeAmountUSD = derivedFeeAmountBNB.times(bundle.bnbPrice);
 
-  // // only accounts for volume through white listed tokens
-  // let trackedAmountUSD = getTrackedVolumeUSD(
-  //   bundle as Bundle,
-  //   amount0Total,
-  //   token0 as Token,
-  //   amount1Total,
-  //   token1 as Token
-  // );
-  // let trackedFeeAmountUSD = getTrackedFeeVolumeUSD(
-  //   bundle as Bundle,
-  //   amount0Total,
-  //   token0 as Token,
-  //   amount1Total,
-  //   token1 as Token
-  // );
-
   let price0 = token0.derivedBNB.times(bundle.bnbPrice);
   let price1 = token1.derivedBNB.times(bundle.bnbPrice);
-
-  // let trackedAmountBNB: BigDecimal;
-  // if (bundle.bnbPrice.equals(BIG_DECIMAL_ZERO)) {
-  //   trackedAmountBNB = BIG_DECIMAL_ZERO;
-  // } else {
-  //   trackedAmountBNB = trackedAmountUSD.div(bundle.bnbPrice);
-  // }
 
   // update token0 global volume and token liquidity stats
   token0.tradeVolume = token0.tradeVolume.plus(amount0In.plus(amount0Out));
