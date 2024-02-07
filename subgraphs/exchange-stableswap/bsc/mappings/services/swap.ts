@@ -2,7 +2,6 @@
 import { BigDecimal, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import { Bundle, Pair, Swap, Token, Transaction } from "../../generated/schema";
 import { BIG_DECIMAL_ZERO, BIG_INT_ONE, convertTokenToDecimal } from "../utils";
-import { getTrackedFeeVolumeUSD, getTrackedVolumeUSD } from "../utils/pricing";
 import { getOrCreateFactory } from "../utils/data";
 import { updatePairDayData, updatePairHourData, updatePancakeDayData, updateTokenDayData } from "./dayUpdates";
 
@@ -52,40 +51,40 @@ export function swap(event: ethereum.Event, params: SwapParams): void {
   }
   let derivedFeeAmountUSD = derivedFeeAmountBNB.times(bundle.bnbPrice);
 
-  // only accounts for volume through white listed tokens
-  let trackedAmountUSD = getTrackedVolumeUSD(
-    bundle as Bundle,
-    amount0Total,
-    token0 as Token,
-    amount1Total,
-    token1 as Token
-  );
-  let trackedFeeAmountUSD = getTrackedFeeVolumeUSD(
-    bundle as Bundle,
-    amount0Total,
-    token0 as Token,
-    amount1Total,
-    token1 as Token
-  );
+  // // only accounts for volume through white listed tokens
+  // let trackedAmountUSD = getTrackedVolumeUSD(
+  //   bundle as Bundle,
+  //   amount0Total,
+  //   token0 as Token,
+  //   amount1Total,
+  //   token1 as Token
+  // );
+  // let trackedFeeAmountUSD = getTrackedFeeVolumeUSD(
+  //   bundle as Bundle,
+  //   amount0Total,
+  //   token0 as Token,
+  //   amount1Total,
+  //   token1 as Token
+  // );
 
   let price0 = token0.derivedBNB.times(bundle.bnbPrice);
   let price1 = token1.derivedBNB.times(bundle.bnbPrice);
 
-  let trackedAmountBNB: BigDecimal;
-  if (bundle.bnbPrice.equals(BIG_DECIMAL_ZERO)) {
-    trackedAmountBNB = BIG_DECIMAL_ZERO;
-  } else {
-    trackedAmountBNB = trackedAmountUSD.div(bundle.bnbPrice);
-  }
+  // let trackedAmountBNB: BigDecimal;
+  // if (bundle.bnbPrice.equals(BIG_DECIMAL_ZERO)) {
+  //   trackedAmountBNB = BIG_DECIMAL_ZERO;
+  // } else {
+  //   trackedAmountBNB = trackedAmountUSD.div(bundle.bnbPrice);
+  // }
 
   // update token0 global volume and token liquidity stats
   token0.tradeVolume = token0.tradeVolume.plus(amount0In.plus(amount0Out));
-  token0.tradeVolumeUSD = token0.tradeVolumeUSD.plus(trackedAmountUSD);
+  token0.tradeVolumeUSD = token0.tradeVolumeUSD.plus(derivedAmountUSD);
   token0.untrackedVolumeUSD = token0.untrackedVolumeUSD.plus(derivedAmountUSD);
 
   // update token1 global volume and token liquidity stats
   token1.tradeVolume = token1.tradeVolume.plus(amount1In.plus(amount1Out));
-  token1.tradeVolumeUSD = token1.tradeVolumeUSD.plus(trackedAmountUSD);
+  token1.tradeVolumeUSD = token1.tradeVolumeUSD.plus(derivedAmountUSD);
   token1.untrackedVolumeUSD = token1.untrackedVolumeUSD.plus(derivedAmountUSD);
 
   // update txn counts
@@ -93,7 +92,7 @@ export function swap(event: ethereum.Event, params: SwapParams): void {
   token1.totalTransactions = token1.totalTransactions.plus(BIG_INT_ONE);
 
   // update pair volume data, use tracked amount if we have it as its probably more accurate
-  pair.volumeUSD = pair.volumeUSD.plus(trackedAmountUSD);
+  pair.volumeUSD = pair.volumeUSD.plus(derivedAmountUSD);
   pair.volumeOutUSD = pair.volumeOutUSD.plus(amount0Out.times(price0)).plus(amount1Out.times(price1));
   pair.volumeToken0 = pair.volumeToken0.plus(amount0Total);
   pair.volumeToken1 = pair.volumeToken1.plus(amount1Total);
@@ -103,8 +102,8 @@ export function swap(event: ethereum.Event, params: SwapParams): void {
 
   // update global values, only used tracked amounts for volume
   let factory = getOrCreateFactory(pair.factory);
-  factory.totalVolumeUSD = factory.totalVolumeUSD.plus(trackedAmountUSD);
-  factory.totalVolumeBNB = factory.totalVolumeBNB.plus(trackedAmountBNB);
+  factory.totalVolumeUSD = factory.totalVolumeUSD.plus(derivedAmountUSD);
+  factory.totalVolumeBNB = factory.totalVolumeBNB.plus(derivedAmountBNB);
   factory.untrackedVolumeUSD = factory.untrackedVolumeUSD.plus(derivedAmountUSD);
   factory.totalTransactions = factory.totalTransactions.plus(BIG_INT_ONE);
 
@@ -140,8 +139,8 @@ export function swap(event: ethereum.Event, params: SwapParams): void {
   swap.from = event.transaction.from;
   swap.logIndex = event.logIndex;
   // use the tracked amount if we have it
-  swap.amountUSD = trackedAmountUSD === BIG_DECIMAL_ZERO ? derivedAmountUSD : trackedAmountUSD;
-  swap.amountFeeUSD = trackedFeeAmountUSD === BIG_DECIMAL_ZERO ? derivedFeeAmountUSD : trackedFeeAmountUSD;
+  swap.amountUSD = derivedAmountUSD;
+  swap.amountFeeUSD = derivedFeeAmountUSD;
   swap.save();
 
   // update the transaction
@@ -160,21 +159,21 @@ export function swap(event: ethereum.Event, params: SwapParams): void {
   let token1DayData = updateTokenDayData(token1 as Token, event);
 
   // swap specific updating
-  pancakeDayData.dailyVolumeUSD = pancakeDayData.dailyVolumeUSD.plus(trackedAmountUSD);
-  pancakeDayData.dailyVolumeBNB = pancakeDayData.dailyVolumeBNB.plus(trackedAmountBNB);
+  pancakeDayData.dailyVolumeUSD = pancakeDayData.dailyVolumeUSD.plus(derivedAmountUSD);
+  pancakeDayData.dailyVolumeBNB = pancakeDayData.dailyVolumeBNB.plus(derivedAmountBNB);
   pancakeDayData.dailyVolumeUntracked = pancakeDayData.dailyVolumeUntracked.plus(derivedAmountUSD);
   pancakeDayData.save();
 
   // swap specific updating for pair
   pairDayData.dailyVolumeToken0 = pairDayData.dailyVolumeToken0.plus(amount0Total);
   pairDayData.dailyVolumeToken1 = pairDayData.dailyVolumeToken1.plus(amount1Total);
-  pairDayData.dailyVolumeUSD = pairDayData.dailyVolumeUSD.plus(trackedAmountUSD);
+  pairDayData.dailyVolumeUSD = pairDayData.dailyVolumeUSD.plus(derivedAmountUSD);
   pairDayData.save();
 
   // update hourly pair data
   pairHourData.hourlyVolumeToken0 = pairHourData.hourlyVolumeToken0.plus(amount0Total);
   pairHourData.hourlyVolumeToken1 = pairHourData.hourlyVolumeToken1.plus(amount1Total);
-  pairHourData.hourlyVolumeUSD = pairHourData.hourlyVolumeUSD.plus(trackedAmountUSD);
+  pairHourData.hourlyVolumeUSD = pairHourData.hourlyVolumeUSD.plus(derivedAmountUSD);
   pairHourData.save();
 
   // swap specific updating for token0

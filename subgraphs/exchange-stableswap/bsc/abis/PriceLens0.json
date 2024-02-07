@@ -1,0 +1,121 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      { "name": "nativePriceAggregator", "type": "address", "internalType": "address" },
+      { "name": "wnative", "type": "address", "internalType": "address" }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "DECIMALS",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "_nativePriceAggregator",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "_wnative",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getNativePrice",
+    "inputs": [{ "name": "token", "type": "address", "internalType": "address" }],
+    "outputs": [{ "name": "nativePrice", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getUsd",
+    "inputs": [{ "name": "token", "type": "address", "internalType": "address" }],
+    "outputs": [{ "name": "price", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "owner",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "setNativePriceAggregator",
+    "inputs": [{ "name": "nativePriceAggregator", "type": "address", "internalType": "address" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setSource",
+    "inputs": [
+      { "name": "token", "type": "address", "internalType": "address" },
+      { "name": "sourceType", "type": "uint8", "internalType": "enum PriceLens0.SourceType" },
+      { "name": "sourceAddress", "type": "address", "internalType": "address" },
+      { "name": "baseAddress", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setSourceList",
+    "inputs": [
+      {
+        "name": "sourceList",
+        "type": "tuple[]",
+        "internalType": "struct PriceLens0.SourceList[]",
+        "components": [
+          { "name": "token", "type": "address", "internalType": "address" },
+          { "name": "sourceType", "type": "uint8", "internalType": "enum PriceLens0.SourceType" },
+          { "name": "sourceAddress", "type": "address", "internalType": "address" },
+          { "name": "baseAddress", "type": "address", "internalType": "address" }
+        ]
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "sources",
+    "inputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "outputs": [
+      { "name": "sourceType", "type": "uint8", "internalType": "enum PriceLens0.SourceType" },
+      { "name": "sourceAddress", "type": "address", "internalType": "address" },
+      { "name": "baseAddress", "type": "address", "internalType": "address" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "transferOwnership",
+    "inputs": [{ "name": "newOwner", "type": "address", "internalType": "address" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "event",
+    "name": "OwnershipTransferred",
+    "inputs": [
+      { "name": "user", "type": "address", "indexed": true, "internalType": "address" },
+      { "name": "newOwner", "type": "address", "indexed": true, "internalType": "address" }
+    ],
+    "anonymous": false
+  },
+  { "type": "error", "name": "IncorrectBaseAddress", "inputs": [] },
+  { "type": "error", "name": "IncorrectChainlinkPrice", "inputs": [] },
+  { "type": "error", "name": "IncorrectSourceAddress", "inputs": [] },
+  { "type": "error", "name": "UnknowPrice", "inputs": [] }
+]
