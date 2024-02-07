@@ -69,6 +69,8 @@ templates:
           file: ./abis/PairV3.json
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: PriceLens0
+          file: ./abis/PriceLens0.json
       eventHandlers:
         - event: AddLiquidity(indexed address,uint256[2],uint256[2],uint256,uint256)
           handler: handleAddLiquidity
@@ -106,6 +108,8 @@ templates:
           file: ./abis/PairV3.json
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: PriceLens0
+          file: ./abis/PriceLens0.json
       eventHandlers:
         - event: AddLiquidity(indexed address,uint256[3],uint256[3],uint256,uint256)
           handler: handleTriAddLiquidity

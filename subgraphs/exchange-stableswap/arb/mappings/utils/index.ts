@@ -19,7 +19,9 @@ export let PENDLE_ADDRESS = "0x0c880f6761F1af8d9Aa9C466984b80DAb9a8c9e8";
 //When new factory was deployed, and SC address into list
 export let FACTORIES: string[] = [STABLESWAP_FACTORY_ADDRESS];
 
-export let priceLensContract = PriceLens0.bind(Address.fromString("0x6234d989583520565d00131948c1fb7c4ebb691d"));
+export let PRICE_LENS_ADDRESS = "0xe604940c06df1b6a9851f8e8d8d22468cb932e38";
+
+export let priceLensContract = PriceLens0.bind(Address.fromString(PRICE_LENS_ADDRESS));
 
 export let USDT_ADDR = Address.fromString(USDT_ADDRESS);
 export let USDC_ADDR = Address.fromString(USDC_ADDRESS);

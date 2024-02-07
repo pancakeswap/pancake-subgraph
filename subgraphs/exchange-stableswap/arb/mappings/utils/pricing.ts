@@ -13,7 +13,6 @@ import {
   WETH_ADDR,
   PENDLE_ADDR,
   USDC_ADDR,
-  PENDLE_ADDRESS,
   priceLensContract,
   convertTokenToDecimal,
   BIG_INT_6,
@@ -63,8 +62,8 @@ let WHITELIST: string[] = [
   // WETH_ADDRESS,
   // USDT_ADDRESS,
   // USDC_ADDRESS,
-  PENDLE_ADDRESS,
-  "0xB688BA096b7Bb75d7841e47163Cd12D18B36A5bF", // mPENDLE
+  // PENDLE_ADDRESS,
+  // "0xB688BA096b7Bb75d7841e47163Cd12D18B36A5bF", // mPENDLE
 ];
 
 // minimum liquidity for price to get tracked
@@ -107,9 +106,6 @@ export function findBnbPerToken(token: Token): BigDecimal {
   if (Address.fromString(token.id).equals(USDC_ADDR)) {
     return getPairTokenPrice(USDC_WETH_V3_PAIR, false);
   }
-  if (Address.fromString(token.id).equals(PENDLE_ADDR)) {
-    return getPairTokenPrice(PENDLE_WETH_V3_PAIR, true);
-  }
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {
     if (Address.fromString(token.id).equals(Address.fromString(WHITELIST[i]))) {
@@ -132,8 +128,14 @@ export function findBnbPerToken(token: Token): BigDecimal {
     }
   }
   let tokenBNBPrice = priceLensContract.try_getNativePrice(Address.fromString(token.id));
+
   if (!tokenBNBPrice.reverted) {
     return convertTokenToDecimal(tokenBNBPrice.value, BIG_INT_6);
+  }
+
+  // backward compatibility before price lens
+  if (Address.fromString(token.id).equals(PENDLE_ADDR)) {
+    return getPairTokenPrice(PENDLE_WETH_V3_PAIR, true);
   }
 
   return BIG_DECIMAL_ZERO; // nothing was found return 0
