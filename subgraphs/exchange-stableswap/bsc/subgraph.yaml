@@ -6,9 +6,9 @@ schema:
 # graft:
 #   base: Qme4U6by9yqGwTPKRaPvbgo7Ar9CwYFaTjmy9z6uVSjxvL
 #   block: 33890015 # for previous exiting factory
-# graft:
-#   base: QmXYctSeyF2dMi6Cmkb4t83BMn1RJcENkVSkAgsTTXFAC4
-#   block: 35661200 # for previous exiting factory
+graft:
+  base: QmXYctSeyF2dMi6Cmkb4t83BMn1RJcENkVSkAgsTTXFAC4
+  block: 35922202 # for previous exiting factory
 dataSources:
   - kind: ethereum/contract
     name: StableSwapFactory
