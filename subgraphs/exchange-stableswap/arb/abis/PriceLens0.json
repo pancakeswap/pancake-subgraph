@@ -1,0 +1,132 @@
+[
+  {
+    "inputs": [
+      { "internalType": "address", "name": "nativePriceAggregator", "type": "address" },
+      { "internalType": "address", "name": "wnative", "type": "address" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  { "inputs": [], "name": "IncorrectBaseAddress", "type": "error" },
+  { "inputs": [], "name": "IncorrectChainlinkPrice", "type": "error" },
+  { "inputs": [], "name": "IncorrectSourceAddress", "type": "error" },
+  { "inputs": [], "name": "UnknowPrice", "type": "error" },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "token", "type": "address" },
+      { "indexed": true, "internalType": "enum PriceLens0.SourceType", "name": "sourceType", "type": "uint8" },
+      { "indexed": false, "internalType": "address", "name": "sourceAddress", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "baseAddress", "type": "address" }
+    ],
+    "name": "UpdateSource",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "DECIMALS",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_nativePriceAggregator",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_wnative",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "token", "type": "address" }],
+    "name": "getNativePrice",
+    "outputs": [{ "internalType": "uint256", "name": "nativePrice", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "token", "type": "address" }],
+    "name": "getUsd",
+    "outputs": [{ "internalType": "uint256", "name": "price", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "nativePriceAggregator", "type": "address" }],
+    "name": "setNativePriceAggregator",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "token", "type": "address" },
+      { "internalType": "enum PriceLens0.SourceType", "name": "sourceType", "type": "uint8" },
+      { "internalType": "address", "name": "sourceAddress", "type": "address" },
+      { "internalType": "address", "name": "baseAddress", "type": "address" }
+    ],
+    "name": "setSource",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "token", "type": "address" },
+          { "internalType": "enum PriceLens0.SourceType", "name": "sourceType", "type": "uint8" },
+          { "internalType": "address", "name": "sourceAddress", "type": "address" },
+          { "internalType": "address", "name": "baseAddress", "type": "address" }
+        ],
+        "internalType": "struct PriceLens0.SourceList[]",
+        "name": "sourceList",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "setSourceList",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "sources",
+    "outputs": [
+      { "internalType": "enum PriceLens0.SourceType", "name": "sourceType", "type": "uint8" },
+      { "internalType": "address", "name": "sourceAddress", "type": "address" },
+      { "internalType": "address", "name": "baseAddress", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

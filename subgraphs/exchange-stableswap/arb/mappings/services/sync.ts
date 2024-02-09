@@ -39,11 +39,22 @@ export function sync(pairAddress: Address): void {
   bundle.save();
 
   let t0derivedETH = findBnbPerToken(token0 as Token);
+  let t1derivedETH = findBnbPerToken(token1 as Token);
+
+  // if t0 bnb is not found
+  if (t0derivedETH.equals(BIG_DECIMAL_ZERO) && t1derivedETH.gt(BIG_DECIMAL_ZERO)) {
+    t0derivedETH = t1derivedETH.times(pair.token1Price);
+  }
+
+  // if t1 bnb is not found
+  if (t1derivedETH.equals(BIG_DECIMAL_ZERO) && t0derivedETH.gt(BIG_DECIMAL_ZERO)) {
+    t1derivedETH = t0derivedETH.times(pair.token0Price);
+  }
+
   token0.derivedETH = t0derivedETH;
   token0.derivedUSD = t0derivedETH.times(bundle.ethPrice);
   token0.save();
 
-  let t1derivedETH = findBnbPerToken(token1 as Token);
   token1.derivedETH = t1derivedETH;
   token1.derivedUSD = t1derivedETH.times(bundle.ethPrice);
   token1.save();

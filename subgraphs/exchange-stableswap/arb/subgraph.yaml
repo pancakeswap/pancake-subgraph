@@ -8,7 +8,7 @@ dataSources:
     name: StableSwapFactory
     network: arbitrum-one
     source:
-      address: '0x5d5fbb19572c4a89846198c3dbedb2b6ef58a77a'
+      address: "0x5d5fbb19572c4a89846198c3dbedb2b6ef58a77a"
       abi: StableSwapFactory
       startBlock: 169319653
     mapping:
@@ -35,6 +35,8 @@ dataSources:
           file: ./abis/ERC20NameBytes.json
         - name: ERC20SymbolBytes
           file: ./abis/ERC20SymbolBytes.json
+        - name: PriceLens0
+          file: ./abis/PriceLens0.json
       eventHandlers:
         - event: NewStableSwapPair(indexed address,address,address,address,address)
           handler: handlePairCreated
@@ -67,6 +69,8 @@ templates:
           file: ./abis/PairV3.json
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: PriceLens0
+          file: ./abis/PriceLens0.json
       eventHandlers:
         - event: AddLiquidity(indexed address,uint256[2],uint256[2],uint256,uint256)
           handler: handleAddLiquidity
@@ -104,6 +108,8 @@ templates:
           file: ./abis/PairV3.json
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: PriceLens0
+          file: ./abis/PriceLens0.json
       eventHandlers:
         - event: AddLiquidity(indexed address,uint256[3],uint256[3],uint256,uint256)
           handler: handleTriAddLiquidity
