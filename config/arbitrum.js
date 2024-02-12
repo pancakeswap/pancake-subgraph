@@ -54,7 +54,7 @@ module.exports = {
     startBlock: 105053701,
   },
   predictionV2: {
-    startBlock: 158927648,
-    address: "0xF2F90E718a3BFaCb430c1818cB962f05A2631998",
+    startBlock: 170624327,
+    address: "0x870CBfD72970E6ad146310Dd0EC546Db1Cbbe6F8",
   },
 };

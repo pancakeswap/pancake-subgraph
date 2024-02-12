@@ -8,9 +8,9 @@ dataSources:
     name: PredictionV2
     network: arbitrum-one
     source:
-      address: "0xF2F90E718a3BFaCb430c1818cB962f05A2631998"
+      address: "0x870CBfD72970E6ad146310Dd0EC546Db1Cbbe6F8"
       abi: PredictionV2
-      startBlock: 158927648
+      startBlock: 170624327
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
