@@ -5,19 +5,19 @@ import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { exponentToBigDecimal, safeDiv } from "./index";
 
 // prettier-ignore
-const WETH_ADDRESS = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1";
+const WETH_ADDRESS = "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91";
 // prettier-ignore
-const USDC_WETH_03_POOL = "0xd9e2a1a61b6e61b275cec326465d417e52c1b95c";
+const USDC_WETH_03_POOL = "0x291d9f9764c72c9ba6ff47b451a9f7885ebf9977";
 
-const STABLE_IS_TOKEN0 = "false" as string;
+const STABLE_IS_TOKEN0 = "true" as string;
 
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s
 // prettier-ignore
-export let WHITELIST_TOKENS: string[] = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1,0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9,0xaf88d065e77c8cc2239327c5edb3a432268e5831,0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,0x912ce59144191c1204e64559fe8253a0e49e6548,0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f,0xda10009cbd5d07dd0cecc66161fc93d7c9000da1,0xe80772eaf6e2e18b651f160bc9158b2a5cafca65,0xb1084db8d3c05cebd5fa9335df95ee4b8a0edc30".split(",");
+export let WHITELIST_TOKENS: string[] = "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91,0x493257fd37edb34451f62edf8d2a0c418852ba4c,0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181,0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4,0xbbeb516fb02a01611cbbe0453fe3c580d7281011,0x32fd44bb869620c0ef993754c8a00be67c464806,0x703b52f2b28febcb60e1372858af5b18849fe867,0x3a287a06c66f9e95a56327185ca2bdf5f031cecd,0x4b9eb6c0b6ea15176bbf62841c6b2a8a398cb656,0x8e86e46278518efc1c5ced245cba2c7e3ef11557".split(",");
 
 // prettier-ignore
-let STABLE_COINS: string[] = "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9,0xaf88d065e77c8cc2239327c5edb3a432268e5831,0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,0xda10009cbd5d07dd0cecc66161fc93d7c9000da1".split(",");
+let STABLE_COINS: string[] = "0x493257fd37edb34451f62edf8d2a0c418852ba4c,0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4,0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181,0x4b9eb6c0b6ea15176bbf62841c6b2a8a398cb656,0x8e86e46278518efc1c5ced245cba2c7e3ef11557".split(",");
 
 let MINIMUM_ETH_LOCKED = BigDecimal.fromString("0");
 
