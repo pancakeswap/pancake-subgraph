@@ -74,6 +74,9 @@ export function fetchTokenName(tokenAddress: Address): string {
 }
 
 export function fetchTokenDecimals(tokenAddress: Address): BigInt {
+  if (tokenAddress.toHexString() == "0x5285d9d9f784bce2aa7b82cf318d632d423c1047") {
+    return BigInt.fromI32(0);
+  }
   let contract = ERC20.bind(tokenAddress);
   let decimalValue = null;
   let decimalResult = contract.try_decimals();
