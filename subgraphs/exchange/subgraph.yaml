@@ -3,6 +3,9 @@ description: PancakeSwap is a decentralized protocol for automated token exchang
 repository: https://github.com/pancakeswap
 schema:
   file: ./schema.graphql
+graft:
+  base: QmfGuiGdHVCbSf8TsVBcjTSn93udHVuwy1EFGyLKEfJ6ty
+  block: 35800481
 dataSources:
   - kind: ethereum/contract
     name: Factory
